@@ -10,6 +10,7 @@
 		D449F7C82247C32800211E2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7C72247C32800211E2E /* main.swift */; };
 		D449F7CD2247C33F00211E2E /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
 		D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
+		D461E5632247FFE200F6965A /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -166,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */,
+				D461E5632247FFE200F6965A /* RVS_BasicGCDTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

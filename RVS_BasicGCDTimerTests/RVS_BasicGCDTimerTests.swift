@@ -23,5 +23,84 @@
 
 import XCTest
 
-class RVS_BasicGCDTimerTests: XCTestCase {
+typealias ResponseHandlerContextFunc = () -> Void
+
+class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
+    func basicGCDTimerCallback(_ inTimer: RVS_BasicGCDTimer) {
+        if let contextfunc = inTimer.context as? ResponseHandlerContextFunc {
+            contextfunc()
+        }
+    }
+    
+    // Extremely basic one-shot call.
+    func testGCDBasicOneShot() {
+        var endTime: Date!
+        var startTime: Date!
+        var newTimer: RVS_BasicGCDTimer!
+
+        let expectation = XCTestExpectation(description: "Complete Timer")
+        
+        func responseFunc() {
+            endTime = Date()
+            print("Timer Complete!")
+            expectation.fulfill()
+        }
+        
+        // 100 milliseconds.
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: true, context: responseFunc)
+        
+        startTime = Date()
+        newTimer.resume()
+        
+        // Wait until the expectation is fulfilled, with a timeout of half a second.
+        wait(for: [expectation], timeout: 0.5)
+        
+        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        XCTAssertNotNil(endTime, "No end time!")
+        
+        if let endTime = endTime {
+            print(String(format: "Total Time To Run: %f milliseconds", (endTime.timeIntervalSinceReferenceDate - startTime.timeIntervalSinceReferenceDate) * 1000))
+        }
+        
+        newTimer.invalidate()
+    }
+    
+    // Test repeat five times.
+    func testGCDBasicRepeat() {
+        var timerCount: Int = 0
+        var endTime: Date!
+        var startTime: Date!
+        var newTimer: RVS_BasicGCDTimer!
+        
+        let expectation = XCTestExpectation(description: "Complete Timer")
+        
+        func responseFunc() {
+            timerCount += 1
+            endTime = Date()
+            print(String(format: "Callback at %f milliseconds", (endTime.timeIntervalSinceReferenceDate - startTime.timeIntervalSinceReferenceDate) * 1000))
+            if 4 < timerCount {
+                print("Timer Complete After Five Repetitions!")
+                newTimer.invalidate()
+                expectation.fulfill()
+            }
+        }
+        
+        // Every 100 milliseconds.
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: false, context: responseFunc)
+        
+        startTime = Date()
+        newTimer.resume()
+        
+        // Wait until the expectation is fulfilled, with a timeout of a second.
+        wait(for: [expectation], timeout: 1.0)
+        
+        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        XCTAssertNotNil(endTime, "No end time!")
+        
+        if let endTime = endTime {
+            print(String(format: "Total Time To Run: %f milliseconds", (endTime.timeIntervalSinceReferenceDate - startTime.timeIntervalSinceReferenceDate) * 1000))
+        }
+        
+        newTimer.invalidate()
+    }
 }

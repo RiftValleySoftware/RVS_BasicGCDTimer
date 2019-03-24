@@ -25,16 +25,58 @@ import Foundation
 
 /* ################################################################## */
 /**
- This is the basic callback protocol for the general-purpose GCD timer class. It has one simple required method.
+ This is the basic callback protocol for the general-purpose GCD timer class. It has one simple required method, and two optional methods.
  */
 public protocol RVS_BasicGCDTimerDelegate: class {
     /* ############################################################## */
     /**
-     Called periodically, as the GCDTimer repeats (or fires once).
+     Called periodically, as the GCDTimer repeats (or fires once). This is required.
      
      - parameter timer: The BasicGCDTimer instance that is invoking the callback.
      */
     func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer)
+    /* ############################################################## */
+    /**
+     This is called after the timer is initially valid (but before the first run). It is optional.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer)
+    /* ############################################################## */
+    /**
+     This is called just before the timer invalidates. It is optional.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
+}
+
+/* ################################################################## */
+/**
+ These defaults mean that these two methods are optional.
+ */
+public extension RVS_BasicGCDTimerDelegate {
+    /* ############################################################## */
+    /**
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer) {
+        #if DEBUG
+            print("Default basicGCDTimerValid delegate call!")
+        #endif
+    }
+    
+    /* ############################################################## */
+    /**
+     This is called just before the timer invalidates.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer) {
+        #if DEBUG
+            print("Default basicGCDTimerWillBecomeInvalid delegate call!")
+        #endif
+    }
 }
 
 /* ################################################################## */
@@ -71,7 +113,7 @@ public class RVS_BasicGCDTimer {
     private var _timerVar: DispatchSourceTimer!
     /// This is the contained delegate instance
     private weak var _delegate: RVS_BasicGCDTimerDelegate?
-    
+
     /* ############################################################## */
     /**
      This dynamically initialized calculated property will return (or create and return) a basic GCD timer that (probably) repeats.
@@ -85,8 +127,11 @@ public class RVS_BasicGCDTimer {
             #endif
             _timerVar = DispatchSource.makeTimerSource()                            // We make a generic, default timer source. No frou-frou.
             let leeway = DispatchTimeInterval.milliseconds(leewayInMilliseconds)    // If they have provided a leeway, we apply it here. We assume milliseconds.
-            _timerVar.setEventHandler { [weak self] in
-                self?.delegate?.basicGCDTimerCallback(self!)
+            _timerVar.setEventHandler { [weak self] in                              // This is the timer's base callback. This is called from the system timer.
+                self?.delegate?.basicGCDTimerCallback(self!)                        // Call the delegate back.
+                if nil == self?.delegate || self?._onlyFireOnce ?? true {           // The timer commits seppukku if it's only to fire one time. It also does it if the variable can't unwrap (should never happen).
+                    self?.invalidate()
+                }
             }
             if _onlyFireOnce {                                                      // Just this once...
                 _timerVar.schedule(deadline: .now() + timeIntervalInSeconds)
@@ -95,6 +140,8 @@ public class RVS_BasicGCDTimer {
                     repeating: timeIntervalInSeconds,                               // If we are repeating (default), we add our duration as the repeating time.
                     leeway: leeway)                                                 // Add any leeway we specified.
             }
+            
+            delegate?.basicGCDTimerValid(self)
         }
         
         return _timerVar
@@ -107,7 +154,9 @@ public class RVS_BasicGCDTimer {
     public var timeIntervalInSeconds: TimeInterval = 0
     /// This is how much "leeway" we give the timer, in milliseconds. It is ignored for onlyFireOnce.
     public var leewayInMilliseconds: Int = 0
-    
+    /// This allows the delegate to add any "context" data to the instance,
+    public var context: Any!
+
     /* ############################################################## */
     // MARK: - Public Calculated Properties
     /* ############################################################## */
@@ -140,7 +189,8 @@ public class RVS_BasicGCDTimer {
                 _state = ._suspended
                 _timer.suspend()
             } else if newValue {    // If the new value is true, then we resume (which could create a new instance of the timer).
-                resume()
+                _state = ._running
+                _timer.resume()
             }
         }
     }
@@ -159,8 +209,26 @@ public class RVS_BasicGCDTimer {
                 #if DEBUG
                     print("timer changing the delegate from \(String(describing: delegate)) to \(String(describing: newValue))")
                 #endif
-                if nil == newValue {  // Bad delegate means we SCRAM the reactor.
-                    invalidate()
+                if nil == newValue, nil != _timerVar {  // We can't have a timer with no one to call. We also use this to kill the timer.
+                    delegate?.basicGCDTimerWillBecomeInvalid(self)
+                    _delegate = nil
+                    _timerVar.setEventHandler(handler: nil)
+                    _timerVar.cancel()
+                    
+                    if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
+                        #if DEBUG
+                        print("timer one more for the road")
+                        #endif
+                        _timerVar.resume()
+                    }
+                    
+                    // We clean up everything.
+                    timeIntervalInSeconds = 0
+                    leewayInMilliseconds = 0
+                    context = nil
+                    _onlyFireOnce = false
+                    _state = ._invalid
+                    _timerVar = nil
                 }
                 _delegate = newValue
             }
@@ -190,17 +258,20 @@ public class RVS_BasicGCDTimer {
      - parameter delegate: Our delegate, for callbacks. Optional. Default is nil.
      - parameter leewayInMilliseconds: Any leeway. This is optional, and default is zero (0). It is ignored if onlyFireOnce is true.
      - parameter onlyFireOnce: If true, then this will only fire one time, as opposed to repeat. Optional. Default is false. If true, then leewayInMilliseconds is ignored.
+     - parameter context: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
      */
     public init(timeIntervalInSeconds inTimeIntervalInSeconds: TimeInterval,
                 delegate inDelegate: RVS_BasicGCDTimerDelegate?,
                 leewayInMilliseconds inLeewayInMilliseconds: Int = 0,
-                onlyFireOnce inOnlyFireOnce: Bool = false) {
+                onlyFireOnce inOnlyFireOnce: Bool = false,
+                context inContext: Any! = nil) {
         #if DEBUG
             print("timer init")
         #endif
         timeIntervalInSeconds = inTimeIntervalInSeconds
         leewayInMilliseconds = inLeewayInMilliseconds
         delegate = inDelegate
+        context = inContext
         _onlyFireOnce = inOnlyFireOnce
     }
     
@@ -239,23 +310,7 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer invalidate")
             #endif
-            delegate = nil  // We won't be calling the delegate anymore.
-            _timerVar.setEventHandler(handler: nil)
-            _timerVar.cancel()
-            
-            if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
-                #if DEBUG
-                    print("timer one more for the road")
-                #endif
-                _timerVar.resume()
-            }
-            
-            // We clean up everything.
-            _onlyFireOnce = false
-            timeIntervalInSeconds = 0
-            leewayInMilliseconds = 0
-            _state = ._invalid
-            _timerVar = nil
+            delegate = nil
         }
     }
 }
