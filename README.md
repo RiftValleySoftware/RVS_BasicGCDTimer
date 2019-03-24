@@ -69,10 +69,12 @@ Once the timer is instantiated, you start it by calling `resume()`:
 
     newTimer.resume()
 
-The timer will repeat until it is invalidated or deinitialized:
+If repeating, the timer will repeat until it is invalidated or deinitialized:
 
     newTimer.invalidate()
-    
+
+If a "one-shot," then the timer is invalidated as soon as it completes.
+
 DEPENDENCIES
 =
 
