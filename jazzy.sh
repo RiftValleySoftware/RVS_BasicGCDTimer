@@ -7,7 +7,7 @@ jazzy   --github_url https://github.com/RiftValleySoftware/RVS_BasicGCDTimer\
         --readme ./README.md --theme fullwidth\
         --author The\ Great\ Rift\ Valley\ Software\ Company\
         --author_url https://riftvalleysoftware.com\
-        --module RVS_IPAddress\
+        --module RVS_BasicGCDTimer\
         --copyright [©2019\ The\ Great\ Rift\ Valley\ Software\ Company]\(https://riftvalleysoftware.com\)
 cp icon.png docs/icon.png
 cd "${CWD}"

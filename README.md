@@ -65,6 +65,10 @@ However, there's a lot of defaults. You can specify the exact same as such:
 
     newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate)
 
+Once the timer is instantiated, you start it by calling `resume()`:
+
+    newTimer.resume()
+
 The timer will repeat until it is invalidated or deinitialized:
 
     newTimer.invalidate()
