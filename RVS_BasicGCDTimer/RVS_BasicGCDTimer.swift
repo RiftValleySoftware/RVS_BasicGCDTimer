@@ -42,6 +42,9 @@ public protocol RVS_BasicGCDTimerDelegate: class {
  This is a general-purpose GCD timer class.
  
  It requires that an owning instance register a delegate to receive callbacks.
+ 
+ The way that you use this, is to create an instance of this class (we use a class, to ensure that it is referenced, as opposed to copied).
+ You then call "resume()" on that instance.
  */
 public class RVS_BasicGCDTimer {
     /* ############################################################## */
@@ -85,12 +88,12 @@ public class RVS_BasicGCDTimer {
             _timerVar.setEventHandler { [weak self] in
                 self?.delegate?.basicGCDTimerCallback(self!)
             }
-            if _onlyFireOnce {
+            if _onlyFireOnce {                                                      // Just this once...
                 _timerVar.schedule(deadline: .now() + timeIntervalInSeconds)
             } else {
-                _timerVar.schedule(deadline: .now() + timeIntervalInSeconds,    // The number of seconds each iteration of the timer will take.
-                    repeating: timeIntervalInSeconds,                           // If we are repeating (default), we add our duration as the repeating time. Otherwise (only fire once), we set 0.
-                    leeway: leeway)                                             // Add any leeway we specified.
+                _timerVar.schedule(deadline: .now() + timeIntervalInSeconds,        // The number of seconds each iteration of the timer will take.
+                    repeating: timeIntervalInSeconds,                               // If we are repeating (default), we add our duration as the repeating time.
+                    leeway: leeway)                                                 // Add any leeway we specified.
             }
         }
         
@@ -117,14 +120,6 @@ public class RVS_BasicGCDTimer {
     
     /* ############################################################## */
     /**
-     - returns: true, if the timer is currently running. READ ONLY
-     */
-    public var isRunning: Bool {
-        return ._running == _state
-    }
-    
-    /* ############################################################## */
-    /**
      - returns: true, if the timer will only fire one time (will return false after that one fire). READ ONLY
      */
     public var isOnlyFiringOnce: Bool {
@@ -133,7 +128,26 @@ public class RVS_BasicGCDTimer {
     
     /* ############################################################## */
     /**
-     - returns: the delegate object. READ/WRITE
+     - returns: true, if the timer is currently running. READ/WRITE
+     */
+    public var isRunning: Bool {
+        get {
+            return ._running == _state  // Simply return true, if we are running.
+        }
+        
+        set {
+            if ._running == _state && !newValue {   // If we were running, and the new value if false, we pause.
+                _state = ._suspended
+                _timer.suspend()
+            } else if newValue {    // If the new value is true, then we resume (which could create a new instance of the timer).
+                resume()
+            }
+        }
+    }
+
+    /* ############################################################## */
+    /**
+     - returns: the delegate object. READ/WRITE. If nil, then the instance will stop and invalidate. You must have a delegate to run.
      */
     public var delegate: RVS_BasicGCDTimerDelegate? {
         get {
@@ -145,6 +159,9 @@ public class RVS_BasicGCDTimer {
                 #if DEBUG
                     print("timer changing the delegate from \(String(describing: delegate)) to \(String(describing: newValue))")
                 #endif
+                if nil == newValue {  // Bad delegate means we SCRAM the reactor.
+                    invalidate()
+                }
                 _delegate = newValue
             }
         }
@@ -196,8 +213,7 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer resume")
             #endif
-            _state = ._running
-            _timer.resume()    // Remember that this could create a timer on the spot.
+            isRunning = true    // Remember that this could create a timer on the spot.
         }
     }
     
@@ -210,8 +226,7 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer suspend")
             #endif
-            _state = ._suspended
-            _timer.suspend()
+            isRunning = false
         }
     }
     
@@ -224,10 +239,10 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer invalidate")
             #endif
-            delegate = nil
+            delegate = nil  // We won't be calling the delegate anymore.
             _timerVar.setEventHandler(handler: nil)
-            
             _timerVar.cancel()
+            
             if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
                 #if DEBUG
                     print("timer one more for the road")
