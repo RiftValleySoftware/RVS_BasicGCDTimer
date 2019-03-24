@@ -6,8 +6,16 @@ Basic Grand Central Dispatch Timer
 Introduction
 -
 
+This is a fundamental tool: A simple [Grand Central Dispatch](https://developer.apple.com/documentation/dispatch) timer that either fires repeatedly, or only once.
+
 What Problem Does This Solve?
 -
+
+Timers are necessary for many different reasons. They could be the driving engine of a clock app, or a UI tool to refresh a display or close a screen.
+
+This will allow "leeway," which Apple suggests as a way to help reduce energy usage, and is thread-independent. You can instantiate it on any queue that you want.
+
+It's incredibly simple. Just a "set and forget," if you are firing just once, or a simple repeating callback.
 
 Requirements
 -
@@ -19,8 +27,22 @@ This requires Swift Version 4.0 or above (tested with 4.2).
 WHERE TO GET
 =
 
+[This is the GitHub repo for the project.](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer).
+
+[Thisis the documentation page for it](https://riftvalleysoftware.com/work/open-source-projects/#RVS_BasicGCDTimer)
+
 USAGE
 =
+
+Include the Source in Your Project
+-
+
+This is a simple source file; not a module.
+
+To use this, simply add the [RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer/blob/master/RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift) file to your project; copying it wherever you want.
+
+You then instantiate the timer:
+
 
 
 DEPENDENCIES
