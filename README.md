@@ -43,8 +43,32 @@ To use this, simply add the [RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift](https://
 
 You then instantiate the timer:
 
+Either as a one-shot timer (in this case, 100 milliseconds):
 
+`timeIntervalInSeconds` is a double-precision floating point number, with the timer period, in seconds (not milliseconds). It is required to be a positive value over zero.
 
+The `delegate` is required. The timer won't work at all without a valid delegate.
+
+`leewayInMilliseconds` is the recommended "leeway" that Apple suggests that you give timers. This helps conserve energy in mobile devices.
+
+Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
+
+`someContext` is any data that you want returned to the callback in your delegate method. It will be available as the timer's `context` property.
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext)
+
+Here, we specify repeating, with no leeway, and no context data:
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil)
+
+However, there's a lot of defaults. You can specify the exact same as such:
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate)
+
+The timer will repeat until it is invalidated or deinitialized:
+
+    newTimer.invalidate()
+    
 DEPENDENCIES
 =
 
