@@ -1,0 +1,400 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D449F7C82247C32800211E2E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7C72247C32800211E2E /* main.swift */; };
+		D449F7CD2247C33F00211E2E /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
+		D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RVS_BasicGCDTimer; sourceTree = BUILT_PRODUCTS_DIR; };
+		D449F7C72247C32800211E2E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimer.swift; sourceTree = "<group>"; };
+		D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RVS_BasicGCDTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimerTests.swift; sourceTree = "<group>"; };
+		D449F7D92247C50B00211E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		D449F7C62247C32800211E2E /* RVS_BasicGCDTimer */ = {
+			isa = PBXGroup;
+			children = (
+				D449F7C72247C32800211E2E /* main.swift */,
+				D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */,
+			);
+			path = RVS_BasicGCDTimer;
+			sourceTree = "<group>";
+		};
+		D449F7D62247C50B00211E2E /* RVS_BasicGCDTimerTests */ = {
+			isa = PBXGroup;
+			children = (
+				D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */,
+				D449F7D92247C50B00211E2E /* Info.plist */,
+			);
+			path = RVS_BasicGCDTimerTests;
+			sourceTree = "<group>";
+		};
+		D494801521E384C100B51AB3 = {
+			isa = PBXGroup;
+			children = (
+				D449F7C62247C32800211E2E /* RVS_BasicGCDTimer */,
+				D449F7D62247C50B00211E2E /* RVS_BasicGCDTimerTests */,
+				D494802021E384C100B51AB3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D494802021E384C100B51AB3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */,
+				D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D449F7C42247C32800211E2E /* RVS_BasicGCDTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D449F7C92247C32800211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */;
+			buildPhases = (
+				5E92B1260EEB80BAE26977DD /* SwiftLINT */,
+				D449F7C12247C32800211E2E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RVS_BasicGCDTimer;
+			productName = RVS_BasicGCDTimer;
+			productReference = D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */;
+			productType = "com.apple.product-type.tool";
+		};
+		D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */;
+			buildPhases = (
+				D449F7D12247C50B00211E2E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RVS_BasicGCDTimerTests;
+			productName = RVS_BasicGCDTimerTests;
+			productReference = D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D494801621E384C100B51AB3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "The Great Rift Valley Software Company";
+				TargetAttributes = {
+					D449F7C42247C32800211E2E = {
+						CreatedOnToolsVersion = 10.1;
+					};
+					D449F7D42247C50B00211E2E = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = D494801921E384C100B51AB3 /* Build configuration list for PBXProject "RVS_BasicGCDTimer" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D494801521E384C100B51AB3;
+			productRefGroup = D494802021E384C100B51AB3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D449F7C42247C32800211E2E /* RVS_BasicGCDTimer */,
+				D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5E92B1260EEB80BAE26977DD /* SwiftLINT */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLINT;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -f \"${PROJECT_DIR}/Pods/SwiftLint/swiftlint\"; then\n    \"${PROJECT_DIR}/Pods/SwiftLint/swiftlint\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D449F7C12247C32800211E2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D449F7C82247C32800211E2E /* main.swift in Sources */,
+				D449F7CD2247C33F00211E2E /* RVS_BasicGCDTimer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D449F7D12247C50B00211E2E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D449F7CA2247C32800211E2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				INFOPLIST_FILE = "$(SRCROOT)/RVS_BasicGCDTimerTests/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		D449F7CB2247C32800211E2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				INFOPLIST_FILE = "$(SRCROOT)/RVS_BasicGCDTimerTests/Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		D449F7DB2247C50B00211E2E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				INFOPLIST_FILE = RVS_BasicGCDTimerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		D449F7DC2247C50B00211E2E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				INFOPLIST_FILE = RVS_BasicGCDTimerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		D494803121E384C100B51AB3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D494803221E384C100B51AB3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D449F7C92247C32800211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D449F7CA2247C32800211E2E /* Debug */,
+				D449F7CB2247C32800211E2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D449F7DB2247C50B00211E2E /* Debug */,
+				D449F7DC2247C50B00211E2E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D494801921E384C100B51AB3 /* Build configuration list for PBXProject "RVS_BasicGCDTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D494803121E384C100B51AB3 /* Debug */,
+				D494803221E384C100B51AB3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D494801621E384C100B51AB3 /* Project object */;
+}
