@@ -137,7 +137,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             expectation.fulfill()
         }
         
-        // Every 100 milliseconds on the global queue, and give a leeway of 20ms.
+        // Every 100 milliseconds on the global queue, and give a leeway of 10ms.
         newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: timerTime, delegate: self, leewayInMilliseconds: leewayInMilliseconds, onlyFireOnce: false, context: responseFunc, queue: DispatchQueue.global())
         
         startTime = Date()
