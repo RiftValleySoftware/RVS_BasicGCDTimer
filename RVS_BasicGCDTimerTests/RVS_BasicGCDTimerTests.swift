@@ -106,7 +106,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
     
-    // Extremely basic test repeat five times, but give a leeway.
+    // Repeat one hundred milliseconds fifty times, and give a leeway of ten milliseconds.
     func testGCDBasicRepeatWithLeeway() {
         let leewayInMilliseconds = 10   // If you make this less than ten, you'll probably get intermittent failures, because of the overhead.
         let timerTime: Double = 0.1
