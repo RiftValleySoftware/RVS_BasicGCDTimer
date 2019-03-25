@@ -128,9 +128,11 @@ public class RVS_BasicGCDTimer {
             _timerVar = DispatchSource.makeTimerSource(queue: queue)                // We make a generic, default timer source. No frou-frou. If a queue was specified, we use that.
             let leeway = DispatchTimeInterval.milliseconds(leewayInMilliseconds)    // If they have provided a leeway, we apply it here. We assume milliseconds.
             _timerVar.setEventHandler { [weak self] in                              // This is the timer's base callback. This is called from the system timer.
-                self?.delegate?.basicGCDTimerCallback(self!)                        // Call the delegate back.
-                if nil == self?.delegate || self?._onlyFireOnce ?? true {           // The timer commits seppukku if it's only to fire one time. It also does it if the variable can't unwrap (should never happen).
-                    self?.invalidate()
+                if let self = self {
+                    self.delegate?.basicGCDTimerCallback(self)                      // Call the delegate back.
+                    if nil == self.delegate || self._onlyFireOnce {                 // The timer commits seppukku if it's only to fire one time. It also does it if the variable can't unwrap (should never happen).
+                        self.invalidate()
+                    }
                 }
             }
             if _onlyFireOnce {                                                      // Just this once...
@@ -156,7 +158,39 @@ public class RVS_BasicGCDTimer {
         
         return _timerVar
     }
-    
+
+    /* ############################################################## */
+    /**
+     This is called to completely invalidate the timer.
+     */
+    private func _seppukku() {
+        if let timer = _timerVar {
+        #if DEBUG
+            print("timer invalidating.")
+        #endif
+            delegate?.basicGCDTimerWillBecomeInvalid(self)
+            _delegate = nil
+            timer.setEventHandler(handler: nil)
+            timer.cancel()
+            
+            // We clean up everything.
+            timeIntervalInSeconds = 0
+            leewayInMilliseconds = 0
+            context = nil
+            _onlyFireOnce = false
+            
+            if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
+                #if DEBUG
+                    print("timer one more for the road")
+                #endif
+                timer.resume()
+            }
+            
+            _timerVar = nil
+            _state = ._invalid
+        }
+    }
+
     /* ############################################################## */
     // MARK: - Public Instance Properties
     /* ############################################################## */
@@ -223,28 +257,11 @@ public class RVS_BasicGCDTimer {
                 #if DEBUG
                     print("timer changing the delegate from \(String(describing: delegate)) to \(String(describing: newValue))")
                 #endif
-                if nil == newValue, nil != _timerVar {  // We can't have a timer with no one to call. We also use this to kill the timer.
-                    delegate?.basicGCDTimerWillBecomeInvalid(self)
-                    _delegate = nil
-                    _timerVar.setEventHandler(handler: nil)
-                    _timerVar.cancel()
-                    
-                    if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
-                        #if DEBUG
-                            print("timer one more for the road")
-                        #endif
-                        _timerVar.resume()
-                    }
-                    
-                    // We clean up everything.
-                    timeIntervalInSeconds = 0
-                    leewayInMilliseconds = 0
-                    context = nil
-                    _onlyFireOnce = false
-                    _state = ._invalid
-                    _timerVar = nil
+                if nil == newValue {  // We can't have a timer with no one to call. We also use this to kill the timer.
+                    _seppukku()
+                } else {
+                    _delegate = newValue
                 }
-                _delegate = newValue
             }
         }
     }
@@ -259,7 +276,7 @@ public class RVS_BasicGCDTimer {
         #if DEBUG
             print("timer deinit")
         #endif
-        invalidate()
+        _seppukku()
     }
     
     /* ############################################################## */
@@ -290,6 +307,7 @@ public class RVS_BasicGCDTimer {
         leewayInMilliseconds = inLeewayInMilliseconds
         delegate = inDelegate
         context = inContext
+        isWallTime = inIsWallTime
         _onlyFireOnce = inOnlyFireOnce
     }
     
@@ -324,11 +342,6 @@ public class RVS_BasicGCDTimer {
      This completely nukes the timer. It resets the entire object to default.
      */
     public func invalidate() {
-        if ._invalid != _state, nil != _timerVar {
-            #if DEBUG
-                print("timer invalidate")
-            #endif
-            delegate = nil
-        }
+        _seppukku()
     }
 }
