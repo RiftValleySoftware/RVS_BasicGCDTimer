@@ -106,6 +106,50 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
     
+    // Extremely basic test repeat five times, but give a leeway.
+    func testGCDBasicRepeatWithLeeway() {
+        let leewayInMilliseconds = 10   // If you make this less than ten, you'll probably get intermittent failures, because of the overhead.
+        let timerTime: Double = 0.1
+        let repetitionCount = 50
+        
+        var offset: Double = 0.0    // This is the overhead incurred before the first callback. We add this to the leeway.
+        
+        var timerCount: Int = 0
+        var startTime: Date!
+        var newTimer: RVS_BasicGCDTimer!
+        
+        let expectation = XCTestExpectation()
+        expectation.expectedFulfillmentCount = 50
+        
+        func responseFunc(_: RVS_BasicGCDTimer?) {
+            timerCount += 1
+            let timeInMilliseconds = Date().timeIntervalSince(startTime) * 1000.0
+            if 0 == offset {
+                offset = timeInMilliseconds - (timerTime * 1000)
+            }
+            let compareTime: Double = (Double(timerCount) * timerTime * 1000.0) + offset + Double(leewayInMilliseconds)
+            XCTAssertLessThan(timeInMilliseconds, compareTime, "We are outside the expected window")
+            print(String(format: "Completed Repetition %d at %f milliseconds.", timerCount + 1, timeInMilliseconds))
+            if repetitionCount == timerCount {
+                print("Timer Complete After Fifty Repetitions!")
+                newTimer.invalidate()
+            }
+            expectation.fulfill()
+        }
+        
+        // Every 100 milliseconds on the global queue, and give a leeway of 20ms.
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: timerTime, delegate: self, leewayInMilliseconds: leewayInMilliseconds, onlyFireOnce: false, context: responseFunc, queue: DispatchQueue.global())
+        
+        startTime = Date()
+        newTimer.resume()
+        
+        // Wait until the expectation is fulfilled, with a timeout designed to give us very little wiggle room.
+        let timeoutInSeconds = (Double(repetitionCount) * timerTime) + (Double(leewayInMilliseconds) / 1000.0)
+        wait(for: [expectation], timeout: timeoutInSeconds)
+        
+        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+    }
+
     // Test multiple queues (100 one-shot timers).
     func testThreading() {
         func runTimers(_ inTimerArray: [RVS_BasicGCDTimer]) {

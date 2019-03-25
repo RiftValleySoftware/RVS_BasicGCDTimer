@@ -13,7 +13,9 @@ What Problem Does This Solve?
 
 Timers are necessary for many different reasons. They could be the driving engine of a clock app, or a UI tool to refresh a display or close a screen.
 
-This will allow "leeway," which Apple suggests as a way to help reduce energy usage, and is thread-independent. You can instantiate it on any queue that you want.
+This will allow "leeway," which Apple suggests as a way to help reduce energy usage.
+
+The timer is thread-independent. You can instantiate it on any queue that you want.
 
 It's incredibly simple. Just a "set and forget," if you are firing just once, or a simple repeating callback.
 
@@ -43,7 +45,7 @@ To use this, simply add the [RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift](https://
 
 You then instantiate the timer:
 
-Either as a one-shot timer (in this case, 100 milliseconds):
+Either as a one-shot timer (in this case, 100 milliseconds), or as a repeating timer:
 
 `timeIntervalInSeconds` is a double-precision floating point number, with the timer period, in seconds (not milliseconds). It is required to be a positive value over zero.
 
@@ -61,7 +63,7 @@ Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
 
     newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
 
-Here, we specify repeating, with no leeway, and no context data:
+Here, we specify a repeating timer, with no leeway, and no context data:
 
     newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil, queue: nil, isWallTime: false)
 
