@@ -235,7 +235,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         runTimers(timers)
     }
     
-    // Test multiple queues (100 repeating timers).
+    // Test multiple queues (100 repeating timers). This also tests the two optional callbacks.
     func testRepeatThreading() {
         func runTimers(_ inTimerArray: [RVS_BasicGCDTimer]) {
             var expectation = XCTestExpectation()
@@ -245,7 +245,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             print("Waiting for fulfillment of \(inTimerArray.count * 5) iterations.")
             var startTime: Date!
             
-            var trackTimers = [Int](repeatElement(0, count: inTimerArray.count))
+            var trackTimers = [Int](repeatElement(-100, count: inTimerArray.count))
             
             func getTimerIndex(_ inTimer: RVS_BasicGCDTimer) -> Int! {
                 var ret: Int!
@@ -262,6 +262,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
                 if let timer = inTimer {
                     var indexString = ""
                     if let index = getTimerIndex(timer) {
+                        trackTimers[index] = 0
                         indexString = " " + String(index + 1)
                     }
                     print(String(format: "Initializing timer\(indexString) at %f milliseconds", (Date().timeIntervalSince(startTime) * 1000)))
