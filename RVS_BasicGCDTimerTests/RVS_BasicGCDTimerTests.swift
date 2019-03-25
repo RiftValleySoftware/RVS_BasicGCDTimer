@@ -66,7 +66,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         expectation.expectedFulfillmentCount = 5
         
         func responseFunc() {
-            print(String(format: "Completed Repetition %d at %f milliseconds.", timerCount, (Date().timeIntervalSince(startTime) * 1000)))
+            print(String(format: "Completed Repetition %d at %f milliseconds.", timerCount + 1, (Date().timeIntervalSince(startTime) * 1000)))
             if 4 == timerCount {
                 print("Timer Complete After Five Repetitions!")
                 newTimer.invalidate()
