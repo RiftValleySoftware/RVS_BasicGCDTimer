@@ -57,11 +57,13 @@ Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
 
 `queue` is the GCD queue to use. Not specifying means that the default queue is used.
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main)
+`isWallTime` asks the timer to use the "Apple Wall Clock" time. That time is absolute, and doesn't care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent.
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
 
 Here, we specify repeating, with no leeway, and no context data:
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil, queue: nil)
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil, queue: nil, isWallTime: false)
 
 However, there's a lot of defaults. You can specify the exact same as such:
 

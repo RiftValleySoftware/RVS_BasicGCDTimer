@@ -134,11 +134,21 @@ public class RVS_BasicGCDTimer {
                 }
             }
             if _onlyFireOnce {                                                      // Just this once...
-                _timerVar.schedule(deadline: .now() + timeIntervalInSeconds)
+                if isWallTime {                                                     // See if we want to use "Wall" time, which doesn't care whether or not the computer goes to sleep.
+                    _timerVar.schedule(wallDeadline: DispatchWallTime.now() + timeIntervalInSeconds)
+                } else {
+                    _timerVar.schedule(deadline: .now() + timeIntervalInSeconds)
+                }
             } else {
-                _timerVar.schedule(deadline: .now() + timeIntervalInSeconds,        // The number of seconds each iteration of the timer will take.
-                    repeating: timeIntervalInSeconds,                               // If we are repeating (default), we add our duration as the repeating time.
-                    leeway: leeway)                                                 // Add any leeway we specified.
+                if isWallTime {                                                     // See if we want to use "Wall" time, which doesn't care whether or not the computer goes to sleep.
+                    _timerVar.schedule(wallDeadline: DispatchWallTime.now() + timeIntervalInSeconds,    // The number of seconds each iteration of the timer will take.
+                        repeating: timeIntervalInSeconds,                                               // If we are repeating (default), we add our duration as the repeating time.
+                        leeway: leeway)                                                                 // Add any leeway we specified.
+                } else {
+                    _timerVar.schedule(deadline: .now() + timeIntervalInSeconds,    // The number of seconds each iteration of the timer will take.
+                        repeating: timeIntervalInSeconds,                           // If we are repeating (default), we add our duration as the repeating time.
+                        leeway: leeway)                                             // Add any leeway we specified.
+                }
             }
             
             delegate?.basicGCDTimerValid(self)
@@ -158,7 +168,9 @@ public class RVS_BasicGCDTimer {
     public var context: Any!
     /// This is the dispatch queue the timer will use.
     public var queue: DispatchQueue!
-    
+    /// True, if we are to use the Apple "Wall Clock" time.
+    public var isWallTime: Bool = false
+
     /* ############################################################## */
     // MARK: - Public Calculated Properties
     /* ############################################################## */
@@ -262,13 +274,15 @@ public class RVS_BasicGCDTimer {
      - parameter onlyFireOnce: If true, then this will only fire one time, as opposed to repeat. Optional. Default is false. If true, then leewayInMilliseconds is ignored.
      - parameter context: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
      - parameter queue: The DispatchQueue to use for the timer. Optional. If not specified, the default queue is used.
+     - parameter isWallTime: If true (default is false), then the timer will use the Apple "Wall time" clock, which is more consistent.
      */
     public init(timeIntervalInSeconds inTimeIntervalInSeconds: TimeInterval,
                 delegate inDelegate: RVS_BasicGCDTimerDelegate?,
                 leewayInMilliseconds inLeewayInMilliseconds: Int = 0,
                 onlyFireOnce inOnlyFireOnce: Bool = false,
                 context inContext: Any! = nil,
-                queue inQueue: DispatchQueue! = nil) {
+                queue inQueue: DispatchQueue! = nil,
+                isWallTime inIsWallTime: Bool = false) {
         #if DEBUG
             print("timer init")
         #endif
