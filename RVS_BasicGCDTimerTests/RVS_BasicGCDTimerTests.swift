@@ -44,8 +44,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             expectation.fulfill()
         }
         
-        // 100 milliseconds.
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: true, context: responseFunc)
+        // 100 milliseconds on the main queue.
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: true, context: responseFunc, queue: DispatchQueue.main)
         
         startTime = Date()
         newTimer.resume()
@@ -75,8 +75,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             timerCount += 1
         }
         
-        // Every 100 milliseconds.
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: false, context: responseFunc)
+        // Every 100 milliseconds on the global queue.
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: false, context: responseFunc, queue: DispatchQueue.global())
         
         startTime = Date()
         newTimer.resume()

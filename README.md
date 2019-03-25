@@ -55,11 +55,13 @@ Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
 
 `someContext` is any data that you want returned to the callback in your delegate method. It will be available as the timer's `context` property.
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext)
+`queue` is the GCD queue to use. Not specifying means that the default queue is used.
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main)
 
 Here, we specify repeating, with no leeway, and no context data:
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil)
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil, queue: nil)
 
 However, there's a lot of defaults. You can specify the exact same as such:
 

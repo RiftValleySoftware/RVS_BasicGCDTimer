@@ -125,7 +125,7 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer create GCD object")
             #endif
-            _timerVar = DispatchSource.makeTimerSource()                            // We make a generic, default timer source. No frou-frou.
+            _timerVar = DispatchSource.makeTimerSource(queue: queue)                // We make a generic, default timer source. No frou-frou. If a queue was specified, we use that.
             let leeway = DispatchTimeInterval.milliseconds(leewayInMilliseconds)    // If they have provided a leeway, we apply it here. We assume milliseconds.
             _timerVar.setEventHandler { [weak self] in                              // This is the timer's base callback. This is called from the system timer.
                 self?.delegate?.basicGCDTimerCallback(self!)                        // Call the delegate back.
@@ -156,7 +156,9 @@ public class RVS_BasicGCDTimer {
     public var leewayInMilliseconds: Int = 0
     /// This allows the delegate to add any "context" data to the instance,
     public var context: Any!
-
+    /// This is the dispatch queue the timer will use.
+    public var queue: DispatchQueue!
+    
     /* ############################################################## */
     // MARK: - Public Calculated Properties
     /* ############################################################## */
@@ -217,7 +219,7 @@ public class RVS_BasicGCDTimer {
                     
                     if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
                         #if DEBUG
-                        print("timer one more for the road")
+                            print("timer one more for the road")
                         #endif
                         _timerVar.resume()
                     }
@@ -259,12 +261,14 @@ public class RVS_BasicGCDTimer {
      - parameter leewayInMilliseconds: Any leeway. This is optional, and default is zero (0). It is ignored if onlyFireOnce is true.
      - parameter onlyFireOnce: If true, then this will only fire one time, as opposed to repeat. Optional. Default is false. If true, then leewayInMilliseconds is ignored.
      - parameter context: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
+     - parameter queue: The DispatchQueue to use for the timer. Optional. If not specified, the default queue is used.
      */
     public init(timeIntervalInSeconds inTimeIntervalInSeconds: TimeInterval,
                 delegate inDelegate: RVS_BasicGCDTimerDelegate?,
                 leewayInMilliseconds inLeewayInMilliseconds: Int = 0,
                 onlyFireOnce inOnlyFireOnce: Bool = false,
-                context inContext: Any! = nil) {
+                context inContext: Any! = nil,
+                queue inQueue: DispatchQueue! = nil) {
         #if DEBUG
             print("timer init")
         #endif
