@@ -308,6 +308,7 @@ public class RVS_BasicGCDTimer {
         delegate = inDelegate
         context = inContext
         isWallTime = inIsWallTime
+        queue = inQueue
         _onlyFireOnce = inOnlyFireOnce
     }
     
