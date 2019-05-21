@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RVS_BasicGCDTimerDelegate Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Protocol/RVS_BasicGCDTimerDelegate" class="dashAnchor"></a>
+
+    <a title="RVS_BasicGCDTimerDelegate Protocol Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          RVS_BasicGCDTimer Docs
+        </a>
+         (100% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/RiftValleySoftware/RVS_BasicGCDTimer">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">RVS_BasicGCDTimer Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      RVS_BasicGCDTimerDelegate Protocol Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/RVS_BasicGCDTimer.html">RVS_BasicGCDTimer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/RVS_BasicGCDTimerDelegate.html">RVS_BasicGCDTimerDelegate</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>RVS_BasicGCDTimerDelegate</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RVS_BasicGCDTimerDelegate</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>This is the basic callback protocol for the general-purpose GCD timer class. It has one simple required method, and two optional methods.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_BasicGCDTimer0a1_bC8DelegateP05basicC8CallbackyyA2ACF"></a>
+                    <a name="//apple_ref/swift/Method/basicGCDTimerCallback(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimer0a1_bC8DelegateP05basicC8CallbackyyA2ACF">basicGCDTimerCallback(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Called periodically, as the GCDTimer repeats (or fires once). This is required.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">basicGCDTimerCallback</span><span class="p">(</span><span class="n">_</span> <span class="nv">timer</span><span class="p">:</span> <span class="kt"><a href="../Classes/RVS_BasicGCDTimer.html">RVS_BasicGCDTimer</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>timer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The BasicGCDTimer instance that is invoking the callback.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_BasicGCDTimer0a1_bC8DelegateP05basicC5ValidyyA2ACF"></a>
+                    <a name="//apple_ref/swift/Method/basicGCDTimerValid(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimer0a1_bC8DelegateP05basicC5ValidyyA2ACF">basicGCDTimerValid(_:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This is called after the timer is initially valid (but before the first run). It is optional.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">basicGCDTimerValid</span><span class="p">(</span><span class="n">_</span> <span class="nv">timer</span><span class="p">:</span> <span class="kt"><a href="../Classes/RVS_BasicGCDTimer.html">RVS_BasicGCDTimer</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>timer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The BasicGCDTimer instance that is invoking the callback.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_BasicGCDTimer0a1_bC8DelegateP05basicC17WillBecomeInvalidyyA2ACF"></a>
+                    <a name="//apple_ref/swift/Method/basicGCDTimerWillBecomeInvalid(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimer0a1_bC8DelegateP05basicC17WillBecomeInvalidyyA2ACF">basicGCDTimerWillBecomeInvalid(_:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This is called just before the timer invalidates. It is optional.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>This is called just before the timer invalidates.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">basicGCDTimerWillBecomeInvalid</span><span class="p">(</span><span class="n">_</span> <span class="nv">timer</span><span class="p">:</span> <span class="kt"><a href="../Classes/RVS_BasicGCDTimer.html">RVS_BasicGCDTimer</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>timer</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The BasicGCDTimer instance that is invoking the callback.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p><a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external">©2019 The Great Rift Valley Software Company</a></p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
