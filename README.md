@@ -79,7 +79,7 @@ You pause (suspend) a running timer by calling `pause()`:
 
     newTimer.pause()
 
-It the timer is not already running, nothing happens. If it is running, then it suspends.
+If the timer is not already running, nothing happens. If it is running, then it suspends.
 
 If repeating, the timer will repeat until it is invalidated or deinitialized:
 
