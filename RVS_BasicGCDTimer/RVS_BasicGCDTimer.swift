@@ -49,11 +49,26 @@ public protocol RVS_BasicGCDTimerDelegate: class {
      - parameter timer: The BasicGCDTimer instance that is invoking the callback.
      */
     func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
+    /* ############################################################## */
+    /**
+     This is called just before the timer invalidates. It is optional.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer)
+    
+    /* ############################################################## */
+    /**
+     This is called when the timer resumes.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer)
 }
 
 /* ################################################################## */
 /**
- These defaults mean that these two methods are optional.
+ These defaults mean that these methods are optional.
  */
 public extension RVS_BasicGCDTimerDelegate {
     /* ############################################################## */
@@ -75,6 +90,30 @@ public extension RVS_BasicGCDTimerDelegate {
     func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer) {
         #if DEBUG
             print("Default basicGCDTimerWillBecomeInvalid delegate call!")
+        #endif
+    }
+    
+    /* ############################################################## */
+    /**
+     This is called when the timer suspends.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer) {
+        #if DEBUG
+            print("Default basicGCDTimerSuspend delegate call!")
+        #endif
+    }
+    
+    /* ############################################################## */
+    /**
+     This is called when the timer resumes.
+     
+     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     */
+    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer) {
+        #if DEBUG
+            print("Default basicGCDTimerResume delegate call!")
         #endif
     }
 }
@@ -113,7 +152,7 @@ public class RVS_BasicGCDTimer {
     private var _timerVar: DispatchSourceTimer!
     /// This is the contained delegate instance
     private weak var _delegate: RVS_BasicGCDTimerDelegate?
-
+    
     /* ############################################################## */
     /**
      This dynamically initialized calculated property will return (or create and return) a basic GCD timer that (probably) repeats.
@@ -158,16 +197,16 @@ public class RVS_BasicGCDTimer {
         
         return _timerVar
     }
-
+    
     /* ############################################################## */
     /**
      This is called to completely invalidate the timer.
      */
     private func _seppukku() {
         if let timer = _timerVar {
-        #if DEBUG
-            print("timer invalidating.")
-        #endif
+            #if DEBUG
+                print("timer invalidating.")
+            #endif
             delegate?.basicGCDTimerWillBecomeInvalid(self)
             _delegate = nil
             timer.setEventHandler(handler: nil)
@@ -190,7 +229,7 @@ public class RVS_BasicGCDTimer {
             _state = ._invalid
         }
     }
-
+    
     /* ############################################################## */
     // MARK: - Public Instance Properties
     /* ############################################################## */
@@ -204,7 +243,7 @@ public class RVS_BasicGCDTimer {
     public var queue: DispatchQueue!
     /// True, if we are to use the Apple "Wall Clock" time.
     public var isWallTime: Bool = false
-
+    
     /* ############################################################## */
     // MARK: - Public Calculated Properties
     /* ############################################################## */
@@ -242,7 +281,7 @@ public class RVS_BasicGCDTimer {
             }
         }
     }
-
+    
     /* ############################################################## */
     /**
      - returns: the delegate object. READ/WRITE. If nil, then the instance will stop and invalidate. You must have a delegate to run.
@@ -302,6 +341,9 @@ public class RVS_BasicGCDTimer {
                 isWallTime inIsWallTime: Bool = false) {
         #if DEBUG
             print("timer init")
+            print("\tleewayInMilliseconds: \(inLeewayInMilliseconds)")
+            print("\tonlyFireOnce: \(inOnlyFireOnce ? "true" : "false")")
+            print("\tisWallTime: \(inIsWallTime ? "true" : "false")")
         #endif
         timeIntervalInSeconds = inTimeIntervalInSeconds
         leewayInMilliseconds = inLeewayInMilliseconds
@@ -321,6 +363,7 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer resume")
             #endif
+            delegate?.basicGCDTimerResume(self) // Call the delegate
             isRunning = true    // Remember that this could create a timer on the spot.
         }
     }
@@ -334,6 +377,7 @@ public class RVS_BasicGCDTimer {
             #if DEBUG
                 print("timer suspend")
             #endif
+            delegate?.basicGCDTimerSuspend(self) // Call the delegate
             isRunning = false
         }
     }

@@ -25,18 +25,25 @@ import XCTest
 
 typealias ResponseHandlerContextFunc = (_: RVS_BasicGCDTimer?) -> Void
 typealias TimerCallbacks = (standard: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
+typealias TimerMultiCallbacks = (standard: ResponseHandlerContextFunc, suspend: ResponseHandlerContextFunc, resume: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
 
 class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
     func basicGCDTimerCallback(_ inTimer: RVS_BasicGCDTimer) {
-        if let contextfunc = inTimer.context as? ResponseHandlerContextFunc {
-            contextfunc(inTimer)
-        } else if let contextfunc = inTimer.context as? TimerCallbacks {
+        if let contextfunc = inTimer.context as? TimerCallbacks {
             contextfunc.standard(inTimer)
+        } else if let contextfunc = inTimer.context as? TimerMultiCallbacks {
+            contextfunc.standard(inTimer)
+        } else if let contextfunc = inTimer.context as? ResponseHandlerContextFunc {
+            contextfunc(inTimer)
+        } else {
+            print("Default basicGCDTimerValid delegate call!")
         }
     }
     
     func basicGCDTimerValid(_ inTimer: RVS_BasicGCDTimer) {
         if let contextfunc = inTimer.context as? TimerCallbacks {
+            contextfunc.first(inTimer)
+        } else if let contextfunc = inTimer.context as? TimerMultiCallbacks {
             contextfunc.first(inTimer)
         } else {
             print("Default basicGCDTimerValid delegate call!")
@@ -46,8 +53,26 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
     func basicGCDTimerWillBecomeInvalid(_ inTimer: RVS_BasicGCDTimer) {
         if let contextfunc = inTimer.context as? TimerCallbacks {
             contextfunc.last(inTimer)
+        } else if let contextfunc = inTimer.context as? TimerMultiCallbacks {
+            contextfunc.last(inTimer)
         } else {
             print("Default basicGCDTimerValid delegate call!")
+        }
+    }
+
+    func basicGCDTimerSuspend(_ inTimer: RVS_BasicGCDTimer) {
+        if let contextfunc = inTimer.context as? TimerMultiCallbacks {
+            contextfunc.suspend(inTimer)
+        } else {
+            print("Default basicGCDTimerSuspend delegate call!")
+        }
+    }
+
+    func basicGCDTimerResume(_ inTimer: RVS_BasicGCDTimer) {
+        if let contextfunc = inTimer.context as? TimerMultiCallbacks {
+            contextfunc.resume(inTimer)
+        } else {
+            print("Default basicGCDTimerResume delegate call!")
         }
     }
 
@@ -345,5 +370,55 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         }
         
         runTimers(timers)
+    }
+    
+    // This test just makes sure that all the callbacks happen. Since the timer is so rough, the time measurement is best viewed manually.
+    func testSuspendResume () {
+        var startTime: Date!
+        let expectation: XCTestExpectation!
+
+        func standardCallback(_ inTimer: RVS_BasicGCDTimer?) {
+            print(String(format: "Standard Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
+            expectation.fulfill()
+        }
+        
+        func suspendCallback(_ inTimer: RVS_BasicGCDTimer?) {
+            print(String(format: "Suspend Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
+            expectation.fulfill()
+        }
+        
+        func resumeCallback(_ inTimer: RVS_BasicGCDTimer?) {
+            print(String(format: "Resume Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
+            expectation.fulfill()
+       }
+        
+        func initCallback(_ inTimer: RVS_BasicGCDTimer?) {
+            print(String(format: "Init Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
+            expectation.fulfill()
+        }
+        
+        func deinitCallback(_ inTimer: RVS_BasicGCDTimer?) {
+            print(String(format: "DeInit Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
+            expectation.fulfill()
+        }
+
+        expectation = XCTestExpectation()
+        expectation.expectedFulfillmentCount = 5
+        startTime = Date()
+        let callbacks = TimerMultiCallbacks(standard: standardCallback, suspend: suspendCallback, resume: resumeCallback, first: initCallback, last: deinitCallback)
+        let testTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1, delegate: self, context: callbacks)
+        
+        testTimer.resume()
+        
+        // We play around with different threads, just for the hell of it. If we're skating on thin ice; might as well dance.
+        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.25) {
+            testTimer.pause()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                testTimer.resume()
+            }
+        }
+        
+        // Wait until the expectation is fulfilled, with a timeout of 1.5 seconds.
+        wait(for: [expectation], timeout: 1.5)
     }
 }

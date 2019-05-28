@@ -59,7 +59,9 @@ Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
 
 `queue` is the GCD queue to use. Not specifying means that the default queue is used.
 
-`isWallTime` asks the timer to use the "Apple Wall Clock" time. That time is absolute, and doesn't care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent. However, it can lead to unexpected behavior, like if the app is suspended for some period of time, and is restarted, instead of continuing where it left off, the completion call may be executed immediately.
+`isWallTime` asks the timer to use the "Apple Wall Clock" time. That time is absolute, and doesn't care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent.
+
+Note that using Wall Time can lead to unexpected behavior. For example, if the app is suspended for some period of time, and is restarted, instead of continuing where it left off, the completion call may be executed immediately.
 
     newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
 
@@ -86,6 +88,32 @@ If repeating, the timer will repeat until it is invalidated or deinitialized:
     newTimer.invalidate()
 
 If a "one-shot," then the timer is invalidated as soon as it completes.
+
+Delegate
+-
+The delegate has one required method, and four optional ones (with default extension handlers). The parameter passed in is the timer object.
+
+You can look at the timer object's `context` property for any data/functions/whatever that you want the callback to access.
+
+This one is called at the completion of the timer. It is required:
+
+    func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer)
+
+This one is an optional method that is called when the timer bcomes valid:
+
+    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer)
+
+This one is an optional one that is called JUST PRIOR to a timer bcoming invalid:
+
+    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
+
+This is an optional method that is called as the timer is suspended:
+
+    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer)
+
+This is an optional method that is called as the timer is resumed (which includes the initial start):
+
+    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer)
 
 DEPENDENCIES
 =
