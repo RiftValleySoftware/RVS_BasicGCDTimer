@@ -59,7 +59,7 @@ Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
 
 `queue` is the GCD queue to use. Not specifying means that the default queue is used.
 
-`isWallTime` asks the timer to use the "Apple Wall Clock" time. That time is absolute, and doesn't care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent.
+`isWallTime` asks the timer to use the "Apple Wall Clock" time. That time is absolute, and doesn't care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent. However, it can lead to unexpected behavior, like if the app is suspended for some period of time, and is restarted, instead of continuing where it left off, the completion call may be executed immediately.
 
     newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
 
@@ -74,6 +74,12 @@ However, there's a lot of defaults. You can specify the exact same as such:
 Once the timer is instantiated, you start it by calling `resume()`:
 
     newTimer.resume()
+
+You pause (suspend) a running timer by calling `pause()`:
+
+    newTimer.pause()
+
+It the timer is not already running, nothing happens. If it is running, then it suspends.
 
 If repeating, the timer will repeat until it is invalidated or deinitialized:
 
