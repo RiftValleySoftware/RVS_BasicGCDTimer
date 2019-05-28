@@ -120,8 +120,6 @@
 <p><code>queue</code> is the GCD queue to use. Not specifying means that the default queue is used.</p>
 
 <p><code>isWallTime</code> asks the timer to use the <q>Apple Wall Clock</q> time. That time is absolute, and doesn&rsquo;t care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent.</p>
-
-<p>Note that using Wall Time can lead to unexpected behavior. For example, if the app is suspended for some period of time, and is restarted, instead of continuing where it left off, the completion call may be executed immediately.</p>
 <pre class="highlight plaintext"><code>newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
 </code></pre>
 
@@ -137,42 +135,11 @@
 <pre class="highlight plaintext"><code>newTimer.resume()
 </code></pre>
 
-<p>You pause (suspend) a running timer by calling <code>pause()</code>:</p>
-<pre class="highlight plaintext"><code>newTimer.pause()
-</code></pre>
-
-<p>If the timer is not already running, nothing happens. If it is running, then it suspends.</p>
-
 <p>If repeating, the timer will repeat until it is invalidated or deinitialized:</p>
 <pre class="highlight plaintext"><code>newTimer.invalidate()
 </code></pre>
 
 <p>If a <q>one-shot,</q> then the timer is invalidated as soon as it completes.</p>
-<h2 id='delegate' class='heading'>Delegate</h2>
-
-<p>The delegate has one required method, and four optional ones (with default extension handlers). The parameter passed in is the timer object.</p>
-
-<p>You can look at the timer object&rsquo;s <code>context</code> property for any data/functions/whatever that you want the callback to access.</p>
-
-<p>This one is called at the completion of the timer. It is required:</p>
-<pre class="highlight plaintext"><code>func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer)
-</code></pre>
-
-<p>This one is an optional method that is called when the timer bcomes valid:</p>
-<pre class="highlight plaintext"><code>func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer)
-</code></pre>
-
-<p>This one is an optional one that is called JUST PRIOR to a timer bcoming invalid:</p>
-<pre class="highlight plaintext"><code>func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
-</code></pre>
-
-<p>This is an optional method that is called as the timer is suspended:</p>
-<pre class="highlight plaintext"><code>func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer)
-</code></pre>
-
-<p>This is an optional method that is called as the timer is resumed (which includes the initial start):</p>
-<pre class="highlight plaintext"><code>func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer)
-</code></pre>
 <h1 id='dependencies' class='heading'>DEPENDENCIES</h1>
 
 <p>There are no dependencies to use RVS_BasicGCDTimer in your project. In order to test it and run it in the module project, you should use <a href="https://cocoapods.org">CocoaPods</a> to install <a href="https://cocoapods.org/pods/SwiftLint">SwiftLint</a>, although that is not required. It&rsquo;s <a href="https://littlegreenviper.com/series/swiftwater/swiftlint/">just good practice</a>.</p>
