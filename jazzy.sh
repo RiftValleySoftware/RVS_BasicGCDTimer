@@ -11,5 +11,4 @@ jazzy   --github_url https://github.com/RiftValleySoftware/RVS_BasicGCDTimer \
         --module RVS_BasicGCDTimer \
         --copyright [©2019\ The\ Great\ Rift\ Valley\ Software\ Company]\(https://riftvalleysoftware.com\)
 cp icon.png docs/icon.png
-cp .nojekyll docs/.nojekyll
 cd "${CWD}"
