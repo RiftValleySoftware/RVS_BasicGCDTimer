@@ -11,27 +11,15 @@
       location = "group:LICENSE.txt">
    </FileRef>
    <FileRef
-      location = "group:Podfile">
-   </FileRef>
-   <FileRef
-      location = "group:.swift-version">
-   </FileRef>
-   <FileRef
       location = "group:.swiftlint.yml">
    </FileRef>
    <FileRef
       location = "group:jazzy.sh">
    </FileRef>
    <FileRef
-      location = "group:Cartfile">
-   </FileRef>
-   <FileRef
       location = "group:Package.swift">
    </FileRef>
    <FileRef
       location = "group:RVS_BasicGCDTimer.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
