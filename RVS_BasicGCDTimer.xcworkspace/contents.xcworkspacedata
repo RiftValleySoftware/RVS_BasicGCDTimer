@@ -14,7 +14,7 @@
       location = "group:.swiftlint.yml">
    </FileRef>
    <FileRef
-      location = "group:jazzy.sh">
+      location = "group:jazzy.command">
    </FileRef>
    <FileRef
       location = "group:Package.swift">

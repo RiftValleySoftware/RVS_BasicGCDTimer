@@ -6,7 +6,7 @@ let package = Package(
     name: "RVS_BasicGCDTimer",
     products: [
         .library(
-            name: "RVS_BasicGCDTimer",
+            name: "RVS-BasicGCDTimer",
             type: .dynamic,
             targets: ["RVS_BasicGCDTimer"])
     ],
