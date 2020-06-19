@@ -1,3 +1,7 @@
+**Version 1.2.1.2000** *TBD*
+
+- Added SPM support.
+
 **Version 1.2.0.2000** *May 26, 2020*
 
 - Removed the CocoaPods stuff.

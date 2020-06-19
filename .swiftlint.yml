@@ -12,7 +12,7 @@ opt_in_rules:
 
 excluded:
 - Pods
-- RVS_BasicGCDTimerTests
+- test
 - docs
 
 file_length:

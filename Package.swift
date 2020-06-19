@@ -1,3 +1,5 @@
+// swift-tools-version:5.2
+
 import PackageDescription
 
 let package = Package(
@@ -5,16 +7,12 @@ let package = Package(
     products: [
         .library(
             name: "RVS_BasicGCDTimer",
-            targets: ["RVS_BasicGCDTimer"]
-        )
+            type: .dynamic,
+            targets: ["RVS_BasicGCDTimer"])
     ],
     targets: [
         .target(
             name: "RVS_BasicGCDTimer",
-            path: "RVS_BasicGCDTimer"
-        )
-    ],
-    swiftLanguageVersions: [
-        4.2
+            path: "./src")
     ]
 )
