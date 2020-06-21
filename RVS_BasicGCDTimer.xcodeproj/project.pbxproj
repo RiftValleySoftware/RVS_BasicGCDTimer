@@ -15,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D4481F01249EE420006D0D09 /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Warnings.xcconfig; path = "Project-Meta/Warnings.xcconfig"; sourceTree = "<group>"; };
 		D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RVS_BasicGCDTimer; sourceTree = BUILT_PRODUCTS_DIR; };
 		D449F7C72247C32800211E2E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimer.swift; sourceTree = "<group>"; };
@@ -24,6 +25,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		D4481F02249EE43D006D0D09 /* Project-Meta */ = {
+			isa = PBXGroup;
+			children = (
+				D4481F01249EE420006D0D09 /* Warnings.xcconfig */,
+			);
+			name = "Project-Meta";
+			sourceTree = "<group>";
+		};
 		D449F7C62247C32800211E2E /* src */ = {
 			isa = PBXGroup;
 			children = (
@@ -47,6 +56,7 @@
 			children = (
 				D449F7C62247C32800211E2E /* src */,
 				D449F7D62247C50B00211E2E /* test */,
+				D4481F02249EE43D006D0D09 /* Project-Meta */,
 				D494802021E384C100B51AB3 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -150,7 +160,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if test -f \"${PROJECT_DIR}/SwiftLint/swiftlint\"; then\n    \"${PROJECT_DIR}/SwiftLint/swiftlint\"\nfi\n";
+			shellScript = "if test -f \"${PROJECT_DIR}/Project-Meta/SwiftLint/swiftlint\"; then\n    \"${PROJECT_DIR}/Project-Meta/SwiftLint/swiftlint\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -227,7 +237,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "RVS-BasicGCDTimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -250,7 +260,7 @@
 					"@loader_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "RVS-BasicGCDTimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -260,6 +270,7 @@
 		};
 		D494803121E384C100B51AB3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4481F01249EE420006D0D09 /* Warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -324,6 +335,7 @@
 		};
 		D494803221E384C100B51AB3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D4481F01249EE420006D0D09 /* Warnings.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
