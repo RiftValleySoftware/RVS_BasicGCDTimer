@@ -36,6 +36,15 @@ WHERE TO GET
 USAGE
 =
 
+[Swift Package Manager (SPM)](https://swift.org/package-manager/)
+-
+
+You can use SPM to load the project as a dependency, by referencing its [GitHub Repo](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer/) URI (SSH: [git@github.com:RiftValleySoftware/RVS_BasicGCDTimer.git](git@github.com:RiftValleySoftware/RVS_BasicGCDTimer.git), or HTTPS: [https://github.com/RiftValleySoftware/RVS_BasicGCDTimer.git](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer.git)).
+
+Once you have the dependency attached, you reference it by adding an import to the files that consume the package:
+    
+    import RVS_BasicGCDTimer
+
 Include the Source in Your Project
 -
 
