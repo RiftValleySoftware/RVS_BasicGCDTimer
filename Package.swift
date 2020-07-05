@@ -36,7 +36,6 @@ let package = Package(
     products: [
         .library(
             name: "RVS-BasicGCDTimer",
-            type: .dynamic,
             targets: ["RVS_BasicGCDTimer"])
     ],
     targets: [

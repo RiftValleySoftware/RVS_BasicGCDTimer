@@ -1,3 +1,7 @@
+**Version 1.3.0.2000** *July 5, 2020*
+
+- Switched to a static library.
+
 **Version 1.2.1.2000** *June 19, 2020*
 
 - Added SPM support.
