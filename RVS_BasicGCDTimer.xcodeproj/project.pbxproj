@@ -22,12 +22,14 @@
 		D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RVS_BasicGCDTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimerTests.swift; sourceTree = "<group>"; };
 		D449F7D92247C50B00211E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D4C8FEE724D4D62A000A1375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Meta/Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		D4481F02249EE43D006D0D09 /* Project-Meta */ = {
 			isa = PBXGroup;
 			children = (
+				D4C8FEE724D4D62A000A1375 /* Info.plist */,
 				D4481F01249EE420006D0D09 /* Warnings.xcconfig */,
 			);
 			name = "Project-Meta";
