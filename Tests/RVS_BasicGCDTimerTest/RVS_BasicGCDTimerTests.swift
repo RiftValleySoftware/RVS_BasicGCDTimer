@@ -1,4 +1,4 @@
-/**
+/*
  © Copyright 2019-2020, The Great Rift Valley Software Company
  
  LICENSE:
@@ -24,6 +24,7 @@
  */
 
 import XCTest
+@testable import RVS_BasicGCDTimer
 
 typealias ResponseHandlerContextFunc = (_: RVS_BasicGCDTimer?) -> Void
 typealias TimerCallbacks = (standard: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
@@ -183,10 +184,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             func getTimerIndex(_ inTimer: RVS_BasicGCDTimer) -> Int! {
                 var ret: Int!
                 
-                for tuple in inTimerArray.enumerated() {
-                    if tuple.element === inTimer {
-                        ret = tuple.offset
-                    }
+                for tuple in inTimerArray.enumerated() where tuple.element === inTimer {
+                    ret = tuple.offset
                 }
                 return ret
             }
@@ -277,10 +276,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             func getTimerIndex(_ inTimer: RVS_BasicGCDTimer) -> Int! {
                 var ret: Int!
                 
-                for tuple in inTimerArray.enumerated() {
-                    if tuple.element === inTimer {
-                        ret = tuple.offset
-                    }
+                for tuple in inTimerArray.enumerated() where tuple.element === inTimer {
+                    ret = tuple.offset
                 }
                 return ret
             }

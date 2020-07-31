@@ -11,8 +11,7 @@ opt_in_rules:
 - comma
 
 excluded:
-- Pods
-- test
+- Tests
 - docs
 
 file_length:

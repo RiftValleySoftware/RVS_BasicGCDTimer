@@ -33,29 +33,45 @@
 			name = "Project-Meta";
 			sourceTree = "<group>";
 		};
-		D449F7C62247C32800211E2E /* src */ = {
+		D449F7C62247C32800211E2E /* RVS_BasicGCDTimer */ = {
 			isa = PBXGroup;
 			children = (
 				D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */,
 			);
-			path = src;
+			path = RVS_BasicGCDTimer;
 			sourceTree = "<group>";
 		};
-		D449F7D62247C50B00211E2E /* test */ = {
+		D449F7D62247C50B00211E2E /* RVS_BasicGCDTimerTest */ = {
 			isa = PBXGroup;
 			children = (
-				D449F7C72247C32800211E2E /* main.swift */,
 				D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */,
-				D449F7D92247C50B00211E2E /* Info.plist */,
 			);
-			path = test;
+			path = RVS_BasicGCDTimerTest;
+			sourceTree = "<group>";
+		};
+		D47A55BF24D4CF4100E670AB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D449F7C62247C32800211E2E /* RVS_BasicGCDTimer */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D47A55C024D4CF5500E670AB /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				D449F7D92247C50B00211E2E /* Info.plist */,
+				D449F7C72247C32800211E2E /* main.swift */,
+				D449F7D62247C50B00211E2E /* RVS_BasicGCDTimerTest */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		D494801521E384C100B51AB3 = {
 			isa = PBXGroup;
 			children = (
-				D449F7C62247C32800211E2E /* src */,
-				D449F7D62247C50B00211E2E /* test */,
+				D47A55BF24D4CF4100E670AB /* Sources */,
+				D47A55C024D4CF5500E670AB /* Tests */,
 				D4481F02249EE43D006D0D09 /* Project-Meta */,
 				D494802021E384C100B51AB3 /* Products */,
 			);
@@ -111,7 +127,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1150;
+				LastUpgradeCheck = 1160;
 				ORGANIZATIONNAME = "The Great Rift Valley Software Company";
 				TargetAttributes = {
 					D449F7C42247C32800211E2E = {
@@ -230,7 +246,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = KSAUGZFWP2;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = test/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -253,7 +269,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = KSAUGZFWP2;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = test/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

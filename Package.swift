@@ -1,6 +1,6 @@
 // swift-tools-version:5.2
 
-/**
+/*
 © Copyright 2019-2020, The Great Rift Valley Software Company
 
 LICENSE:
@@ -39,8 +39,8 @@ let package = Package(
             targets: ["RVS_BasicGCDTimer"])
     ],
     targets: [
-        .target(
-            name: "RVS_BasicGCDTimer",
-            path: "./src")
+        .target(name: "RVS_BasicGCDTimer"),
+        .testTarget(name: "RVS_BasicGCDTimerTest",
+                    dependencies: ["RVS_BasicGCDTimer"])
     ]
 )

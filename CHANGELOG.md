@@ -1,3 +1,7 @@
+**Version 1.3.1.2000** *July 31, 2020*
+
+- Switched structure to enable GitHub Swift Action
+
 **Version 1.3.0.2000** *July 5, 2020*
 
 - Switched to a static library.
