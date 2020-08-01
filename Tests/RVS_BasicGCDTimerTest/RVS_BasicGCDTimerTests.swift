@@ -137,9 +137,9 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
     // Repeat one hundred milliseconds fifty times, and give a leeway of one hundred milliseconds.
     func testGCDBasicRepeatWithLeeway() {
         #if TESTING
-        let leewayInMilliseconds = 10    // If you make this less than ten, you'll probably get intermittent failures, because of the overhead.
+            let leewayInMilliseconds = 10    // If you make this less than ten, you'll probably get intermittent failures, because of the overhead.
         #else
-        let leewayInMilliseconds = 100   // This is for the GitHub Action. Things move a LOT slower, overe there.
+            let leewayInMilliseconds = 100   // This is for the GitHub Action. Things move a LOT slower, overe there.
         #endif
         
         let timerTime: Double = 0.1
