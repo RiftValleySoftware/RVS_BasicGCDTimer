@@ -97,8 +97,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         startTime = Date()
         newTimer.resume()
         
-        // Wait until the expectation is fulfilled, with a timeout of half a second.
-        wait(for: [expectation], timeout: 0.5)
+        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
+        wait(for: [expectation], timeout: 1.5)
         
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
@@ -128,8 +128,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         startTime = Date()
         newTimer.resume()
         
-        // Wait until the expectation is fulfilled, with a timeout of a second.
-        wait(for: [expectation], timeout: 1.0)
+        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
+        wait(for: [expectation], timeout: 1.5)
 
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
@@ -235,8 +235,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
                 $0.resume()
             }
             
-            // Wait until the expectation is fulfilled, with a timeout of 150 ms.
-            wait(for: [expectation], timeout: 0.15)
+            // Wait until the expectation is fulfilled, with a timeout of 250 ms.
+            wait(for: [expectation], timeout: 0.25)
             
             for timerTuple in inTimerArray.enumerated() {
                 XCTAssertTrue(timerTuple.element.isInvalid, "Timer \(timerTuple.offset + 1) should be invalid!")   // We should be invalid.
@@ -345,8 +345,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
                 $0.resume()
             }
             
-            // Wait until the expectation is fulfilled, with a timeout of 1 second.
-            wait(for: [expectation], timeout: 1)
+            // Wait until the expectation is fulfilled, with a timeout of a second and a half.
+            wait(for: [expectation], timeout: 1.5)
             
             for timerTuple in inTimerArray.enumerated() {
                 XCTAssertTrue(timerTuple.element.isInvalid, "Timer \(timerTuple.offset + 1) should be invalid!")   // We should be invalid.
@@ -417,7 +417,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             }
         }
         
-        // Wait until the expectation is fulfilled, with a timeout of 1.5 seconds.
-        wait(for: [expectation], timeout: 1.5)
+        // Wait until the expectation is fulfilled, with a timeout of 2.5 seconds.
+        wait(for: [expectation], timeout: 2.5)
     }
 }
