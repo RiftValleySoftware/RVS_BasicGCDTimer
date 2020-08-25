@@ -31,7 +31,7 @@ WHERE TO GET
 
 [This is the GitHub repo for the project.](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer).
 
-[Thisis the documentation page for it](https://riftvalleysoftware.com/work/open-source-projects/#RVS_BasicGCDTimer)
+[This is the documentation page for it](https://riftvalleysoftware.com/work/open-source-projects/#RVS_BasicGCDTimer)
 
 USAGE
 =
