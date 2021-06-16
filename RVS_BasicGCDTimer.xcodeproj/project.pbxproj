@@ -7,23 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D449F7CD2247C33F00211E2E /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
 		D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
-		D461E5632247FFE200F6965A /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
-		D4BD98D9267A90A10027A775 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7C72247C32800211E2E /* main.swift */; };
-		D4CA4561249D33D0003C2564 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7C72247C32800211E2E /* main.swift */; };
+		D4FFE696267A983F0074D1DC /* libRVS_BasicGCDTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */; };
+		D4FFE697267A98570074D1DC /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D4FFE692267A982D0074D1DC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D494801621E384C100B51AB3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4FFE688267A980A0074D1DC;
+			remoteInfo = RVS_BasicGCDTimer_Test;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D4481F01249EE420006D0D09 /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Warnings.xcconfig; path = "Project-Meta/Warnings.xcconfig"; sourceTree = "<group>"; };
-		D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RVS_BasicGCDTimer; sourceTree = BUILT_PRODUCTS_DIR; };
-		D449F7C72247C32800211E2E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimer.swift; sourceTree = "<group>"; };
 		D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RVS_BasicGCDTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimerTests.swift; sourceTree = "<group>"; };
-		D449F7D92247C50B00211E2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D4C8FEE724D4D62A000A1375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Meta/Info.plist; sourceTree = "<group>"; };
+		D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRVS_BasicGCDTimer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4FFE698267A9B030074D1DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D4FFE694267A98390074D1DC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4FFE696267A983F0074D1DC /* libRVS_BasicGCDTimer.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		D4481F02249EE43D006D0D09 /* Project-Meta */ = {
@@ -62,8 +80,7 @@
 		D47A55C024D4CF5500E670AB /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				D449F7D92247C50B00211E2E /* Info.plist */,
-				D449F7C72247C32800211E2E /* main.swift */,
+				D4FFE698267A9B030074D1DC /* Info.plist */,
 				D449F7D62247C50B00211E2E /* RVS_BasicGCDTimerTest */,
 			);
 			path = Tests;
@@ -82,8 +99,8 @@
 		D494802021E384C100B51AB3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */,
 				D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */,
+				D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -91,36 +108,37 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D449F7C42247C32800211E2E /* RVS_BasicGCDTimer */ = {
+		D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D449F7C92247C32800211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */;
+			buildConfigurationList = D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */;
 			buildPhases = (
-				5E92B1260EEB80BAE26977DD /* SwiftLINT */,
-				D449F7C12247C32800211E2E /* Sources */,
+				D449F7D12247C50B00211E2E /* Sources */,
+				D4FFE694267A98390074D1DC /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D4FFE693267A982D0074D1DC /* PBXTargetDependency */,
+			);
+			name = RVS_BasicGCDTimerTests;
+			productName = RVS_BasicGCDTimerTests;
+			productReference = D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4FFE691267A980A0074D1DC /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */;
+			buildPhases = (
+				D4FFE686267A980A0074D1DC /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = RVS_BasicGCDTimer;
-			productName = RVS_BasicGCDTimer;
-			productReference = D449F7C52247C32800211E2E /* RVS_BasicGCDTimer */;
-			productType = "com.apple.product-type.tool";
-		};
-		D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */;
-			buildPhases = (
-				D449F7D12247C50B00211E2E /* Sources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = RVS_BasicGCDTimerTests;
-			productName = RVS_BasicGCDTimerTests;
-			productReference = D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
+			productName = RVS_BasicGCDTimer_Test;
+			productReference = D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -132,13 +150,12 @@
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = "The Great Rift Valley Software Company";
 				TargetAttributes = {
-					D449F7C42247C32800211E2E = {
-						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1020;
-					};
 					D449F7D42247C50B00211E2E = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
+					};
+					D4FFE688267A980A0074D1DC = {
+						CreatedOnToolsVersion = 12.5;
 					};
 				};
 			};
@@ -155,105 +172,56 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D449F7C42247C32800211E2E /* RVS_BasicGCDTimer */,
 				D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */,
+				D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer */,
 			);
 		};
 /* End PBXProject section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		5E92B1260EEB80BAE26977DD /* SwiftLINT */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLINT;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if command -v swiftlint\nthen\n    swiftlint\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		D449F7C12247C32800211E2E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				D4BD98D9267A90A10027A775 /* main.swift in Sources */,
-				D449F7CD2247C33F00211E2E /* RVS_BasicGCDTimer.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D449F7D12247C50B00211E2E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */,
-				D461E5632247FFE200F6965A /* RVS_BasicGCDTimer.swift in Sources */,
-				D4CA4561249D33D0003C2564 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D4FFE686267A980A0074D1DC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4FFE697267A98570074D1DC /* RVS_BasicGCDTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		D4FFE693267A982D0074D1DC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer */;
+			targetProxy = D4FFE692267A982D0074D1DC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		D449F7CA2247C32800211E2E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2000;
-				DEVELOPMENT_TEAM = KSAUGZFWP2;
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = Meta/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.3.2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		D449F7CB2247C32800211E2E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2000;
-				DEVELOPMENT_TEAM = KSAUGZFWP2;
-				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = Meta/Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				MARKETING_VERSION = 1.3.2;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 		D449F7DB2247C50B00211E2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				DEVELOPMENT_TEAM = "";
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"TESTING=1",
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = Tests/info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -272,14 +240,16 @@
 		D449F7DC2247C50B00211E2E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
-				CODE_SIGN_STYLE = Automatic;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = NO;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				DEVELOPMENT_TEAM = "";
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				GCC_PREPROCESSOR_DEFINITIONS = "TESTING=1";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
-				INFOPLIST_FILE = Tests/Info.plist;
+				INFOPLIST_FILE = Tests/info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -427,18 +397,37 @@
 			};
 			name = Release;
 		};
+		D4FFE68F267A980A0074D1DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				DRIVERKIT_DEPLOYMENT_TARGET = "";
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D4FFE690267A980A0074D1DC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				DRIVERKIT_DEPLOYMENT_TARGET = "";
+				EXECUTABLE_PREFIX = lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D449F7C92247C32800211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				D449F7CA2247C32800211E2E /* Debug */,
-				D449F7CB2247C32800211E2E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -453,6 +442,15 @@
 			buildConfigurations = (
 				D494803121E384C100B51AB3 /* Debug */,
 				D494803221E384C100B51AB3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D4FFE691267A980A0074D1DC /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4FFE68F267A980A0074D1DC /* Debug */,
+				D4FFE690267A980A0074D1DC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

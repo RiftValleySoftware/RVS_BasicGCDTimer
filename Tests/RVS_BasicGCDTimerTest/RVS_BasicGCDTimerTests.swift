@@ -24,6 +24,7 @@
  */
 
 import XCTest
+import RVS_BasicGCDTimer
 
 typealias ResponseHandlerContextFunc = (_: RVS_BasicGCDTimer?) -> Void
 typealias TimerCallbacks = (standard: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
