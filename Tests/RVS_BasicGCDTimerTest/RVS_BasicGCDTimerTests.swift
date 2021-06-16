@@ -20,11 +20,10 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.3.0
+ Version: 1.3.2
  */
 
 import XCTest
-@testable import RVS_BasicGCDTimer
 
 typealias ResponseHandlerContextFunc = (_: RVS_BasicGCDTimer?) -> Void
 typealias TimerCallbacks = (standard: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
@@ -195,7 +194,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
                 return ret
             }
             
-            var expectation = XCTestExpectation()
+            let expectation = XCTestExpectation()
             expectation.expectedFulfillmentCount = inTimerArray.count
             var startTime: Date!
             
@@ -269,7 +268,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
     // Test multiple queues (100 repeating timers). This also tests the two optional callbacks.
     func testRepeatThreading() {
         func runTimers(_ inTimerArray: [RVS_BasicGCDTimer]) {
-            var expectation = XCTestExpectation()
+            let expectation = XCTestExpectation()
             var fulfillmentCount = 0
             
             expectation.expectedFulfillmentCount = inTimerArray.count

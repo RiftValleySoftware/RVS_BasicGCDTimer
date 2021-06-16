@@ -1,3 +1,7 @@
+**Version 1.3.2.3000** *June 16, 2021*
+
+- Updated to latest of everything
+
 **Version 1.3.1.2000** *July 31, 2020*
 
 - Switched structure to enable GitHub Swift Action

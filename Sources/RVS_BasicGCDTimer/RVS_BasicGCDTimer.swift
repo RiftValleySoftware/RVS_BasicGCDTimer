@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.3.0
+ Version: 1.3.2
  */
 
 import Foundation
@@ -29,7 +29,7 @@ import Foundation
 /**
  This is the basic callback protocol for the general-purpose GCD timer class. It has one simple required method, and two optional methods.
  */
-public protocol RVS_BasicGCDTimerDelegate: class {
+public protocol RVS_BasicGCDTimerDelegate: AnyObject {
     /* ############################################################## */
     /**
      Called periodically, as the GCDTimer repeats (or fires once). This is required.
