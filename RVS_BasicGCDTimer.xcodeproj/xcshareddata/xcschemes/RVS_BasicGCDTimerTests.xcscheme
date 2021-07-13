@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D449F7C42247C32800211E2E"
-               BuildableName = "RVS_BasicGCDTimer"
+               BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
+               BuildableName = "libRVS_BasicGCDTimer.a"
                BlueprintName = "RVS_BasicGCDTimer"
                ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
             </BuildableReference>
@@ -26,7 +26,18 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "YES">
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
+            BuildableName = "libRVS_BasicGCDTimer.a"
+            BlueprintName = "RVS_BasicGCDTimer"
+            ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -54,8 +65,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D449F7C42247C32800211E2E"
-            BuildableName = "RVS_BasicGCDTimer"
+            BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
+            BuildableName = "libRVS_BasicGCDTimer.a"
             BlueprintName = "RVS_BasicGCDTimer"
             ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
          </BuildableReference>
@@ -70,8 +81,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D449F7C42247C32800211E2E"
-            BuildableName = "RVS_BasicGCDTimer"
+            BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
+            BuildableName = "libRVS_BasicGCDTimer.a"
             BlueprintName = "RVS_BasicGCDTimer"
             ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
          </BuildableReference>

@@ -422,7 +422,17 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
             }
         }
         
+        XCTAssertTrue(testTimer.isRunning)
+        XCTAssertFalse(testTimer.isOnlyFiringOnce)
+
         // Wait until the expectation is fulfilled, with a timeout of 2.5 seconds.
         wait(for: [expectation], timeout: 2.5)
+        
+        testTimer.isRunning = false
+
+        // This tests the _sepukku() routine.
+        testTimer.delegate = nil
+        
+        XCTAssertTrue(testTimer.isInvalid)
     }
 }
