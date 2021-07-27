@@ -435,4 +435,30 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         
         XCTAssertTrue(testTimer.isInvalid)
     }
+    
+    // We just test the defaults, so we satisfy Code Coverage.
+    func testProtocolDefaults () {
+        let expectation: XCTestExpectation!
+        
+        expectation = XCTestExpectation()
+        expectation.expectedFulfillmentCount = 1
+
+        class EmptyDelegateClass: RVS_BasicGCDTimerDelegate {
+            func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer) {
+                timer.pause()
+                timer.resume()
+                if let expectation = timer.context as? XCTestExpectation {
+                    expectation.fulfill()
+                }
+            }
+        }
+        
+        let emptyCallbacks = EmptyDelegateClass()
+        
+        let testTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: emptyCallbacks, context: expectation)
+        
+        testTimer.isRunning = true
+
+        wait(for: [expectation], timeout: 0.25)
+    }
 }
