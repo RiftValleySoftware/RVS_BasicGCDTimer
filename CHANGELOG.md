@@ -1,3 +1,7 @@
+**Version 1.3.4.3000** *December 24, 2021*
+
+- Updated for the latest toolchains.
+
 **Version 1.3.3.3000** *September 23, 2021*
 
 - Updated for the latest toolchains.
