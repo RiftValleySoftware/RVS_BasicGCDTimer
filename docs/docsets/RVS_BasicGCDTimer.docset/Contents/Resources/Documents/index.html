@@ -73,7 +73,7 @@
           <div class="section-content top-matter">
             
             <p><img src="icon.png" alt="Project Icon"></p>
-<h1 id='basic-grand-central-dispatch-timer' class='heading'>Basic Grand Central Dispatch Timer</h1>
+<h1 id='basic-gcd-timer' class='heading'>Basic GCD Timer</h1>
 <h2 id='introduction' class='heading'>Introduction</h2>
 
 <p>This is a fundamental tool: A simple <a href="https://developer.apple.com/documentation/dispatch">Grand Central Dispatch</a> timer that either fires repeatedly, or only once.</p>
@@ -91,12 +91,12 @@
 <p>It should work fine for osx, tvOS and iOS. It only depends on the Swift Foundation library.</p>
 
 <p>This requires Swift Version 4.0 or above (tested with 4.2).</p>
-<h1 id='where-to-get' class='heading'>WHERE TO GET</h1>
+<h2 id='where-to-get' class='heading'>WHERE TO GET</h2>
 
 <p><a href="https://github.com/RiftValleySoftware/RVS_BasicGCDTimer">This is the GitHub repo for the project.</a>.</p>
 
 <p><a href="https://riftvalleysoftware.com/work/open-source-projects/#RVS_BasicGCDTimer">This is the documentation page for it</a></p>
-<h1 id='usage' class='heading'>USAGE</h1>
+<h2 id='usage' class='heading'>USAGE</h2>
 <h2 id='a-href-https-swift-org-package-manager-swift-package-manager-spm-a' class='heading'><a href="https://swift.org/package-manager/">Swift Package Manager (SPM)</a></h2>
 
 <p>You can use SPM to load the project as a dependency, by referencing its <a href="https://github.com/RiftValleySoftware/RVS_BasicGCDTimer/">GitHub Repo</a> URI (SSH: <a href="git@github.com:RiftValleySoftware/RVS_BasicGCDTimer.git">git@github.com:RiftValleySoftware/RVS_BasicGCDTimer.git</a>, or HTTPS: <a href="https://github.com/RiftValleySoftware/RVS_BasicGCDTimer.git">https://github.com/RiftValleySoftware/RVS_BasicGCDTimer.git</a>).</p>
@@ -104,7 +104,7 @@
 <p>Once you have the dependency attached, you reference it by adding an import to the files that consume the package:</p>
 <pre class="highlight plaintext"><code>import RVS_BasicGCDTimer
 </code></pre>
-<h2 id='include-the-source-in-your-project' class='heading'>Include the Source in Your Project</h2>
+<h3 id='include-the-source-in-your-project' class='heading'>Include the Source in Your Project</h3>
 
 <p>This is a simple source file; not a module.</p>
 
@@ -155,7 +155,7 @@
 </code></pre>
 
 <p>If a &ldquo;one-shot,&rdquo; then the timer is invalidated as soon as it completes.</p>
-<h2 id='delegate' class='heading'>Delegate</h2>
+<h3 id='delegate' class='heading'>Delegate</h3>
 
 <p>The delegate has one required method, and four optional ones (with default extension handlers). The parameter passed in is the timer object.</p>
 
@@ -180,10 +180,10 @@
 <p>This is an optional method that is called as the timer is resumed (which includes the initial start):</p>
 <pre class="highlight plaintext"><code>func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer)
 </code></pre>
-<h1 id='dependencies' class='heading'>DEPENDENCIES</h1>
+<h2 id='dependencies' class='heading'>DEPENDENCIES</h2>
 
 <p>There are no dependencies to use RVS_BasicGCDTimer in your project. In order to test it and run it in the module project, you should use <a href="https://cocoapods.org">CocoaPods</a> to install <a href="https://cocoapods.org/pods/SwiftLint">SwiftLint</a>, although that is not required. It&rsquo;s <a href="https://littlegreenviper.com/series/swiftwater/swiftlint/">just good practice</a>.</p>
-<h1 id='license' class='heading'>LICENSE</h1>
+<h2 id='license' class='heading'>LICENSE</h2>
 
 <p>MIT License</p>
 

@@ -1,28 +1,32 @@
-**Version 1.3.4.3000** *December 24, 2021*
+**Version 1.3.5** *January 27, 2022*
+
+- Added support for DocC. No code changes.
+
+**Version 1.3.4** *December 24, 2021*
 
 - Updated for the latest toolchains.
 
-**Version 1.3.3.3000** *September 23, 2021*
+**Version 1.3.3** *September 23, 2021*
 
 - Updated for the latest toolchains.
 
-**Version 1.3.2.3000** *June 16, 2021*
+**Version 1.3.2** *June 16, 2021*
 
 - Updated to latest of everything
 
-**Version 1.3.1.2000** *July 31, 2020*
+**Version 1.3.1** *July 31, 2020*
 
 - Switched structure to enable GitHub Swift Action
 
-**Version 1.3.0.2000** *July 5, 2020*
+**Version 1.3.0** *July 5, 2020*
 
 - Switched to a static library.
 
-**Version 1.2.1.2000** *June 19, 2020*
+**Version 1.2.1** *June 19, 2020*
 
 - Added SPM support.
 
-**Version 1.2.0.2000** *May 26, 2020*
+**Version 1.2.0** *May 26, 2020*
 
 - Removed the CocoaPods stuff.
 - Removed a looping Cartfile (copy/pasta error).

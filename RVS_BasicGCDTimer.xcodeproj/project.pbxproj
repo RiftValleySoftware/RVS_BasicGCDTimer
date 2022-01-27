@@ -28,6 +28,7 @@
 		D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RVS_BasicGCDTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimerTests.swift; sourceTree = "<group>"; };
 		D4C8FEE724D4D62A000A1375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Meta/Info.plist; sourceTree = "<group>"; };
+		D4D65BB927A3626000F05AAC /* RVS_BasicGCDTimer.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = RVS_BasicGCDTimer.docc; sourceTree = "<group>"; };
 		D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRVS_BasicGCDTimer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4FFE698267A9B030074D1DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */,
+				D4D65BB927A3626000F05AAC /* RVS_BasicGCDTimer.docc */,
 			);
 			path = RVS_BasicGCDTimer;
 			sourceTree = "<group>";
@@ -230,6 +232,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "RVS-BasicGCDTimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG TESTING";
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -258,6 +261,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "RVS-BasicGCDTimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TESTING;
 				SWIFT_TREAT_WARNINGS_AS_ERRORS = YES;
@@ -406,6 +410,7 @@
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -420,6 +425,7 @@
 				EXECUTABLE_PREFIX = lib;
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};

@@ -1,8 +1,8 @@
+# ``RVS_BasicGCDTimer``
+
 ![Project Icon](icon.png)
 
-# Basic GCD Timer
-
-## Introduction
+## Overview
 
 This is a fundamental tool: A simple [Grand Central Dispatch](https://developer.apple.com/documentation/dispatch) timer that either fires repeatedly, or only once.
 
