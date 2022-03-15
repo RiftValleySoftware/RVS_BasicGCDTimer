@@ -1,3 +1,7 @@
+**Version 1.3.6** *March 15, 2022*
+
+- Updated to latest tools. No code changes.
+
 **Version 1.3.5** *January 27, 2022*
 
 - Added support for DocC. No code changes.
