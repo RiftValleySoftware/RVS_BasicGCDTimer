@@ -1,3 +1,7 @@
+**Version 1.4.0** *May 8, 2022*
+
+- Made the class Equatable.
+
 **Version 1.3.6** *March 15, 2022*
 
 - Updated to latest tools. No code changes.

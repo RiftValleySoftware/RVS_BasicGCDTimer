@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.3.6
+ Version: 1.4.0
  */
 
 import Foundation
@@ -146,6 +146,8 @@ public class RVS_BasicGCDTimer {
     /* ############################################################## */
     // MARK: - Private Instance Properties
     /* ############################################################## */
+    /// This is used to enforce Equatable.
+    private var _uuid = UUID()
     /// This holds our current run state.
     private var _state: _State = ._invalid
     /// This holds a Boolean that is true, if we are to only fire once (default is false, which means we repeat).
@@ -391,4 +393,21 @@ public class RVS_BasicGCDTimer {
     public func invalidate() {
         _seppukku()
     }
+}
+
+// MARK: Equatable Conformance
+/* ################################################################## */
+/**
+ This applies a simple Equatable comparison.
+ */
+extension RVS_BasicGCDTimer: Equatable {
+    /* ############################################################## */
+    /**
+     Simple comparison, using the instance UUIDs
+     - parameters:
+        - lhs: The left-hand side of the comparison.
+        - rhs: The right-hand side.
+     - returns: True, if both reference the same instance.
+     */
+    public static func == (lhs: RVS_BasicGCDTimer, rhs: RVS_BasicGCDTimer) -> Bool { lhs._uuid == rhs._uuid }
 }
