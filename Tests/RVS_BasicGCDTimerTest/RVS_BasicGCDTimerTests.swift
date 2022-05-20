@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.4.1
+ Version: 1.4.2
  */
 
 import XCTest
@@ -143,7 +143,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
     // Repeat one hundred milliseconds fifty times, and give a leeway of one hundred milliseconds.
     func testGCDBasicRepeatWithLeeway() {
         #if TESTING
-            let leewayInMilliseconds = 11    // If you make this less than eleven, you'll probably get intermittent failures, because of the overhead.
+            let leewayInMilliseconds = 30    // If you make this less than fifteen, you'll probably get intermittent failures, because of the overhead.
         #else
             let leewayInMilliseconds = 100   // This is for the GitHub Action. Things move a LOT slower, overe there.
         #endif
@@ -246,8 +246,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
                 $0.resume()
             }
             
-            // Wait until the expectation is fulfilled, with a timeout of 250 ms.
-            wait(for: [expectation], timeout: 0.25)
+            // Wait until the expectation is fulfilled, with a timeout of half a second.
+            wait(for: [expectation], timeout: 0.5)
             
             for timerTuple in inTimerArray.enumerated() {
                 XCTAssertTrue(timerTuple.element.isInvalid, "Timer \(timerTuple.offset + 1) should be invalid!")   // We should be invalid.
@@ -356,8 +356,8 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
                 $0.resume()
             }
             
-            // Wait until the expectation is fulfilled, with a timeout of a second and a half.
-            wait(for: [expectation], timeout: 1.5)
+            // Wait until the expectation is fulfilled, with a timeout of two seconds.
+            wait(for: [expectation], timeout: 2.0)
             
             for timerTuple in inTimerArray.enumerated() {
                 XCTAssertTrue(timerTuple.element.isInvalid, "Timer \(timerTuple.offset + 1) should be invalid!")   // We should be invalid.

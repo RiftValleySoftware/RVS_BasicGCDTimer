@@ -14,9 +14,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-               BuildableName = "libRVS_BasicGCDTimer.a"
-               BlueprintName = "RVS_BasicGCDTimer (MacOS)"
+               BlueprintIdentifier = "D424248E2838164800A6FD90"
+               BuildableName = "libRVS_BasicGCDTimer (TVOS).a"
+               BlueprintName = "RVS_BasicGCDTimer (TVOS)"
+               ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D42424B9283816DD00A6FD90"
+               BuildableName = "RVS_BasicGCDTimerTests (TVOS).xctest"
+               BlueprintName = "RVS_BasicGCDTimerTests (TVOS)"
                ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -26,26 +40,15 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "YES">
-      <CodeCoverageTargets>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-            BuildableName = "libRVS_BasicGCDTimer.a"
-            BlueprintName = "RVS_BasicGCDTimer (MacOS)"
-            ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
-         </BuildableReference>
-      </CodeCoverageTargets>
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D449F7D42247C50B00211E2E"
-               BuildableName = "RVS_BasicGCDTimerTests.xctest"
-               BlueprintName = "RVS_BasicGCDTimerTests (MacOS)"
+               BlueprintIdentifier = "D42424B9283816DD00A6FD90"
+               BuildableName = "RVS_BasicGCDTimerTests (TVOS).xctest"
+               BlueprintName = "RVS_BasicGCDTimerTests (TVOS)"
                ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -60,17 +63,7 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "NO">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-            BuildableName = "libRVS_BasicGCDTimer.a"
-            BlueprintName = "RVS_BasicGCDTimer (MacOS)"
-            ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
+      allowLocationSimulation = "YES">
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -81,9 +74,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-            BuildableName = "libRVS_BasicGCDTimer.a"
-            BlueprintName = "RVS_BasicGCDTimer (MacOS)"
+            BlueprintIdentifier = "D424248E2838164800A6FD90"
+            BuildableName = "libRVS_BasicGCDTimer (TVOS).a"
+            BlueprintName = "RVS_BasicGCDTimer (TVOS)"
             ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

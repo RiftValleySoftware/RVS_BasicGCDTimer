@@ -1,3 +1,8 @@
+**Version 1.4.2** *May 20, 2022*
+
+- Just to be a completionist, I added tests and builds for all the platforms.
+- I also stretched a couple of timeouts, for possibly clunkier tests.
+
 **Version 1.4.1** *May 20, 2022*
 
 - Just reduced the OS requirements, as there's no need to have them so tight.

@@ -7,12 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D424247F2838160A00A6FD90 /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
+		D42424962838165100A6FD90 /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
+		D42424972838165200A6FD90 /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
+		D42424A02838168200A6FD90 /* libRVS_BasicGCDTimer (iOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4242478283815FA00A6FD90 /* libRVS_BasicGCDTimer (iOS).a */; };
+		D42424A62838169200A6FD90 /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
+		D42424AF283816AA00A6FD90 /* libRVS_BasicGCDTimer (WatchOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = D42424842838162E00A6FD90 /* libRVS_BasicGCDTimer (WatchOS).a */; };
+		D42424B5283816B800A6FD90 /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
+		D42424BE283816DD00A6FD90 /* libRVS_BasicGCDTimer (TVOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = D424248F2838164800A6FD90 /* libRVS_BasicGCDTimer (TVOS).a */; };
+		D42424C4283816ED00A6FD90 /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
 		D449F7D82247C50B00211E2E /* RVS_BasicGCDTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */; };
-		D4FFE696267A983F0074D1DC /* libRVS_BasicGCDTimer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */; };
+		D4FFE696267A983F0074D1DC /* libRVS_BasicGCDTimer (MacOS).a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer (MacOS).a */; };
 		D4FFE697267A98570074D1DC /* RVS_BasicGCDTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D42424A12838168200A6FD90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D494801621E384C100B51AB3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4242477283815FA00A6FD90;
+			remoteInfo = "RVS_BasicGCDTimer (iOS)";
+		};
+		D42424B0283816AA00A6FD90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D494801621E384C100B51AB3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D42424832838162E00A6FD90;
+			remoteInfo = "RVS_BasicGCDTimer (WatchOS)";
+		};
+		D42424BF283816DD00A6FD90 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D494801621E384C100B51AB3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D424248E2838164800A6FD90;
+			remoteInfo = "RVS_BasicGCDTimer (TVOS)";
+		};
 		D4FFE692267A982D0074D1DC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D494801621E384C100B51AB3 /* Project object */;
@@ -22,23 +52,104 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D4242476283815FA00A6FD90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424822838162E00A6FD90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D424248D2838164800A6FD90 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		D4242478283815FA00A6FD90 /* libRVS_BasicGCDTimer (iOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRVS_BasicGCDTimer (iOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D42424842838162E00A6FD90 /* libRVS_BasicGCDTimer (WatchOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRVS_BasicGCDTimer (WatchOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D424248F2838164800A6FD90 /* libRVS_BasicGCDTimer (TVOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRVS_BasicGCDTimer (TVOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D424249C2838168200A6FD90 /* RVS_BasicGCDTimerTests (iOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RVS_BasicGCDTimerTests (iOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D42424AB283816AA00A6FD90 /* RVS_BasicGCDTimerTests (WatchOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RVS_BasicGCDTimerTests (WatchOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D42424BA283816DD00A6FD90 /* RVS_BasicGCDTimerTests (TVOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RVS_BasicGCDTimerTests (TVOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4481F01249EE420006D0D09 /* Warnings.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Warnings.xcconfig; path = "Project-Meta/Warnings.xcconfig"; sourceTree = "<group>"; };
 		D449F7CC2247C33F00211E2E /* RVS_BasicGCDTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimer.swift; sourceTree = "<group>"; };
-		D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RVS_BasicGCDTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests (MacOS).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "RVS_BasicGCDTimerTests (MacOS).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D449F7D72247C50B00211E2E /* RVS_BasicGCDTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RVS_BasicGCDTimerTests.swift; sourceTree = "<group>"; };
 		D4C8FEE724D4D62A000A1375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Meta/Info.plist; sourceTree = "<group>"; };
 		D4D65BB927A3626000F05AAC /* RVS_BasicGCDTimer.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = RVS_BasicGCDTimer.docc; sourceTree = "<group>"; };
-		D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRVS_BasicGCDTimer.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer (MacOS).a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libRVS_BasicGCDTimer (MacOS).a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4FFE698267A9B030074D1DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D4242475283815FA00A6FD90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424812838162E00A6FD90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D424248C2838164800A6FD90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424992838168200A6FD90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424A02838168200A6FD90 /* libRVS_BasicGCDTimer (iOS).a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424A8283816AA00A6FD90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424AF283816AA00A6FD90 /* libRVS_BasicGCDTimer (WatchOS).a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424B7283816DD00A6FD90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424BE283816DD00A6FD90 /* libRVS_BasicGCDTimer (TVOS).a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D4FFE694267A98390074D1DC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4FFE696267A983F0074D1DC /* libRVS_BasicGCDTimer.a in Frameworks */,
+				D4FFE696267A983F0074D1DC /* libRVS_BasicGCDTimer (MacOS).a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,8 +212,14 @@
 		D494802021E384C100B51AB3 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */,
-				D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */,
+				D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests (MacOS).xctest */,
+				D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer (MacOS).a */,
+				D4242478283815FA00A6FD90 /* libRVS_BasicGCDTimer (iOS).a */,
+				D42424842838162E00A6FD90 /* libRVS_BasicGCDTimer (WatchOS).a */,
+				D424248F2838164800A6FD90 /* libRVS_BasicGCDTimer (TVOS).a */,
+				D424249C2838168200A6FD90 /* RVS_BasicGCDTimerTests (iOS).xctest */,
+				D42424AB283816AA00A6FD90 /* RVS_BasicGCDTimerTests (WatchOS).xctest */,
+				D42424BA283816DD00A6FD90 /* RVS_BasicGCDTimerTests (TVOS).xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -110,9 +227,114 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */ = {
+		D4242477283815FA00A6FD90 /* RVS_BasicGCDTimer (iOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */;
+			buildConfigurationList = D424247E283815FA00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (iOS)" */;
+			buildPhases = (
+				D4242474283815FA00A6FD90 /* Sources */,
+				D4242475283815FA00A6FD90 /* Frameworks */,
+				D4242476283815FA00A6FD90 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RVS_BasicGCDTimer (iOS)";
+			productName = "RVS_BasicGCDTimer (iOS)";
+			productReference = D4242478283815FA00A6FD90 /* libRVS_BasicGCDTimer (iOS).a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D42424832838162E00A6FD90 /* RVS_BasicGCDTimer (WatchOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D42424882838162E00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (WatchOS)" */;
+			buildPhases = (
+				D42424802838162E00A6FD90 /* Sources */,
+				D42424812838162E00A6FD90 /* Frameworks */,
+				D42424822838162E00A6FD90 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RVS_BasicGCDTimer (WatchOS)";
+			productName = "RVS_BasicGCDTimer (WatchOS)";
+			productReference = D42424842838162E00A6FD90 /* libRVS_BasicGCDTimer (WatchOS).a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D424248E2838164800A6FD90 /* RVS_BasicGCDTimer (TVOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D42424932838164800A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (TVOS)" */;
+			buildPhases = (
+				D424248B2838164800A6FD90 /* Sources */,
+				D424248C2838164800A6FD90 /* Frameworks */,
+				D424248D2838164800A6FD90 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RVS_BasicGCDTimer (TVOS)";
+			productName = "RVS_BasicGCDTimer (TVOS)";
+			productReference = D424248F2838164800A6FD90 /* libRVS_BasicGCDTimer (TVOS).a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		D424249B2838168200A6FD90 /* RVS_BasicGCDTimerTests (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D42424A32838168200A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (iOS)" */;
+			buildPhases = (
+				D42424982838168200A6FD90 /* Sources */,
+				D42424992838168200A6FD90 /* Frameworks */,
+				D424249A2838168200A6FD90 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D42424A22838168200A6FD90 /* PBXTargetDependency */,
+			);
+			name = "RVS_BasicGCDTimerTests (iOS)";
+			productName = "RVS_BasicGCDTimerTests (iOS)";
+			productReference = D424249C2838168200A6FD90 /* RVS_BasicGCDTimerTests (iOS).xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D42424AA283816AA00A6FD90 /* RVS_BasicGCDTimerTests (WatchOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D42424B2283816AA00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (WatchOS)" */;
+			buildPhases = (
+				D42424A7283816AA00A6FD90 /* Sources */,
+				D42424A8283816AA00A6FD90 /* Frameworks */,
+				D42424A9283816AA00A6FD90 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D42424B1283816AA00A6FD90 /* PBXTargetDependency */,
+			);
+			name = "RVS_BasicGCDTimerTests (WatchOS)";
+			productName = "RVS_BasicGCDTimerTests (WatchOS)";
+			productReference = D42424AB283816AA00A6FD90 /* RVS_BasicGCDTimerTests (WatchOS).xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D42424B9283816DD00A6FD90 /* RVS_BasicGCDTimerTests (TVOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D42424C1283816DD00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (TVOS)" */;
+			buildPhases = (
+				D42424B6283816DD00A6FD90 /* Sources */,
+				D42424B7283816DD00A6FD90 /* Frameworks */,
+				D42424B8283816DD00A6FD90 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D42424C0283816DD00A6FD90 /* PBXTargetDependency */,
+			);
+			name = "RVS_BasicGCDTimerTests (TVOS)";
+			productName = "RVS_BasicGCDTimerTests (TVOS)";
+			productReference = D42424BA283816DD00A6FD90 /* RVS_BasicGCDTimerTests (TVOS).xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests (MacOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (MacOS)" */;
 			buildPhases = (
 				D449F7D12247C50B00211E2E /* Sources */,
 				D4FFE694267A98390074D1DC /* Frameworks */,
@@ -122,14 +344,14 @@
 			dependencies = (
 				D4FFE693267A982D0074D1DC /* PBXTargetDependency */,
 			);
-			name = RVS_BasicGCDTimerTests;
+			name = "RVS_BasicGCDTimerTests (MacOS)";
 			productName = RVS_BasicGCDTimerTests;
-			productReference = D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests.xctest */;
+			productReference = D449F7D52247C50B00211E2E /* RVS_BasicGCDTimerTests (MacOS).xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer */ = {
+		D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer (MacOS) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D4FFE691267A980A0074D1DC /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */;
+			buildConfigurationList = D4FFE691267A980A0074D1DC /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (MacOS)" */;
 			buildPhases = (
 				D4FFE686267A980A0074D1DC /* Sources */,
 			);
@@ -137,9 +359,9 @@
 			);
 			dependencies = (
 			);
-			name = RVS_BasicGCDTimer;
+			name = "RVS_BasicGCDTimer (MacOS)";
 			productName = RVS_BasicGCDTimer_Test;
-			productReference = D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer.a */;
+			productReference = D4FFE689267A980A0074D1DC /* libRVS_BasicGCDTimer (MacOS).a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -148,10 +370,28 @@
 		D494801621E384C100B51AB3 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1340;
 				ORGANIZATIONNAME = "The Great Rift Valley Software Company";
 				TargetAttributes = {
+					D4242477283815FA00A6FD90 = {
+						CreatedOnToolsVersion = 13.4;
+					};
+					D42424832838162E00A6FD90 = {
+						CreatedOnToolsVersion = 13.4;
+					};
+					D424248E2838164800A6FD90 = {
+						CreatedOnToolsVersion = 13.4;
+					};
+					D424249B2838168200A6FD90 = {
+						CreatedOnToolsVersion = 13.4;
+					};
+					D42424AA283816AA00A6FD90 = {
+						CreatedOnToolsVersion = 13.4;
+					};
+					D42424B9283816DD00A6FD90 = {
+						CreatedOnToolsVersion = 13.4;
+					};
 					D449F7D42247C50B00211E2E = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -174,13 +414,91 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests */,
-				D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer */,
+				D449F7D42247C50B00211E2E /* RVS_BasicGCDTimerTests (MacOS) */,
+				D424249B2838168200A6FD90 /* RVS_BasicGCDTimerTests (iOS) */,
+				D42424AA283816AA00A6FD90 /* RVS_BasicGCDTimerTests (WatchOS) */,
+				D42424B9283816DD00A6FD90 /* RVS_BasicGCDTimerTests (TVOS) */,
+				D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer (MacOS) */,
+				D4242477283815FA00A6FD90 /* RVS_BasicGCDTimer (iOS) */,
+				D42424832838162E00A6FD90 /* RVS_BasicGCDTimer (WatchOS) */,
+				D424248E2838164800A6FD90 /* RVS_BasicGCDTimer (TVOS) */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		D424249A2838168200A6FD90 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424A9283816AA00A6FD90 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424B8283816DD00A6FD90 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		D4242474283815FA00A6FD90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D424247F2838160A00A6FD90 /* RVS_BasicGCDTimer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424802838162E00A6FD90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424962838165100A6FD90 /* RVS_BasicGCDTimer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D424248B2838164800A6FD90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424972838165200A6FD90 /* RVS_BasicGCDTimer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424982838168200A6FD90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424A62838169200A6FD90 /* RVS_BasicGCDTimerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424A7283816AA00A6FD90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424B5283816B800A6FD90 /* RVS_BasicGCDTimerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D42424B6283816DD00A6FD90 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D42424C4283816ED00A6FD90 /* RVS_BasicGCDTimerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D449F7D12247C50B00211E2E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -200,14 +518,251 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D42424A22838168200A6FD90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4242477283815FA00A6FD90 /* RVS_BasicGCDTimer (iOS) */;
+			targetProxy = D42424A12838168200A6FD90 /* PBXContainerItemProxy */;
+		};
+		D42424B1283816AA00A6FD90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D42424832838162E00A6FD90 /* RVS_BasicGCDTimer (WatchOS) */;
+			targetProxy = D42424B0283816AA00A6FD90 /* PBXContainerItemProxy */;
+		};
+		D42424C0283816DD00A6FD90 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D424248E2838164800A6FD90 /* RVS_BasicGCDTimer (TVOS) */;
+			targetProxy = D42424BF283816DD00A6FD90 /* PBXContainerItemProxy */;
+		};
 		D4FFE693267A982D0074D1DC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer */;
+			target = D4FFE688267A980A0074D1DC /* RVS_BasicGCDTimer (MacOS) */;
 			targetProxy = D4FFE692267A982D0074D1DC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		D424247C283815FA00A6FD90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D424247D283815FA00A6FD90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D42424892838162E00A6FD90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+			};
+			name = Debug;
+		};
+		D424248A2838162E00A6FD90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+			};
+			name = Release;
+		};
+		D42424942838164800A6FD90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		D42424952838164800A6FD90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		D42424A42838168200A6FD90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests--iOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D42424A52838168200A6FD90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests--iOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		D42424B3283816AA00A6FD90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests--WatchOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+			};
+			name = Debug;
+		};
+		D42424B4283816AA00A6FD90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests--WatchOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 6.0;
+			};
+			name = Release;
+		};
+		D42424C2283816DD00A6FD90 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests--TVOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		D42424C3283816DD00A6FD90 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = KSAUGZFWP2;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.riftvalleysoftware.RVS-BasicGCDTimerTests--TVOS-";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
 		D449F7DB2247C50B00211E2E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -229,7 +784,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = "RVS-BasicGCDTimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_DOCUMENTATION_COMPILER = YES;
@@ -258,7 +813,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = "RVS-BasicGCDTimer";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_DOCUMENTATION_COMPILER = YES;
@@ -408,7 +963,8 @@
 				DEVELOPMENT_TEAM = KSAUGZFWP2;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
@@ -423,7 +979,8 @@
 				DEVELOPMENT_TEAM = KSAUGZFWP2;
 				DRIVERKIT_DEPLOYMENT_TARGET = "";
 				EXECUTABLE_PREFIX = lib;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_MODULE_NAME = RVS_BasicGCDTimer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_DOCUMENTATION_COMPILER = YES;
 				SDKROOT = macosx;
@@ -434,7 +991,61 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests" */ = {
+		D424247E283815FA00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D424247C283815FA00A6FD90 /* Debug */,
+				D424247D283815FA00A6FD90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D42424882838162E00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (WatchOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D42424892838162E00A6FD90 /* Debug */,
+				D424248A2838162E00A6FD90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D42424932838164800A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (TVOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D42424942838164800A6FD90 /* Debug */,
+				D42424952838164800A6FD90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D42424A32838168200A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D42424A42838168200A6FD90 /* Debug */,
+				D42424A52838168200A6FD90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D42424B2283816AA00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (WatchOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D42424B3283816AA00A6FD90 /* Debug */,
+				D42424B4283816AA00A6FD90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D42424C1283816DD00A6FD90 /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (TVOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D42424C2283816DD00A6FD90 /* Debug */,
+				D42424C3283816DD00A6FD90 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D449F7DA2247C50B00211E2E /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimerTests (MacOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D449F7DB2247C50B00211E2E /* Debug */,
@@ -452,7 +1063,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D4FFE691267A980A0074D1DC /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer" */ = {
+		D4FFE691267A980A0074D1DC /* Build configuration list for PBXNativeTarget "RVS_BasicGCDTimer (MacOS)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D4FFE68F267A980A0074D1DC /* Debug */,
