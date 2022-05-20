@@ -1,3 +1,7 @@
+**Version 1.4.1** *May 20, 2022*
+
+- Just reduced the OS requirements, as there's no need to have them so tight.
+
 **Version 1.4.0** *May 8, 2022*
 
 - Made the class Equatable.

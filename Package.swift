@@ -28,10 +28,10 @@ import PackageDescription
 let package = Package(
     name: "RVS_BasicGCDTimer",
     platforms: [
-        .iOS(.v13),
-        .tvOS(.v13),
+        .iOS(.v11),
+        .tvOS(.v11),
         .macOS(.v10_14),
-        .watchOS(.v6)
+        .watchOS(.v5)
     ],
     products: [
         .library(

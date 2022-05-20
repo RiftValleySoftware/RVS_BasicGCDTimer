@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.4.0
+ Version: 1.4.1
  */
 
 import XCTest
