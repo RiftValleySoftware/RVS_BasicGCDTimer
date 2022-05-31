@@ -35,7 +35,7 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "RVS-BasicGCDTimer",
+            name: "RVS_BasicGCDTimer",
             targets: ["RVS_BasicGCDTimer"])
     ],
     targets: [

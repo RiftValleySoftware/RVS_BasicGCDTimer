@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-               BuildableName = "libRVS_BasicGCDTimer.a"
+               BuildableName = "libRVS_BasicGCDTimer (MacOS).a"
                BlueprintName = "RVS_BasicGCDTimer (MacOS)"
                ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-            BuildableName = "libRVS_BasicGCDTimer.a"
+            BuildableName = "libRVS_BasicGCDTimer (MacOS).a"
             BlueprintName = "RVS_BasicGCDTimer (MacOS)"
             ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
          </BuildableReference>
@@ -44,7 +44,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D449F7D42247C50B00211E2E"
-               BuildableName = "RVS_BasicGCDTimerTests.xctest"
+               BuildableName = "RVS_BasicGCDTimerTests (MacOS).xctest"
                BlueprintName = "RVS_BasicGCDTimerTests (MacOS)"
                ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
             </BuildableReference>
@@ -66,7 +66,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-            BuildableName = "libRVS_BasicGCDTimer.a"
+            BuildableName = "libRVS_BasicGCDTimer (MacOS).a"
             BlueprintName = "RVS_BasicGCDTimer (MacOS)"
             ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
          </BuildableReference>
@@ -82,7 +82,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D4FFE688267A980A0074D1DC"
-            BuildableName = "libRVS_BasicGCDTimer.a"
+            BuildableName = "libRVS_BasicGCDTimer (MacOS).a"
             BlueprintName = "RVS_BasicGCDTimer (MacOS)"
             ReferencedContainer = "container:RVS_BasicGCDTimer.xcodeproj">
          </BuildableReference>

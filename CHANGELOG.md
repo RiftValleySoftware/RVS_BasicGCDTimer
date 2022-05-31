@@ -1,3 +1,5 @@
+**Version 1.5.0** *May 31, 2022*
+
 **Version 1.4.2** *May 20, 2022*
 
 - Just to be a completionist, I added tests and builds for all the platforms.
