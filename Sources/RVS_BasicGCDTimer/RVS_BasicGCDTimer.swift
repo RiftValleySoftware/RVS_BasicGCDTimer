@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.5.0
+ Version: 1.5.1
  */
 
 import Foundation
@@ -75,7 +75,7 @@ public protocol RVS_BasicGCDTimerDelegate: AnyObject {
 public extension RVS_BasicGCDTimerDelegate {
     /* ############################################################## */
     /**
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     The default delegate call does nothing.
      */
     func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer) {
         #if DEBUG
@@ -85,9 +85,7 @@ public extension RVS_BasicGCDTimerDelegate {
     
     /* ############################################################## */
     /**
-     This is called just before the timer invalidates.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     The default delegate call does nothing.
      */
     func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer) {
         #if DEBUG
@@ -97,9 +95,7 @@ public extension RVS_BasicGCDTimerDelegate {
     
     /* ############################################################## */
     /**
-     This is called when the timer suspends.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     The default delegate call does nothing.
      */
     func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer) {
         #if DEBUG
@@ -109,9 +105,7 @@ public extension RVS_BasicGCDTimerDelegate {
     
     /* ############################################################## */
     /**
-     This is called when the timer resumes.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
+     The default delegate call does nothing.
      */
     func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer) {
         #if DEBUG

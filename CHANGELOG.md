@@ -1,4 +1,10 @@
+**Version 1.5.1** *September 11, 2022*
+
+- Documentation updates.
+
 **Version 1.5.0** *May 31, 2022*
+
+- Renamed the product in the package file.
 
 **Version 1.4.2** *May 20, 2022*
 
