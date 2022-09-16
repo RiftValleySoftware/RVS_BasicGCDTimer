@@ -1,3 +1,6 @@
+**Version 1.5.2** *September 16, 2022*
+- Updated tools. No API changes.
+
 **Version 1.5.1** *September 11, 2022*
 
 - Documentation updates.
