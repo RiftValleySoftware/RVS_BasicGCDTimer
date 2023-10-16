@@ -41,7 +41,7 @@ Once you have the dependency attached, you reference it by adding an import to t
 
 ### Include the Source in Your Project
 
-This is a simple source file; not a module.
+You can use it as a simple source file; not a module.
 
 To use this, simply add the [RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer/blob/master/RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift) file to your project; copying it wherever you want.
 
@@ -86,6 +86,13 @@ Here, we specify a repeating timer, with no leeway, and no context data:
 However, there's a lot of defaults. You can specify the exact same as such:
 
     newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate)
+
+Or:
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1) { inTimer, inIsSuccess in
+        print("Timer is \(String(describing: inTimer))")
+        print("Timer was".(inIsSuccess ? " " : "not ")."successful.")
+    }
 
 Once the timer is instantiated, you start it by calling `resume()`:
 

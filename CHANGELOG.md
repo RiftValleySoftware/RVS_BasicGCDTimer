@@ -1,3 +1,11 @@
+**Version 1.7.0** *October 15, 2022*
+- I changed the timer to be a full optional (I don't like implicit optionals).
+- Improved the documentation.
+- Do concrete checks for either delegate or completion.
+- Allow delegate to be omitted.
+- Improved tests.
+- `onlyFireOnce` is now default true.
+
 **Version 1.6.0** *October 15, 2022*
 - Updated the tools.
 - Added a completion to the default initializer, for a simpler use case.

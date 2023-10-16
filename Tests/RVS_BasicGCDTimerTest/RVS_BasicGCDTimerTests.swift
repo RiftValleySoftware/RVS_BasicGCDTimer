@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.6.0
+ Version: 1.7.0
  */
 
 import XCTest
@@ -110,7 +110,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         
         expectation = XCTestExpectation()
         
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, leewayInMilliseconds: 0, onlyFireOnce: true, context: nil, queue: DispatchQueue.main) { inTimer, inSuccess in
+        newTimer = RVS_BasicGCDTimer(0.1) { inTimer, inSuccess in
             XCTAssertEqual(inTimer, newTimer, "Timers are not the same")
             print(String(format: "Timer Complete After %f milliseconds (Completion). Timer was \(inSuccess ? "" : "not ")successful.", Date().timeIntervalSince(startTime) * 1000))
             expectation.fulfill()
@@ -158,7 +158,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         expectation = XCTestExpectation()
         timerCount = 0
         
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, leewayInMilliseconds: 0, onlyFireOnce: true, context: nil, queue: DispatchQueue.main) { inTimer, inSuccess in
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, queue: DispatchQueue.main) { inTimer, inSuccess in
             XCTAssertEqual(inTimer, newTimer, "Timers are not the same")
             print(String(format: "Completed Repetition %d at %f milliseconds (Completion). Timer was \(inSuccess ? "" : "not ")successful.", Date().timeIntervalSince(startTime) * 1000))
             if 4 == timerCount {
@@ -174,6 +174,13 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
 
         // Wait until the expectation is fulfilled, with a timeout of a second and a half.
         wait(for: [expectation], timeout: 1.5)
+        
+        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        
+        // Check to see that we can't start a timer, with no delegate, and no completion.
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1)
+        
+        newTimer.resume()
         
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
@@ -467,7 +474,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         }
         
         XCTAssertTrue(testTimer.isRunning)
-        XCTAssertFalse(testTimer.isOnlyFiringOnce)
+        XCTAssertTrue(testTimer.isOnlyFiringOnce)
 
         // Wait until the expectation is fulfilled, with a timeout of 2.5 seconds.
         wait(for: [expectation], timeout: 2.5)

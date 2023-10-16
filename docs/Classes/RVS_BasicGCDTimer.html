@@ -94,6 +94,37 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_BasicGCDTimerAAC0a1_bC10Completiona"></a>
+                    <a name="//apple_ref/swift/Alias/RVS_BasicGCDTimerCompletion" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimerAAC0a1_bC10Completiona">RVS_BasicGCDTimerCompletion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>This is a completion function that can be used, instead of a delegate.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">RVS_BasicGCDTimerCompletion</span> <span class="o">=</span> <span class="p">(</span><span class="kt">RVS_BasicGCDTimer</span><span class="p">,</span> <span class="kt">Bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
               <div class="task-name-container">
                 <a name="/Public%20Instance%20Properties"></a>
                 <a name="//apple_ref/swift/Section/Public Instance Properties" class="dashAnchor"></a>
@@ -104,6 +135,33 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
                 </div>
               </div>
               <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_BasicGCDTimerAAC10completionyAB_SbtcSgvp"></a>
+                    <a name="//apple_ref/swift/Property/completion" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimerAAC10completionyAB_SbtcSgvp">completion</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If we don&rsquo;t have a delegate, we should have a completion.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">completion</span><span class="p">:</span> <span class="kt"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC0a1_bC10Completiona">RVS_BasicGCDTimerCompletion</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -243,11 +301,11 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
             </div>
             <div class="task-group">
               <div class="task-name-container">
-                <a name="/Public%20Calculated%20Properties"></a>
-                <a name="//apple_ref/swift/Section/Public Calculated Properties" class="dashAnchor"></a>
+                <a name="/Public%20Computed%20Properties"></a>
+                <a name="//apple_ref/swift/Section/Public Computed Properties" class="dashAnchor"></a>
                 <div class="section-name-container">
-                  <a class="section-name-link" href="#/Public%20Calculated%20Properties"></a>
-                  <h3 class="section-name"><span>Public Calculated Properties</span>
+                  <a class="section-name-link" href="#/Public%20Computed%20Properties"></a>
+                  <h3 class="section-name"><span>Public Computed Properties</span>
 </h3>
                 </div>
               </div>
@@ -388,9 +446,9 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:17RVS_BasicGCDTimerAAC21timeIntervalInSeconds8delegate06leewayF12Milliseconds12onlyFireOnce7context5queue10isWallTimeABSd_AA0a1_bC8Delegate_pSgSiSbypSgSo012OS_dispatch_O0CSgSbtcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(timeIntervalInSeconds:delegate:leewayInMilliseconds:onlyFireOnce:context:queue:isWallTime:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:17RVS_BasicGCDTimerAAC21timeIntervalInSeconds8delegate06leewayF12Milliseconds12onlyFireOnce7context5queue10isWallTimeABSd_AA0a1_bC8Delegate_pSgSiSbypSgSo012OS_dispatch_O0CSgSbtcfc">init(timeIntervalInSeconds:<wbr>delegate:<wbr>leewayInMilliseconds:<wbr>onlyFireOnce:<wbr>context:<wbr>queue:<wbr>isWallTime:<wbr>)</a>
+                    <a name="/s:17RVS_BasicGCDTimerAAC21timeIntervalInSeconds8delegate06leewayF12Milliseconds12onlyFireOnce7context5queue10isWallTime10completionABSd_AA0a1_bC8Delegate_pSgSiSbypSgSo012OS_dispatch_O0CSgSbyAB_SbtcSgtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(timeIntervalInSeconds:delegate:leewayInMilliseconds:onlyFireOnce:context:queue:isWallTime:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimerAAC21timeIntervalInSeconds8delegate06leewayF12Milliseconds12onlyFireOnce7context5queue10isWallTime10completionABSd_AA0a1_bC8Delegate_pSgSiSbypSgSo012OS_dispatch_O0CSgSbyAB_SbtcSgtcfc">init(timeIntervalInSeconds:<wbr>delegate:<wbr>leewayInMilliseconds:<wbr>onlyFireOnce:<wbr>context:<wbr>queue:<wbr>isWallTime:<wbr>completion:<wbr>)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -406,12 +464,14 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC21timeIntervalInSecondsSdvp">timeIntervalInSeconds</a></span> <span class="nv">inTimeIntervalInSeconds</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">,</span>
-            <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC8delegateAA0a1_bC8Delegate_pSgvp">delegate</a></span> <span class="nv">inDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/RVS_BasicGCDTimerDelegate.html">RVS_BasicGCDTimerDelegate</a></span><span class="p">?,</span>
+            <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC8delegateAA0a1_bC8Delegate_pSgvp">delegate</a></span> <span class="nv">inDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/RVS_BasicGCDTimerDelegate.html">RVS_BasicGCDTimerDelegate</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
             <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC20leewayInMillisecondsSivp">leewayInMilliseconds</a></span> <span class="nv">inLeewayInMilliseconds</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="n">onlyFireOnce</span> <span class="nv">inOnlyFireOnce</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="n">onlyFireOnce</span> <span class="nv">inOnlyFireOnce</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
             <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC7contextypSgvp">context</a></span> <span class="nv">inContext</span><span class="p">:</span> <span class="kt">Any</span><span class="o">!</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
             <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC5queueSo012OS_dispatch_D0CSgvp">queue</a></span> <span class="nv">inQueue</span><span class="p">:</span> <span class="kt">DispatchQueue</span><span class="o">!</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
-            <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC10isWallTimeSbvp">isWallTime</a></span> <span class="nv">inIsWallTime</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">)</span></code></pre>
+            <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC10isWallTimeSbvp">isWallTime</a></span> <span class="nv">inIsWallTime</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC10completionyAB_SbtcSgvp">completion</a></span> <span class="nv">inCompletion</span><span class="p">:</span> <span class="kt"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC0a1_bC10Completiona">RVS_BasicGCDTimerCompletion</a></span><span class="o">!</span> <span class="o">=</span> <span class="kc">nil</span>
+<span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -463,7 +523,7 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
                               </td>
                               <td>
                                 <div>
-                                  <p>If true, then this will only fire one time, as opposed to repeat. Optional. Default is false. If true, then leewayInMilliseconds is ignored.</p>
+                                  <p>If true, then this will only fire one time, as opposed to repeat. Optional. Default is true. If true, then leewayInMilliseconds is ignored.</p>
                                 </div>
                               </td>
                             </tr>
@@ -500,6 +560,78 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
                               <td>
                                 <div>
                                   <p>If true (default is false), then the timer will use the Apple &ldquo;Wall time&rdquo; clock, which is more consistent.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
+&gt; NOTE: <code><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC10completionyAB_SbtcSgvp">completion</a></code> is very simple. It is only called when the timer completes, or is aborted. For finer control, use a delegate.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:17RVS_BasicGCDTimerAAC_10completionABSd_yAB_Sbtctcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(_:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:17RVS_BasicGCDTimerAAC_10completionABSd_yAB_Sbtctcfc">init(_:<wbr>completion:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Super-simple initializer (just the time and a completion).
+Both parameters are required.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">inTimeIntervalInSeconds</span><span class="p">:</span> <span class="kt">TimeInterval</span><span class="p">,</span> <span class="n"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC10completionyAB_SbtcSgvp">completion</a></span> <span class="nv">inCompletion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/RVS_BasicGCDTimer.html#/s:17RVS_BasicGCDTimerAAC0a1_bC10Completiona">RVS_BasicGCDTimerCompletion</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>inTimeIntervalInSeconds</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The time (in seconds) between fires.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.</p>
                                 </div>
                               </td>
                             </tr>
@@ -674,7 +806,7 @@ You then call &ldquo;resume()&rdquo; on that instance.</p>
     </div>
     <section class="footer">
       <p><a class="link" href="https://riftvalleysoftware.com" target="_blank" rel="external noopener">©2019 The Great Rift Valley Software Company</a></p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
     </section>
   </body>
 </html>
