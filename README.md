@@ -51,7 +51,7 @@ Either as a one-shot timer (in this case, 100 milliseconds), or as a repeating t
 
 `timeIntervalInSeconds` is a double-precision floating point number, with the timer period, in seconds (not milliseconds). It is required to be a positive value over zero.
 
-The `delegate` is required. The timer won't work at all without a valid delegate.
+The `delegate` is required (if there is no completion). The timer won't work at all without a valid delegate or completion.
 
 `leewayInMilliseconds` is the recommended "leeway" that Apple suggests that you give timers. This helps conserve energy in mobile devices.
 
@@ -65,7 +65,19 @@ Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
 
 Note that using Wall Time can lead to unexpected behavior. For example, if the app is suspended for some period of time, and is restarted, instead of continuing where it left off, the completion call may be executed immediately.
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
+`completion` is a completion function. Not specifying it means that a delegate should be provided.
+
+> NOTE: As of version 1.6.0, there is now an optional completion function. It can be a tail completion, and the delegate is now no longer required.
+
+### EXAMPLES
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true, completion: nil )
+
+    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true ) { inTimer, inIsSuccess in
+        print("Timer is \(String(describing: inTimer))")
+        print("Timer was".(inIsSuccess ? " " : "not ")."successful.")
+    }
+}
 
 Here, we specify a repeating timer, with no leeway, and no context data:
 
@@ -90,6 +102,12 @@ If repeating, the timer will repeat until it is invalidated or deinitialized:
     newTimer.invalidate()
 
 If a "one-shot," then the timer is invalidated as soon as it completes.
+
+### Completion
+
+As of version 1.6.0, there is now an optional completion function. It can be a tail completion.
+
+The completion function has 2 arguments: The timer instance, and a boolean, which is true, if the timer completed, and false, if not.
 
 ### Delegate
 

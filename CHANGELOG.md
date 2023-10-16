@@ -1,3 +1,8 @@
+**Version 1.6.0** *October 15, 2022*
+- Updated the tools.
+- Added a completion to the default initializer, for a simpler use case.
+- I had to remove Swiftlint (boo hiss). It looks like the tool did not survive the transition to the new Xcode.
+
 **Version 1.5.2** *September 16, 2022*
 - Updated tools. No API changes.
 

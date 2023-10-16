@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.5.0
+ Version: 1.6.0
  */
 
 import XCTest
@@ -84,7 +84,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         var startTime: Date!
         var newTimer: RVS_BasicGCDTimer!
 
-        let expectation = XCTestExpectation()
+        var expectation = XCTestExpectation()
         
         func responseFunc(_: RVS_BasicGCDTimer?) {
             print(String(format: "Timer Complete After %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
@@ -107,6 +107,22 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         wait(for: [expectation], timeout: 1.5)
         
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        
+        expectation = XCTestExpectation()
+        
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, leewayInMilliseconds: 0, onlyFireOnce: true, context: nil, queue: DispatchQueue.main) { inTimer, inSuccess in
+            XCTAssertEqual(inTimer, newTimer, "Timers are not the same")
+            print(String(format: "Timer Complete After %f milliseconds (Completion). Timer was \(inSuccess ? "" : "not ")successful.", Date().timeIntervalSince(startTime) * 1000))
+            expectation.fulfill()
+        }
+        
+        startTime = Date()
+        newTimer.resume()
+
+        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
+        wait(for: [expectation], timeout: 1.5)
+        
+        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
     
     // Extremely basic test repeat five times.
@@ -115,7 +131,7 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         var startTime: Date!
         var newTimer: RVS_BasicGCDTimer!
         
-        let expectation = XCTestExpectation()
+        var expectation = XCTestExpectation()
         expectation.expectedFulfillmentCount = 5
         
         func responseFunc(_: RVS_BasicGCDTimer?) {
@@ -137,6 +153,28 @@ class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
         // Wait until the expectation is fulfilled, with a timeout of a second and a half.
         wait(for: [expectation], timeout: 1.5)
 
+        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        
+        expectation = XCTestExpectation()
+        timerCount = 0
+        
+        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, leewayInMilliseconds: 0, onlyFireOnce: true, context: nil, queue: DispatchQueue.main) { inTimer, inSuccess in
+            XCTAssertEqual(inTimer, newTimer, "Timers are not the same")
+            print(String(format: "Completed Repetition %d at %f milliseconds (Completion). Timer was \(inSuccess ? "" : "not ")successful.", Date().timeIntervalSince(startTime) * 1000))
+            if 4 == timerCount {
+                print("Timer Complete After Five Repetitions!")
+                newTimer.invalidate()
+            }
+            timerCount += 1
+            expectation.fulfill()
+        }
+        
+        startTime = Date()
+        newTimer.resume()
+
+        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
+        wait(for: [expectation], timeout: 1.5)
+        
         XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
     }
     

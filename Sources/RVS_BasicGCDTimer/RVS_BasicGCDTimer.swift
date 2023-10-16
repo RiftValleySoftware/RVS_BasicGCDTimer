@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.5.2
+ Version: 1.6.0
  */
 
 import Foundation
@@ -125,6 +125,15 @@ public extension RVS_BasicGCDTimerDelegate {
  */
 public class RVS_BasicGCDTimer {
     /* ############################################################## */
+    /**
+     This is a completion function that can be used, instead of a delegate.
+     
+     - parameter: The timer instance calling the completion
+     - parameter: The success flag. True, if the timer completed successfully.
+     */
+    public typealias RVS_BasicGCDTimerCompletion = (_: RVS_BasicGCDTimer, _: Bool) -> Void
+
+    /* ############################################################## */
     // MARK: - Private Enums
     /* ############################################################## */
     /// This is used to hold state flags for internal use.
@@ -167,7 +176,10 @@ public class RVS_BasicGCDTimer {
             _timerVar.setEventHandler { [weak self] in                              // This is the timer's base callback. This is called from the system timer.
                 if let self = self {
                     self.delegate?.basicGCDTimerCallback(self)                      // Call the delegate back.
-                    if nil == self.delegate || self._onlyFireOnce {                 // The timer commits seppukku if it's only to fire one time. It also does it if the variable can't unwrap (should never happen).
+                    self.completion?(self, true)
+                    // The timer commits seppukku if it's only to fire one time. It also does it if the variable can't unwrap (should never happen).
+                    if ((nil == self.delegate) && (nil == self.completion)) || self._onlyFireOnce {
+                        self.completion = nil
                         self.invalidate()
                     }
                 }
@@ -231,6 +243,8 @@ public class RVS_BasicGCDTimer {
     /* ############################################################## */
     // MARK: - Public Instance Properties
     /* ############################################################## */
+    /// If we don't have a delegate, we should have a completion.
+    public var completion: RVS_BasicGCDTimerCompletion?
     /// This is the time between fires, in seconds.
     public var timeIntervalInSeconds: TimeInterval = 0
     /// This is how much "leeway" we give the timer, in milliseconds. It is ignored for onlyFireOnce.
@@ -313,6 +327,7 @@ public class RVS_BasicGCDTimer {
         #if DEBUG
             print("timer deinit")
         #endif
+        completion = nil
         _seppukku()
     }
     
@@ -329,6 +344,7 @@ public class RVS_BasicGCDTimer {
      - parameter context: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
      - parameter queue: The DispatchQueue to use for the timer. Optional. If not specified, the default queue is used.
      - parameter isWallTime: If true (default is false), then the timer will use the Apple "Wall time" clock, which is more consistent.
+     - parameter completion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts.
      */
     public init(timeIntervalInSeconds inTimeIntervalInSeconds: TimeInterval,
                 delegate inDelegate: RVS_BasicGCDTimerDelegate?,
@@ -336,7 +352,9 @@ public class RVS_BasicGCDTimer {
                 onlyFireOnce inOnlyFireOnce: Bool = false,
                 context inContext: Any! = nil,
                 queue inQueue: DispatchQueue! = nil,
-                isWallTime inIsWallTime: Bool = false) {
+                isWallTime inIsWallTime: Bool = false,
+                completion inCompletion: RVS_BasicGCDTimerCompletion! = nil
+    ) {
         #if DEBUG
             print("timer init")
             print("\tleewayInMilliseconds: \(inLeewayInMilliseconds)")
@@ -350,6 +368,7 @@ public class RVS_BasicGCDTimer {
         isWallTime = inIsWallTime
         queue = inQueue
         _onlyFireOnce = inOnlyFireOnce
+        completion = inCompletion
     }
     
     /* ############################################################## */
@@ -386,6 +405,7 @@ public class RVS_BasicGCDTimer {
      */
     public func invalidate() {
         _seppukku()
+        completion?(self, false)
     }
 }
 
