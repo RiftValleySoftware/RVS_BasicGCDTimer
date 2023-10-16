@@ -162,6 +162,13 @@ newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, leewayIn
 }
 </code></pre>
 
+<p>Or:</p>
+<pre class="highlight plaintext"><code>newTimer = RVS_BasicGCDTimer(0.1) { inTimer, inIsSuccess in
+    print("Timer is \(String(describing: inTimer))")
+    print("Timer was".(inIsSuccess ? " " : "not ")."successful.")
+}
+</code></pre>
+
 <p>Once the timer is instantiated, you start it by calling <code>resume()</code>:</p>
 <pre class="highlight plaintext"><code>newTimer.resume()
 </code></pre>

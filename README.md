@@ -94,6 +94,13 @@ Or:
         print("Timer was".(inIsSuccess ? " " : "not ")."successful.")
     }
 
+Or:
+
+    newTimer = RVS_BasicGCDTimer(0.1) { inTimer, inIsSuccess in
+        print("Timer is \(String(describing: inTimer))")
+        print("Timer was".(inIsSuccess ? " " : "not ")."successful.")
+    }
+
 Once the timer is instantiated, you start it by calling `resume()`:
 
     newTimer.resume()
