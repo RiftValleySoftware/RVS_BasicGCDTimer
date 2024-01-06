@@ -20,6 +20,12 @@
       location = "group:Package.swift">
    </FileRef>
    <FileRef
+      location = "group:PRIVACY.md">
+   </FileRef>
+   <FileRef
+      location = "group:PrivacyInfo.xcprivacy">
+   </FileRef>
+   <FileRef
       location = "group:RVS_BasicGCDTimer.xcodeproj">
    </FileRef>
 </Workspace>
