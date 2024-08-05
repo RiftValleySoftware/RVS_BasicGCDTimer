@@ -18,7 +18,7 @@ It's incredibly simple. Just a "set and forget," if you are firing just once, or
 
 ## Requirements
 
-It should work fine for osx, tvOS and iOS. It only depends on the Swift Foundation library.
+It should work fine for macOS, TVOS, WatchOS and iOS/iPadOS. It only depends on the Swift Foundation library.
 
 This requires Swift Version 4.0 or above (tested with 4.2).
 
@@ -129,15 +129,15 @@ The delegate has one required method, and four optional ones (with default exten
 
 You can look at the timer object's `context` property for any data/functions/whatever that you want the callback to access.
 
-This one is called at the completion of the timer. It is required:
+This method is called at the completion of the timer. It is required:
 
     func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer)
 
-This one is an optional method that is called when the timer bcomes valid:
+This method is an optional method that is called when the timer bcomes valid:
 
     func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer)
 
-This one is an optional one that is called JUST PRIOR to a timer bcoming invalid:
+This method is an optional one that is called JUST PRIOR to a timer bcoming invalid:
 
     func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
 
@@ -151,7 +151,7 @@ This is an optional method that is called as the timer is resumed (which include
 
 ## DEPENDENCIES
 
-There are no dependencies to use RVS_BasicGCDTimer in your project. In order to test it and run it in the module project, you should use [CocoaPods](https://cocoapods.org) to install [SwiftLint](https://cocoapods.org/pods/SwiftLint), although that is not required. It's [just good practice](https://littlegreenviper.com/series/swiftwater/swiftlint/).
+There are no dependencies to use RVS_BasicGCDTimer in your project.
 
 ## LICENSE
 
