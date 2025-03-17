@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.7.1
+ Version: 1.7.2
  */
 
 import Foundation
