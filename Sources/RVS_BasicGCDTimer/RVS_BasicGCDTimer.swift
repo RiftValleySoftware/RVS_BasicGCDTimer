@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.7.0
+ Version: 1.7.1
  */
 
 import Foundation
@@ -240,13 +240,10 @@ public class RVS_BasicGCDTimer {
                 timer.resume()
             }
             
-            _timerVar = nil
             _state = ._invalid
-        } else {
-            #if DEBUG
-                print("No timer, when one is expected.")
-            #endif
         }
+        
+        _timerVar = nil
     }
     
     /* ############################################################## */
@@ -287,12 +284,16 @@ public class RVS_BasicGCDTimer {
         get { ._running == _state }
         
         set {
-            if ._running == _state && !newValue {   // If we were running, and the new value if false, we pause.
+            if !newValue,                   // If we were running, and the new value is false, we pause.
+               ._running == _state,
+               let timer = _timer {
                 _state = ._suspended
-                _timer?.suspend()
-            } else if newValue {    // If the new value is true, then we resume (which could create a new instance of the timer).
+                timer.suspend()
+            } else if newValue,             // If the new value is true, then we resume (which could create a new instance of the timer).
+                      ._running != _state,  // We need to make sure that we're not already running, as calling `resume()`, while running, will cause a crash.
+                      let timer = _timer {
                 _state = ._running
-                _timer?.resume()
+                timer.resume()
             }
         }
     }

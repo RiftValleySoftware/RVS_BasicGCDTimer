@@ -1,3 +1,6 @@
+**Version 1.7.1** *March 17, 2025*
+- Fixed a crash, that can occur, if `resume()` is called on an already running timer.
+
 **Version 1.7.0** *October 15, 2022*
 - I changed the timer to be a full optional (I don't like implicit optionals).
 - Improved the documentation.
