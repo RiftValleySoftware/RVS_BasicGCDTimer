@@ -1,5 +1,5 @@
 /**
- © Copyright 2019-2020, The Great Rift Valley Software Company
+ © Copyright 2019-2026, The Great Rift Valley Software Company
  
  LICENSE:
  
@@ -20,7 +20,7 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.7.2
+ Version: 1.7.3
  */
 
 import Foundation
@@ -340,15 +340,15 @@ public class RVS_BasicGCDTimer {
     /**
      Default constructor
      
-     - parameter timeIntervalInSeconds: The time (in seconds) between fires.
-     - parameter delegate: Our delegate, for callbacks. Optional. Default is nil.
-     - parameter leewayInMilliseconds: Any leeway. This is optional, and default is zero (0). It is ignored if onlyFireOnce is true.
-     - parameter onlyFireOnce: If true, then this will only fire one time, as opposed to repeat. Optional. Default is true. If true, then leewayInMilliseconds is ignored.
-     - parameter context: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
-     - parameter queue: The DispatchQueue to use for the timer. Optional. If not specified, the default queue is used.
-     - parameter isWallTime: If true (default is false), then the timer will use the Apple "Wall time" clock, which is more consistent.
-     - parameter completion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
-     > NOTE: `completion` is very simple. It is only called when the timer completes, or is aborted. For finer control, use a delegate.
+     - parameter inTimeIntervalInSeconds: The time (in seconds) between fires.
+     - parameter inDelegate: Our delegate, for callbacks. Optional. Default is nil.
+     - parameter inLeewayInMilliseconds: Any leeway. This is optional, and default is zero (0). It is ignored if onlyFireOnce is true.
+     - parameter inOnlyFireOnce: If true, then this will only fire one time, as opposed to repeat. Optional. Default is true. If true, then leewayInMilliseconds is ignored.
+     - parameter inContext: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
+     - parameter inQueue: The DispatchQueue to use for the timer. Optional. If not specified, the default queue is used.
+     - parameter inIsWallTime: If true (default is false), then the timer will use the Apple "Wall time" clock, which is more consistent.
+     - parameter inCompletion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
+     > NOTE: `inCompletion` is very simple. It is only called when the timer completes, or is aborted. For finer control, use a delegate.
      */
     public init(timeIntervalInSeconds inTimeIntervalInSeconds: TimeInterval,
                 delegate inDelegate: RVS_BasicGCDTimerDelegate? = nil,
@@ -380,7 +380,7 @@ public class RVS_BasicGCDTimer {
      Super-simple initializer (just the time and a completion).
      Both parameters are required.
      - parameter inTimeIntervalInSeconds: The time (in seconds) between fires.
-     - parameter completion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
+     - parameter inCompletion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
      */
     public init(_ inTimeIntervalInSeconds: TimeInterval, completion inCompletion: @escaping RVS_BasicGCDTimerCompletion) {
         timeIntervalInSeconds = inTimeIntervalInSeconds

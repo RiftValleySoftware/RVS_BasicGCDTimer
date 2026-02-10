@@ -1,5 +1,7 @@
 # ``RVS_BasicGCDTimer``
 
+![](icon.png)
+
 ## Overview
 
 This is a fundamental tool: A simple [Grand Central Dispatch](https://developer.apple.com/documentation/dispatch) timer that either fires repeatedly, or only once.

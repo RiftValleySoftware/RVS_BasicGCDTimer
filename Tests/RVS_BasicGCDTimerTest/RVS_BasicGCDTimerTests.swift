@@ -1,5 +1,5 @@
 /*
- © Copyright 2019-2020, The Great Rift Valley Software Company
+ © Copyright 2019-2026, The Great Rift Valley Software Company
  
  LICENSE:
  
@@ -19,8 +19,6 @@
  
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
- 
- Version: 1.7.0
  */
 
 import XCTest
