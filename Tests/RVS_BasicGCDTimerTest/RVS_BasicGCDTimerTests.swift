@@ -24,490 +24,525 @@
 import XCTest
 import RVS_BasicGCDTimer
 
-typealias ResponseHandlerContextFunc = (_: RVS_BasicGCDTimer?) -> Void
-typealias TimerCallbacks = (standard: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
-typealias TimerMultiCallbacks = (standard: ResponseHandlerContextFunc, suspend: ResponseHandlerContextFunc, resume: ResponseHandlerContextFunc, first: ResponseHandlerContextFunc, last: ResponseHandlerContextFunc)
+private final class Delegate: RVS_BasicGCDTimerDelegate {
+    var onFire: (RVS_BasicGCDTimer) -> Void = { _ in }
+    var onValid: (RVS_BasicGCDTimer) -> Void = { _ in }
+    var onInvalid: (RVS_BasicGCDTimer) -> Void = { _ in }
+    var onPause: (RVS_BasicGCDTimer) -> Void = { _ in }
+    var onResume: (RVS_BasicGCDTimer) -> Void = { _ in }
+    func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer) { onFire(timer) }
+    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer) { onValid(timer) }
+    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer) { onInvalid(timer) }
+    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer) { onPause(timer) }
+    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer) { onResume(timer) }
+}
 
-class RVS_BasicGCDTimerTests: XCTestCase, RVS_BasicGCDTimerDelegate {
-    func basicGCDTimerCallback(_ inTimer: RVS_BasicGCDTimer) {
-        if let contextfunc = inTimer.context as? TimerCallbacks {
-            contextfunc.standard(inTimer)
-        } else if let contextfunc = inTimer.context as? TimerMultiCallbacks {
-            contextfunc.standard(inTimer)
-        } else if let contextfunc = inTimer.context as? ResponseHandlerContextFunc {
-            contextfunc(inTimer)
-        } else {
-            print("Default basicGCDTimerValid delegate call!")
-        }
+private final class Locked<Value> {
+    private let lock = NSLock()
+    private var storage: Value
+    init(_ value: Value) { storage = value }
+    var value: Value { update { $0 } }
+    @discardableResult func update<T>(_ action: (inout Value) -> T) -> T {
+        lock.lock()
+        defer { lock.unlock() }
+        return action(&storage)
     }
-    
-    func basicGCDTimerValid(_ inTimer: RVS_BasicGCDTimer) {
-        if let contextfunc = inTimer.context as? TimerCallbacks {
-            contextfunc.first(inTimer)
-        } else if let contextfunc = inTimer.context as? TimerMultiCallbacks {
-            contextfunc.first(inTimer)
-        } else {
-            print("Default basicGCDTimerValid delegate call!")
-        }
-    }
+}
 
-    func basicGCDTimerWillBecomeInvalid(_ inTimer: RVS_BasicGCDTimer) {
-        if let contextfunc = inTimer.context as? TimerCallbacks {
-            contextfunc.last(inTimer)
-        } else if let contextfunc = inTimer.context as? TimerMultiCallbacks {
-            contextfunc.last(inTimer)
-        } else {
-            print("Default basicGCDTimerValid delegate call!")
-        }
-    }
+private final class Weak<Value: AnyObject> {
+    weak var value: Value?
+    init(_ value: Value?) { self.value = value }
+}
 
-    func basicGCDTimerSuspend(_ inTimer: RVS_BasicGCDTimer) {
-        if let contextfunc = inTimer.context as? TimerMultiCallbacks {
-            contextfunc.suspend(inTimer)
-        } else {
-            print("Default basicGCDTimerSuspend delegate call!")
-        }
+final class RVS_BasicGCDTimerTests: XCTestCase {
+    private func waitUntilInvalid(_ timer: RVS_BasicGCDTimer) {
+        let invalid = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in timer.isInvalid }, object: nil)
+        wait(for: [invalid], timeout: 3)
     }
 
-    func basicGCDTimerResume(_ inTimer: RVS_BasicGCDTimer) {
-        if let contextfunc = inTimer.context as? TimerMultiCallbacks {
-            contextfunc.resume(inTimer)
-        } else {
-            print("Default basicGCDTimerResume delegate call!")
-        }
-    }
-
-    // Extremely basic one-shot call.
     func testGCDBasicOneShot() {
-        var startTime: Date!
-        var newTimer: RVS_BasicGCDTimer!
-
-        var expectation = XCTestExpectation()
-        
-        func responseFunc(_: RVS_BasicGCDTimer?) {
-            print(String(format: "Timer Complete After %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
+        let fired = expectation(description: "one event")
+        var results: [Bool] = []
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, queue: .main) { timer, success in
+            results.append(success)
+            XCTAssertTrue(success)
+            XCTAssertTrue(timer.isOnlyFiringOnce)
+            fired.fulfill()
         }
-        
-        // 100 milliseconds on the main queue.
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: true, context: responseFunc, queue: DispatchQueue.main)
-        let sameTimer = newTimer
-        let otherTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: true, context: responseFunc, queue: DispatchQueue.main)
-        
-        XCTAssertNotEqual(newTimer, otherTimer)
-        XCTAssertNotEqual(sameTimer, otherTimer)
-        XCTAssertEqual(sameTimer, newTimer)
-
-        startTime = Date()
-        newTimer.resume()
-        
-        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
-        wait(for: [expectation], timeout: 1.5)
-        
-        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
-        
-        expectation = XCTestExpectation()
-        
-        newTimer = RVS_BasicGCDTimer(0.1) { inTimer, inSuccess in
-            XCTAssertEqual(inTimer, newTimer, "Timers are not the same")
-            print(String(format: "Timer Complete After %f milliseconds (Completion). Timer was \(inSuccess ? "" : "not ")successful.", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
-        }
-        
-        startTime = Date()
-        newTimer.resume()
-
-        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
-        wait(for: [expectation], timeout: 1.5)
-        
-        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        XCTAssertTrue(timer.isInvalid)
+        XCTAssertFalse(timer.isRunning)
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+        XCTAssertTrue(timer.isInvalid)
+        XCTAssertFalse(timer.isOnlyFiringOnce)
+        XCTAssertNil(timer.completion)
+        timer.invalidate()
+        XCTAssertEqual(results, [true])
     }
-    
-    // Extremely basic test repeat five times.
+
+    func testSimpleInitializerUsesCompletion() {
+        let fired = expectation(description: "simple initializer")
+        let results = Locked<[Bool]>([])
+        let timer = RVS_BasicGCDTimer(0.01) { _, success in
+            results.update { $0.append(success) }
+            fired.fulfill()
+        }
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+        waitUntilInvalid(timer)
+        XCTAssertEqual(results.value, [true])
+    }
+
     func testGCDBasicRepeat() {
-        var timerCount: Int = 0
-        var startTime: Date!
-        var newTimer: RVS_BasicGCDTimer!
-        
-        var expectation = XCTestExpectation()
-        expectation.expectedFulfillmentCount = 5
-        
-        func responseFunc(_: RVS_BasicGCDTimer?) {
-            print(String(format: "Completed Repetition %d at %f milliseconds.", timerCount + 1, (Date().timeIntervalSince(startTime) * 1000)))
-            if 4 == timerCount {
-                print("Timer Complete After Five Repetitions!")
-                newTimer.invalidate()
+        let finished = expectation(description: "five events and cancellation")
+        var results: [Bool] = []
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, onlyFireOnce: false, queue: .main) { timer, fired in
+            results.append(fired)
+            if fired && results.count == 5 { timer.invalidate() }
+            if !fired {
+                // Previously this reentered the same cancellation closure indefinitely.
+                timer.invalidate()
+                finished.fulfill()
             }
-            expectation.fulfill()
-            timerCount += 1
         }
-        
-        // Every 100 milliseconds on the global queue.
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, leewayInMilliseconds: 0, onlyFireOnce: false, context: responseFunc, queue: DispatchQueue.global())
-        
-        startTime = Date()
-        newTimer.resume()
-        
-        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
-        wait(for: [expectation], timeout: 1.5)
-
-        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
-        
-        expectation = XCTestExpectation()
-        timerCount = 0
-        
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: nil, queue: DispatchQueue.main) { inTimer, inSuccess in
-            XCTAssertEqual(inTimer, newTimer, "Timers are not the same")
-            print(String(format: "Completed Repetition %d at %f milliseconds (Completion). Timer was \(inSuccess ? "" : "not ")successful.", Date().timeIntervalSince(startTime) * 1000))
-            if 4 == timerCount {
-                print("Timer Complete After Five Repetitions!")
-                newTimer.invalidate()
-            }
-            timerCount += 1
-            expectation.fulfill()
-        }
-        
-        startTime = Date()
-        newTimer.resume()
-
-        // Wait until the expectation is fulfilled, with a timeout of a second and a half.
-        wait(for: [expectation], timeout: 1.5)
-        
-        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
-        
-        // Check to see that we can't start a timer, with no delegate, and no completion.
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1)
-        
-        newTimer.resume()
-        
-        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        timer.resume()
+        wait(for: [finished], timeout: 3)
+        XCTAssertEqual(results, [true, true, true, true, true, false])
+        XCTAssertTrue(timer.isInvalid)
+        XCTAssertNil(timer.completion)
     }
-    
-    // Repeat one hundred milliseconds fifty times, and give a leeway of one hundred milliseconds.
+
     func testGCDBasicRepeatWithLeeway() {
-        #if TESTING
-            let leewayInMilliseconds = 30    // If you make this less than fifteen, you'll probably get intermittent failures, because of the overhead.
-        #else
-            let leewayInMilliseconds = 100   // This is for the GitHub Action. Things move a LOT slower, overe there.
-        #endif
-        
-        let timerTime: Double = 0.1
-        let repetitionCount = 50
-        
-        var offset: Double = 0.0    // This is the overhead incurred before the first callback. We add this to the leeway.
-        
-        var timerCount: Int = 0
-        var startTime: Date!
-        var newTimer: RVS_BasicGCDTimer!
-        
-        let expectation = XCTestExpectation()
-        expectation.expectedFulfillmentCount = 50
-        
-        func responseFunc(_: RVS_BasicGCDTimer?) {
-            timerCount += 1
-            let timeInMilliseconds = Date().timeIntervalSince(startTime) * 1000.0
-            if 0 == offset {
-                offset = timeInMilliseconds - (timerTime * 1000)
-            }
-            let compareTime: Double = (Double(timerCount) * timerTime * 1000.0) + offset + Double(leewayInMilliseconds)
-            XCTAssertLessThan(timeInMilliseconds, compareTime, "We are outside the expected window")
-            print(String(format: "Completed Repetition %d at %f milliseconds.", timerCount + 1, timeInMilliseconds))
-            if repetitionCount == timerCount {
-                print("Timer Complete After Fifty Repetitions!")
-                newTimer.invalidate()
-            }
-            expectation.fulfill()
+        let finished = expectation(description: "repeating timer with leeway")
+        var count = 0
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, leewayInMilliseconds: 5, onlyFireOnce: false, queue: .main) { timer, fired in
+            guard fired else { return }
+            count += 1
+            if count == 3 { timer.invalidate(); finished.fulfill() }
         }
-        
-        // Every 100 milliseconds on the global queue, and give a leeway of 10ms.
-        newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: timerTime, delegate: self, leewayInMilliseconds: leewayInMilliseconds, onlyFireOnce: false, context: responseFunc, queue: DispatchQueue.global())
-        
-        startTime = Date()
-        newTimer.resume()
-        
-        // Wait until the expectation is fulfilled, with a timeout designed to give us very little wiggle room.
-        let timeoutInSeconds = (Double(repetitionCount) * timerTime) + (Double(leewayInMilliseconds) / 1000.0)
-        wait(for: [expectation], timeout: timeoutInSeconds)
-        
-        XCTAssertTrue(newTimer.isInvalid)   // We should be invalid.
+        timer.resume()
+        wait(for: [finished], timeout: 3)
+        XCTAssertEqual(count, 3)
+        XCTAssertTrue(timer.isInvalid)
     }
 
-    // Test multiple queues (100 one-shot timers).
     func testThreading() {
-        func runTimers(_ inTimerArray: [RVS_BasicGCDTimer]) {
-            func getTimerIndex(_ inTimer: RVS_BasicGCDTimer) -> Int! {
-                var ret: Int!
-                
-                for tuple in inTimerArray.enumerated() where tuple.element === inTimer {
-                    ret = tuple.offset
+        let fired = expectation(description: "each queue and clock")
+        fired.expectedFulfillmentCount = 6
+        let queues: [DispatchQueue] = [.main, .global(), DispatchQueue(label: "timer.test.serial")]
+        let timers = queues.flatMap { queue in
+            [false, true].map { wall in
+                RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, queue: queue, isWallTime: wall) { _, success in
+                    XCTAssertTrue(success)
+                    fired.fulfill()
                 }
-                return ret
-            }
-            
-            let expectation = XCTestExpectation()
-            expectation.expectedFulfillmentCount = inTimerArray.count
-            var startTime: Date!
-            
-            func initFunc(_ inTimer: RVS_BasicGCDTimer?) {
-                var indexString = ""
-                if let timer = inTimer {
-                    if let index = getTimerIndex(timer) {
-                        indexString = " " + String(index + 1)
-                    }
-                }
-                print(String(format: "Initializing timer\(indexString) at %f milliseconds", (Date().timeIntervalSince(startTime) * 1000)))
-            }
-            
-            func invalidateFunc(_ inTimer: RVS_BasicGCDTimer?) {
-                var indexString = ""
-                if let timer = inTimer {
-                    if let index = getTimerIndex(timer) {
-                        indexString = " " + String(index + 1)
-                    }
-                }
-                print(String(format: "Invalidating timer\(indexString) at %f milliseconds", (Date().timeIntervalSince(startTime) * 1000)))
-                expectation.fulfill()
-            }
-            
-            func responseFunc(_ inTimer: RVS_BasicGCDTimer?) {
-                XCTAssertNotNil(inTimer, "The timer should not be nil!")
-                var wallString = ""
-                var indexString = ""
-                if let timer = inTimer {
-                    if let index = getTimerIndex(timer) {
-                        indexString = " " + String(index + 1)
-                    }
-                    
-                    wallString = timer.isWallTime ? " (Wall Time)." : "."
-                }
-                print(String(format: "Completed timer\(indexString) at %f milliseconds\(wallString)", (Date().timeIntervalSince(startTime) * 1000)))
-            }
-            
-            startTime = Date()
-            inTimerArray.forEach {
-                $0.context = (standard: responseFunc, first: initFunc, last: invalidateFunc)
-                $0.resume()
-            }
-            
-            // Wait until the expectation is fulfilled, with a timeout of half a second.
-            wait(for: [expectation], timeout: 0.5)
-            
-            for timerTuple in inTimerArray.enumerated() {
-                XCTAssertTrue(timerTuple.element.isInvalid, "Timer \(timerTuple.offset + 1) should be invalid!")   // We should be invalid.
             }
         }
-
-        var timers: [RVS_BasicGCDTimer] = []
-        
-        for _ in 0..<10 {
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.main))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.main, isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .default)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .default), isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .background)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .background), isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .userInteractive)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .userInteractive), isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .userInitiated)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: self, onlyFireOnce: true, queue: DispatchQueue.global(qos: .userInitiated), isWallTime: true))
-        }
-
-        runTimers(timers)
+        timers.forEach { $0.resume() }
+        wait(for: [fired], timeout: 3)
+        timers.forEach { waitUntilInvalid($0) }
     }
-    
-    // Test multiple queues (100 repeating timers). This also tests the two optional callbacks.
+
     func testRepeatThreading() {
-        func runTimers(_ inTimerArray: [RVS_BasicGCDTimer]) {
-            let expectation = XCTestExpectation()
-            var fulfillmentCount = 0
-            
-            expectation.expectedFulfillmentCount = inTimerArray.count
-            print("Waiting for fulfillment of \(inTimerArray.count * 5) iterations.")
-            var startTime: Date!
-            
-            var trackTimers = [Int](repeatElement(-100, count: inTimerArray.count))
-            
-            func getTimerIndex(_ inTimer: RVS_BasicGCDTimer) -> Int! {
-                var ret: Int!
-                
-                for tuple in inTimerArray.enumerated() where tuple.element === inTimer {
-                    ret = tuple.offset
-                }
-                return ret
-            }
-            
-            func initFunc(_ inTimer: RVS_BasicGCDTimer?) {
-                if let timer = inTimer {
-                    var indexString = ""
-                    if let index = getTimerIndex(timer) {
-                        trackTimers[index] = 0
-                        indexString = " " + String(index + 1)
-                    }
-                    print(String(format: "Initializing timer\(indexString) at %f milliseconds", (Date().timeIntervalSince(startTime) * 1000)))
-                } else {
-                    XCTFail("This should never happen!")
-                }
-            }
-            
-            func invalidateFunc(_ inTimer: RVS_BasicGCDTimer?) {
-                if let timer = inTimer {
-                    var indexString = ""
-                    if let index = getTimerIndex(timer) {
-                        indexString = " " + String(index + 1)
-                    }
-                    print(String(format: "Invalidating timer\(indexString) at %f milliseconds", (Date().timeIntervalSince(startTime) * 1000)))
-                    fulfillmentCount += 1
-                    print("Fullfillment \(fulfillmentCount).")
-                    expectation.fulfill()
-                } else {
-                    XCTFail("This should never happen!")
-                }
-            }
-            
-            func responseFunc(_ inTimer: RVS_BasicGCDTimer?) {
-                if let timer = inTimer {
-                    var wallString = ""
-                    var indexString = ""
-                    var callbackIndexString = ""
-                    var destroy = false
-
-                    if let index = getTimerIndex(timer) {
-                        indexString = " " + String(index + 1)
-                        trackTimers[index] += 1
-                        callbackIndexString = String(trackTimers[index])
-                        if 5 == trackTimers[index] {
-                            print("This will be the final call for timer\(indexString).")
-                            destroy = true
-                        }
-                    }
-                    
-                    wallString = timer.isWallTime ? " (Wall Time)." : "."
-                    
-                    print(String(format: "Called timer\(indexString) callback (\(callbackIndexString)) at %f milliseconds\(wallString)", (Date().timeIntervalSince(startTime) * 1000)))
-                    
-                    if destroy {
-                        inTimer?.invalidate()
-                    }
-                } else {
-                    XCTFail("This should never happen!")
-                }
-            }
-
-            startTime = Date()
-            inTimerArray.forEach {
-                $0.context = (standard: responseFunc, first: initFunc, last: invalidateFunc)
-                $0.resume()
-            }
-            
-            // Wait until the expectation is fulfilled, with a timeout of two seconds.
-            wait(for: [expectation], timeout: 2.0)
-            
-            for timerTuple in inTimerArray.enumerated() {
-                XCTAssertTrue(timerTuple.element.isInvalid, "Timer \(timerTuple.offset + 1) should be invalid!")   // We should be invalid.
-            }
+        let done = expectation(description: "concurrent control operations")
+        let eventQueue = DispatchQueue(label: "timer.test.events")
+        let counts = Locked((events: 0, cancellations: 0))
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.001, onlyFireOnce: false, queue: eventQueue) { _, fired in
+            counts.update { if fired { $0.events += 1 } else { $0.cancellations += 1 } }
         }
-        
-        var timers: [RVS_BasicGCDTimer] = []
-        
-        for _ in 0..<10 {
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.main))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.main, isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .default)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .default), isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .background)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .background), isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .userInteractive)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .userInteractive), isWallTime: true))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .userInitiated)))
-            timers.append(RVS_BasicGCDTimer(timeIntervalInSeconds: 0.05, delegate: self, queue: DispatchQueue.global(qos: .userInitiated), isWallTime: true))
+        timer.resume()
+        DispatchQueue.global().async {
+            DispatchQueue.concurrentPerform(iterations: 1000) { index in
+                switch index % 5 {
+                case 0: timer.resume()
+                case 1: timer.pause()
+                case 2: timer.isRunning = true
+                case 3: timer.context = index
+                default: _ = (timer.isRunning, timer.isInvalid, timer.context, timer.completion)
+                }
+            }
+            DispatchQueue.concurrentPerform(iterations: 20) { _ in timer.invalidate() }
+            eventQueue.sync {}
+            done.fulfill()
         }
-        
-        runTimers(timers)
+        wait(for: [done], timeout: 5)
+        XCTAssertTrue(timer.isInvalid)
+        XCTAssertEqual(counts.value.cancellations, 1)
+        XCTAssertNil(timer.context)
     }
-    
-    // This test just makes sure that all the callbacks happen. Since the timer is so rough, the time measurement is best viewed manually.
-    func testSuspendResume () {
-        var startTime: Date!
-        let expectation: XCTestExpectation!
 
-        func standardCallback(_ inTimer: RVS_BasicGCDTimer?) {
-            print(String(format: "Standard Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
-        }
-        
-        func suspendCallback(_ inTimer: RVS_BasicGCDTimer?) {
-            print(String(format: "Suspend Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
-        }
-        
-        func resumeCallback(_ inTimer: RVS_BasicGCDTimer?) {
-            print(String(format: "Resume Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
-       }
-        
-        func initCallback(_ inTimer: RVS_BasicGCDTimer?) {
-            print(String(format: "Init Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
-        }
-        
-        func deinitCallback(_ inTimer: RVS_BasicGCDTimer?) {
-            print(String(format: "DeInit Callback at %f milliseconds", Date().timeIntervalSince(startTime) * 1000))
-            expectation.fulfill()
-        }
-
-        expectation = XCTestExpectation()
-        expectation.expectedFulfillmentCount = 5
-        startTime = Date()
-        let callbacks = TimerMultiCallbacks(standard: standardCallback, suspend: suspendCallback, resume: resumeCallback, first: initCallback, last: deinitCallback)
-        let testTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1, delegate: self, context: callbacks)
-        
-        testTimer.resume()
-        
-        // We play around with different threads, just for the hell of it. If we're skating on thin ice; might as well dance.
-        DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.25) {
-            testTimer.pause()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-                testTimer.resume()
-            }
-        }
-        
-        XCTAssertTrue(testTimer.isRunning)
-        XCTAssertTrue(testTimer.isOnlyFiringOnce)
-
-        // Wait until the expectation is fulfilled, with a timeout of 2.5 seconds.
-        wait(for: [expectation], timeout: 2.5)
-        
-        testTimer.isRunning = false
-
-        // This tests the _sepukku() routine.
-        testTimer.delegate = nil
-        
-        XCTAssertTrue(testTimer.isInvalid)
-    }
-    
-    // We just test the defaults, so we satisfy Code Coverage.
-    func testProtocolDefaults () {
-        let expectation: XCTestExpectation!
-        
-        expectation = XCTestExpectation()
-        expectation.expectedFulfillmentCount = 1
-
-        class EmptyDelegateClass: RVS_BasicGCDTimerDelegate {
-            func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer) {
+    func testSuspendResume() {
+        let finished = expectation(description: "resumes after pause")
+        let delegate = Delegate()
+        var events = 0
+        var pauses = 0
+        var resumes = 0
+        delegate.onPause = { timer in pauses += 1; timer.pause() }
+        delegate.onResume = { timer in resumes += 1; timer.resume() }
+        delegate.onFire = { timer in
+            events += 1
+            if events == 1 {
                 timer.pause()
-                timer.resume()
-                if let expectation = timer.context as? XCTestExpectation {
-                    expectation.fulfill()
+                timer.isRunning = false
+                XCTAssertFalse(timer.isInvalid)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.03) {
+                    XCTAssertEqual(events, 1)
+                    timer.resume()
+                    timer.isRunning = true
                 }
+            } else {
+                timer.invalidate()
+                finished.fulfill()
             }
         }
-        
-        let emptyCallbacks = EmptyDelegateClass()
-        
-        let testTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: emptyCallbacks, context: expectation)
-        
-        testTimer.isRunning = true
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, onlyFireOnce: false, queue: .main)
+        timer.resume()
+        timer.resume()
+        wait(for: [finished], timeout: 3)
+        XCTAssertEqual(events, 2)
+        XCTAssertEqual(pauses, 1)
+        XCTAssertEqual(resumes, 2)
+    }
 
-        wait(for: [expectation], timeout: 0.25)
+    func testProtocolDefaults() {
+        final class DefaultDelegate: RVS_BasicGCDTimerDelegate {
+            let fired: XCTestExpectation
+            init(_ fired: XCTestExpectation) { self.fired = fired }
+            func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer) { fired.fulfill() }
+        }
+        let fired = expectation(description: "default lifecycle implementations")
+        let delegate = DefaultDelegate(fired)
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, queue: .main)
+        timer.resume()
+        timer.pause()
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+        XCTAssertTrue(timer.isInvalid)
+    }
+
+    func testLifecycleOrderAndContext() {
+        let finished = expectation(description: "ordered notifications")
+        let delegate = Delegate()
+        var events: [String] = []
+        delegate.onValid = { timer in
+            XCTAssertTrue(timer.isRunning)
+            events.append("valid")
+        }
+        delegate.onResume = { _ in events.append("resume") }
+        delegate.onFire = { _ in events.append("event") }
+        delegate.onInvalid = { timer in
+            XCTAssertTrue(timer.isInvalid)
+            XCTAssertEqual(timer.context as? String, "context")
+            events.append("invalid")
+            finished.fulfill()
+        }
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, context: "context", queue: .main) { _, fired in
+            XCTAssertTrue(fired)
+            events.append("completion")
+        }
+        timer.resume()
+        wait(for: [finished], timeout: 3)
+        XCTAssertEqual(events, ["valid", "resume", "event", "completion", "invalid"])
+        XCTAssertNil(timer.context)
+        XCTAssertNil(timer.delegate)
+    }
+
+    func testInvalidateBeforeStartIsPermanentAndIdempotent() {
+        var results: [Bool] = []
+        let timer = RVS_BasicGCDTimer(10) { timer, fired in
+            results.append(fired)
+            XCTAssertTrue(timer.isInvalid)
+            timer.invalidate()
+            timer.resume()
+        }
+        timer.context = "context"
+        timer.invalidate()
+        timer.invalidate()
+        timer.isRunning = true
+        XCTAssertEqual(results, [false])
+        XCTAssertFalse(timer.isRunning)
+        XCTAssertNil(timer.completion)
+        XCTAssertNil(timer.context)
+        XCTAssertEqual(timer.timeIntervalInSeconds, 0)
+    }
+
+    func testOneShotCompletionCanInvalidateWithoutFailureCallback() {
+        let fired = expectation(description: "one-shot reentrant invalidation")
+        var results: [Bool] = []
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, queue: .main) { timer, success in
+            results.append(success)
+            timer.invalidate()
+            fired.fulfill()
+        }
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+        XCTAssertEqual(results, [true])
+        XCTAssertTrue(timer.isInvalid)
+    }
+
+    func testDelegateCanCancelBeforeCompletionDelivery() {
+        let cancelled = expectation(description: "cancel from delegate")
+        let delegate = Delegate()
+        var results: [Bool] = []
+        delegate.onFire = { timer in timer.invalidate(); cancelled.fulfill() }
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, onlyFireOnce: false, queue: .main) { _, fired in results.append(fired) }
+        timer.resume()
+        wait(for: [cancelled], timeout: 3)
+        XCTAssertEqual(results, [false])
+    }
+
+    func testValidCallbackCanInvalidateNewSuspendedSource() {
+        let delegate = Delegate()
+        var invalidations = 0
+        var resumes = 0
+        delegate.onValid = { $0.invalidate() }
+        delegate.onInvalid = { timer in invalidations += 1; timer.invalidate() }
+        delegate.onResume = { _ in resumes += 1 }
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1, delegate: delegate)
+        timer.resume()
+        XCTAssertTrue(timer.isInvalid)
+        XCTAssertEqual(invalidations, 1)
+        XCTAssertEqual(resumes, 0)
+    }
+
+    func testValidCallbackCanResumeWithoutOverResuming() {
+        let fired = expectation(description: "resume from validity callback")
+        let delegate = Delegate()
+        delegate.onValid = { $0.resume() }
+        delegate.onFire = { _ in fired.fulfill() }
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, queue: .main)
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+    }
+
+    func testResumeCallbackCanPauseBeforeActivation() {
+        let delegate = Delegate()
+        delegate.onResume = { $0.pause() }
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1, delegate: delegate)
+        timer.resume()
+        XCTAssertFalse(timer.isRunning)
+        XCTAssertFalse(timer.isInvalid)
+        timer.invalidate()
+        XCTAssertTrue(timer.isInvalid)
+    }
+
+    func testRemovingDelegatePreservesCompletion() {
+        let fired = expectation(description: "completion remains")
+        let delegate = Delegate()
+        delegate.onFire = { _ in XCTFail("Removed delegate was called") }
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, queue: .main) { _, success in
+            XCTAssertTrue(success)
+            fired.fulfill()
+        }
+        timer.delegate = nil
+        XCTAssertNil(timer.delegate)
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+    }
+
+    func testRemovingDelegateFromStartedTimerPreservesCompletion() {
+        let fired = expectation(description: "started timer keeps its completion")
+        let delegate = Delegate()
+        delegate.onFire = { _ in XCTFail("Removed delegate was called") }
+        var results: [Bool] = []
+        // The main queue cannot deliver the event until the test begins waiting.
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, queue: .main) { _, success in
+            results.append(success)
+            fired.fulfill()
+        }
+        timer.resume()
+        timer.delegate = nil
+        XCTAssertNil(timer.delegate)
+        XCTAssertTrue(timer.isRunning)
+        XCTAssertFalse(timer.isInvalid)
+        XCTAssertNotNil(timer.completion)
+        wait(for: [fired], timeout: 3)
+        XCTAssertEqual(results, [true])
+        XCTAssertTrue(timer.isInvalid)
+    }
+
+    func testRemovingLastDelegateCancelsStartedTimer() {
+        for paused in [false, true] {
+            let delegate = Delegate()
+            delegate.onFire = { _ in XCTFail("Removed delegate was called") }
+            let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1, delegate: delegate,
+                                         onlyFireOnce: false, context: "context", queue: .main)
+            timer.resume()
+            if paused { timer.pause() }
+            XCTAssertFalse(timer.isInvalid)
+            XCTAssertEqual(timer.isRunning, !paused)
+
+            timer.delegate = nil
+            XCTAssertTrue(timer.isInvalid)
+            XCTAssertFalse(timer.isRunning)
+            XCTAssertNil(timer.delegate)
+            XCTAssertNil(timer.context)
+            XCTAssertEqual(timer.timeIntervalInSeconds, 0)
+
+            // Removing the last recipient permanently invalidates the timer.
+            timer.delegate = delegate
+            timer.resume()
+            XCTAssertNil(timer.delegate)
+            XCTAssertTrue(timer.isInvalid)
+            XCTAssertFalse(timer.isRunning)
+        }
+    }
+
+    func testMissingRecipientsCannotStartViaIsRunning() {
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1)
+        timer.isRunning = true
+        XCTAssertTrue(timer.isInvalid)
+        XCTAssertFalse(timer.isRunning)
+        timer.completion = { _, _ in }
+        timer.isRunning = true
+        XCTAssertTrue(timer.isRunning)
+        timer.invalidate()
+    }
+
+    func testRemovingLastRecipientCancelsPausedSource() {
+        let timer = RVS_BasicGCDTimer(1) { _, _ in XCTFail("Removed completion must not run") }
+        timer.resume()
+        timer.pause()
+        timer.completion = nil
+        XCTAssertTrue(timer.isInvalid)
+    }
+
+    func testWeakDelegateDisappearanceInvalidatesAtNextEvent() {
+        var delegate: Delegate? = Delegate()
+        let weakDelegate = Weak(delegate)
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, delegate: delegate, onlyFireOnce: false, queue: .main)
+        timer.resume()
+        delegate = nil
+        XCTAssertNil(weakDelegate.value)
+        waitUntilInvalid(timer)
+    }
+
+    func testInvalidIntervalsCancelWithoutScheduling() {
+        let intervals: [Double] = [0, -1, .nan, .infinity, -.infinity, .greatestFiniteMagnitude, Double(Int64.max) / 1_000_000_000]
+        for interval in intervals {
+            var results: [Bool] = []
+            let timer = RVS_BasicGCDTimer(interval) { _, fired in results.append(fired) }
+            timer.resume()
+            XCTAssertTrue(timer.isInvalid)
+            XCTAssertFalse(timer.isRunning)
+            XCTAssertEqual(results, [false])
+        }
+    }
+
+    func testInvalidLeewayCancelsWithoutScheduling() {
+        let invalidLeeways = Int64(Int.max) > Int64.max / 1_000_000 ? [-1, Int.max] : [-1]
+        for once in [false, true] {
+            for leeway in invalidLeeways {
+                var results: [Bool] = []
+                let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1, leewayInMilliseconds: leeway, onlyFireOnce: once) { _, fired in results.append(fired) }
+                timer.resume()
+                XCTAssertTrue(timer.isInvalid)
+                XCTAssertEqual(results, [false])
+            }
+        }
+    }
+
+    func testPositiveSubnanosecondIntervalIsSafe() {
+        let fired = expectation(description: "minimum effective interval")
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.0000000001, queue: .main) { _, success in
+            XCTAssertTrue(success)
+            fired.fulfill()
+        }
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+    }
+
+    func testLongIntervalsAndLeewayWorkOnEveryArchitecture() {
+        for once in [false, true] {
+            for wall in [false, true] {
+                let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 60, leewayInMilliseconds: 10_000, onlyFireOnce: once, isWallTime: wall) { _, _ in }
+                timer.resume()
+                XCTAssertTrue(timer.isRunning)
+                timer.invalidate()
+            }
+        }
+    }
+
+    func testConfigurationIsCapturedAtFirstResume() {
+        let firstQueue = DispatchQueue(label: "timer.test.configuration")
+        let timer = RVS_BasicGCDTimer(1) { _, _ in }
+        timer.timeIntervalInSeconds = 5
+        timer.leewayInMilliseconds = 10
+        timer.queue = firstQueue
+        timer.isWallTime = true
+        timer.resume()
+        timer.timeIntervalInSeconds = 0
+        timer.leewayInMilliseconds = -1
+        timer.queue = .main
+        timer.isWallTime = false
+        XCTAssertEqual(timer.timeIntervalInSeconds, 5)
+        XCTAssertEqual(timer.leewayInMilliseconds, 10)
+        XCTAssertTrue(timer.queue === firstQueue)
+        XCTAssertTrue(timer.isWallTime)
+        timer.invalidate()
+    }
+
+    func testEventUsesRequestedQueue() {
+        let key = DispatchSpecificKey<String>()
+        let queue = DispatchQueue(label: "timer.test.delivery")
+        queue.setSpecific(key: key, value: "timer queue")
+        let fired = expectation(description: "queue identity")
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, queue: queue) { _, _ in
+            XCTAssertEqual(DispatchQueue.getSpecific(key: key), "timer queue")
+            fired.fulfill()
+        }
+        timer.resume()
+        wait(for: [fired], timeout: 3)
+        queue.sync {}
+    }
+
+    func testCallbacksDoNotHoldStateLock() {
+        let finished = expectation(description: "cross-thread access from callback")
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.01, queue: DispatchQueue(label: "timer.test.unlocked")) { timer, fired in
+            guard fired else { return }
+            let readFinished = DispatchSemaphore(value: 0)
+            DispatchQueue.global().async {
+                _ = timer.isRunning
+                readFinished.signal()
+            }
+            XCTAssertEqual(readFinished.wait(timeout: .now() + 2), .success)
+            timer.invalidate()
+            finished.fulfill()
+        }
+        timer.resume()
+        wait(for: [finished], timeout: 3)
+    }
+
+    func testInvalidationReleasesCapturedObjects() {
+        final class Token {}
+        var token: Token? = Token()
+        let weakToken = Weak(token)
+        let timer = RVS_BasicGCDTimer(10) { [token] _, _ in _ = token }
+        token = nil
+        XCTAssertNotNil(weakToken.value)
+        timer.invalidate()
+        XCTAssertNil(weakToken.value)
+    }
+
+    func testDeinitializingPausedTimerDoesNotNotifyDelegate() {
+        let delegate = Delegate()
+        delegate.onInvalid = { _ in XCTFail("Deinitialization must not call client code") }
+        var timer: RVS_BasicGCDTimer? = RVS_BasicGCDTimer(timeIntervalInSeconds: 10, delegate: delegate)
+        let weakTimer = Weak(timer)
+        timer?.resume()
+        timer?.pause()
+        timer = nil
+        XCTAssertNil(weakTimer.value)
+    }
+
+    func testEqualityUsesObjectIdentity() {
+        let timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 1)
+        let alias = timer
+        let other = RVS_BasicGCDTimer(timeIntervalInSeconds: 1)
+        XCTAssertEqual(timer, alias)
+        XCTAssertNotEqual(timer, other)
+        timer.invalidate()
+        XCTAssertEqual(timer, alias)
+        XCTAssertNotEqual(timer, other)
     }
 }

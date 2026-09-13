@@ -20,336 +20,281 @@
  
  The Great Rift Valley Software Company: https://riftvalleysoftware.com
  
- Version: 1.7.3
+ Version: 1.8.0
  */
 
 import Foundation
 
-/* ################################################################## */
-/**
- This is the basic callback protocol for the general-purpose GCD timer class. It has one simple required method, and two optional methods.
- */
+/// Receives timer events and optional lifecycle notifications.
+///
+/// Keep a strong reference to the delegate; the timer stores it weakly. Event callbacks
+/// run on the timer's configured queue. Lifecycle notifications run on the thread that
+/// performs the transition, which may differ from that queue. See ``RVS_BasicGCDTimer``
+/// for concurrency and ownership requirements.
 public protocol RVS_BasicGCDTimerDelegate: AnyObject {
-    /* ############################################################## */
-    /**
-     Called periodically, as the GCDTimer repeats (or fires once). This is required.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
-     */
+    /// Handles one delivered timer event, before the completion closure is called.
+    ///
+    /// Invalidating the timer here suppresses the event's subsequent completion call.
+    /// - Parameter timer: The timer delivering the event.
     func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer)
-    /* ############################################################## */
-    /**
-     This is called after the timer is initially valid (but before the first run). It is optional.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
-     */
+
+    /// Reports creation of the dispatch source, before its first activation.
+    ///
+    /// The default implementation does nothing. Calling `invalidate()` here cancels
+    /// activation; calling `resume()` again has no effect.
+    /// - Parameter timer: The timer whose source was created.
     func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer)
-    /* ############################################################## */
-    /**
-     This is called just before the timer invalidates. It is optional.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
-     */
+
+    /// Reports invalidation of a previously created source.
+    ///
+    /// The timer is already invalid when called, so reentrant invalidation is harmless.
+    /// Its context remains available until invalidation notifications return. This is
+    /// not called during deinitialization. The default implementation does nothing.
+    /// - Parameter timer: The timer being invalidated.
     func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
-    /* ############################################################## */
-    /**
-     This is called just before the timer invalidates. It is optional.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
-     */
+
+    /// Reports a transition to the paused state.
+    ///
+    /// The default implementation does nothing.
+    /// - Parameter timer: The paused timer.
     func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer)
-    
-    /* ############################################################## */
-    /**
-     This is called when the timer resumes.
-     
-     - parameter timer: The BasicGCDTimer instance that is invoking the callback.
-     */
+
+    /// Reports an initial start or a transition from paused to running.
+    ///
+    /// The timer reports `isRunning == true` before this notification. On initial
+    /// start, `basicGCDTimerValid(_:)` precedes it. The default does nothing.
+    /// - Parameter timer: The timer being resumed.
     func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer)
 }
 
-/* ################################################################## */
-/**
- These defaults mean that these methods are optional.
- */
 public extension RVS_BasicGCDTimerDelegate {
-    /* ############################################################## */
-    /**
-     The default delegate call does nothing.
-     */
-    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer) {
-        #if DEBUG
-            print("Default basicGCDTimerValid delegate call!")
-        #endif
-    }
-    
-    /* ############################################################## */
-    /**
-     The default delegate call does nothing.
-     */
-    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer) {
-        #if DEBUG
-            print("Default basicGCDTimerWillBecomeInvalid delegate call!")
-        #endif
-    }
-    
-    /* ############################################################## */
-    /**
-     The default delegate call does nothing.
-     */
-    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer) {
-        #if DEBUG
-            print("Default basicGCDTimerSuspend delegate call!")
-        #endif
-    }
-    
-    /* ############################################################## */
-    /**
-     The default delegate call does nothing.
-     */
-    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer) {
-        #if DEBUG
-            print("Default basicGCDTimerResume delegate call!")
-        #endif
-    }
+    /// Provides a no-op default for source creation notifications.
+    /// - Parameter timer: The timer whose source was created.
+    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer) {}
+
+    /// Provides a no-op default for invalidation notifications.
+    /// - Parameter timer: The timer being invalidated.
+    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer) {}
+
+    /// Provides a no-op default for pause notifications.
+    /// - Parameter timer: The paused timer.
+    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer) {}
+
+    /// Provides a no-op default for resume notifications.
+    /// - Parameter timer: The timer being resumed.
+    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer) {}
 }
 
-/* ################################################################## */
-/**
- This is a general-purpose GCD timer class.
- 
- It requires that an owning instance register a delegate to receive callbacks.
- 
- The way that you use this, is to create an instance of this class (we use a class, to ensure that it is referenced, as opposed to copied).
- You then call "resume()" on that instance.
- */
+/// A manually started Dispatch timer that delivers one event or repeats until cancelled.
+///
+/// Retain the timer, supply a delegate or completion, and call ``resume()``. A timer
+/// defaults to a single event; pass `onlyFireOnce: false` to repeat. Use `queue: .main`
+/// for callbacks that update UI. A nil queue uses Dispatch's default global queue.
+///
+/// ```swift
+/// final class DelayedAction {
+///     private var timer: RVS_BasicGCDTimer?
+///
+///     func start() {
+///         timer?.invalidate()
+///         timer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.5, queue: .main) { _, fired in
+///             if fired { print("Timer fired") }
+///         }
+///         timer?.resume()
+///     }
+/// }
+/// ```
+/// Retain the `DelayedAction` owner for as long as delivery is needed.
+///
+/// Timer state and stored properties are protected against concurrent access. Client
+/// callbacks execute outside the internal lock and may call timer methods. Lifecycle
+/// notifications from concurrent operations can overlap or arrive in a different order
+/// than the operations; serialize your calls if notification ordering matters. Pausing
+/// or invalidating does not wait for a callback already in progress to finish. Protect
+/// your delegate, captured variables, and objects held in ``context`` as needed.
+///
+/// The timer retains its completion and context but not its delegate. Avoid a closure
+/// or context that strongly retains the timer or its owner; call ``invalidate()`` when
+/// finished. Deinitialization cancels the source without invoking client code.
+///
+/// Invalidation is permanent. Create another timer to start a new schedule. Dispatch
+/// timers are best-effort scheduling tools, not real-time deadlines or a way to keep an
+/// app executing while the operating system suspends it.
+///
+/// ## Topics
+///
+/// ### Creating a timer
+/// - ``init(timeIntervalInSeconds:delegate:leewayInMilliseconds:onlyFireOnce:context:queue:isWallTime:completion:)``
+/// - ``init(_:completion:)``
+///
+/// ### Controlling delivery
+/// - ``resume()``
+/// - ``pause()``
+/// - ``invalidate()``
+/// - ``isRunning``
+/// - ``isInvalid``
+/// - ``isOnlyFiringOnce``
+///
+/// ### Configuring the schedule
+/// - ``timeIntervalInSeconds``
+/// - ``leewayInMilliseconds``
+/// - ``queue``
+/// - ``isWallTime``
+///
+/// ### Receiving callbacks
+/// - ``delegate``
+/// - ``completion``
+/// - ``context``
+/// - ``RVS_BasicGCDTimerCompletion``
 public class RVS_BasicGCDTimer {
-    /* ############################################################## */
-    /**
-     This is a completion function that can be used, instead of a delegate.
-     
-     - parameter: The timer instance calling the completion
-     - parameter: The success flag. True, if the timer completed successfully.
-     */
-    public typealias RVS_BasicGCDTimerCompletion = (_: RVS_BasicGCDTimer, _: Bool) -> Void
+    /// Handles a delivered event (`true`) or explicit cancellation before completion (`false`).
+    ///
+    /// Repeating timers call this with `true` for each delivered event and at most once
+    /// with `false` when invalidated. One-shot timers do not report cancellation after
+    /// their event has begun. Cancellation before the first `resume()` also reports
+    /// `false`. Deinitialization never calls this closure.
+    ///
+    /// Event delivery uses ``queue``. Cancellation delivery runs synchronously on the
+    /// thread calling ``invalidate()`` and can be nested inside a repeating event call.
+    /// - Parameters:
+    ///   - timer: The timer delivering the notification.
+    ///   - fired: Whether a timer event was delivered rather than cancelled.
+    public typealias RVS_BasicGCDTimerCompletion = (_ timer: RVS_BasicGCDTimer, _ fired: Bool) -> Void
 
-    /* ############################################################## */
-    // MARK: - Private Enums
-    /* ############################################################## */
-    /// This is used to hold state flags for internal use.
-    private enum _State {
-        /// The timer is currently invalid.
-        case _invalid
-        /// The timer is currently paused.
-        case _suspended
-        /// The timer is firing.
-        case _running
-    }
-    
-    /* ############################################################## */
-    // MARK: - Private Instance Properties
-    /* ############################################################## */
-    /// This is used to enforce Equatable.
-    private var _uuid = UUID()
-    /// This holds our current run state.
-    private var _state: _State = ._invalid
-    /// This holds a Boolean that is true, if we are to only fire once (default is true, which means we do not repeat).
-    private var _onlyFireOnce: Bool = true
-    /// This contains the actual dispatch timer object instance.
-    private var _timerVar: DispatchSourceTimer?
-    /// This is the contained delegate instance
+    private enum State { case idle, running, paused, invalidated }
+    private let _lock = NSRecursiveLock()
+    private var _state: State = .idle
+    private var _source: DispatchSourceTimer?
+    private var _sourceIsSuspended = true
+    private var _transition = UUID()
+    private var _oneShotEventBegan = false
+    private var _onlyFireOnce = true
     private weak var _delegate: RVS_BasicGCDTimerDelegate?
-    
-    /* ############################################################## */
-    /**
-     This dynamically initialized calculated property will return (or create and return) a basic GCD timer that (probably) repeats.
-     
-     It uses the current queue.
-     */
-    private var _timer: DispatchSourceTimer? {
-        if nil == _timerVar {   // If we don't already have a timer, we create one. Otherwise, we simply return the already-instantiated object.
-            #if DEBUG
-                print("timer create GCD object")
-            #endif
-            _timerVar = DispatchSource.makeTimerSource(queue: queue)                // We make a generic, default timer source. No frou-frou. If a queue was specified, we use that.
-            let leeway = DispatchTimeInterval.milliseconds(leewayInMilliseconds)    // If they have provided a leeway, we apply it here. We assume milliseconds.
-            _timerVar?.setEventHandler { [weak self] in                             // This is the timer's base callback. This is called from the system timer.
-                if let self = self {
-                    // The timer commits seppukku if it's only to fire one time. It also does it if the variable can't unwrap (should never happen).
-                    if nil == self.delegate,
-                       nil == self.completion {
-                        self.invalidate()
-                    } else {
-                        self.delegate?.basicGCDTimerCallback(self)                  // Call the delegate back.
-                        self.completion?(self, true)                                // Call the completion (if provided).
-                        if self._onlyFireOnce {
-                            self.completion = nil
-                            self.invalidate()
-                        }
-                    }
-                }
-            }
-            if _onlyFireOnce {                                                      // Just this once...
-                if isWallTime {                                                     // See if we want to use "Wall" time, which doesn't care whether or not the computer goes to sleep.
-                    _timerVar?.schedule(wallDeadline: DispatchWallTime.now() + timeIntervalInSeconds)
-                } else {
-                    _timerVar?.schedule(deadline: .now() + timeIntervalInSeconds)
-                }
-            } else {
-                if isWallTime {                                                     // See if we want to use "Wall" time, which doesn't care whether or not the computer goes to sleep.
-                    _timerVar?.schedule(wallDeadline: DispatchWallTime.now() + timeIntervalInSeconds,   // The number of seconds each iteration of the timer will take.
-                        repeating: timeIntervalInSeconds,                                               // If we are repeating (default), we add our duration as the repeating time.
-                        leeway: leeway)                                                                 // Add any leeway we specified.
-                } else {
-                    _timerVar?.schedule(deadline: .now() + timeIntervalInSeconds,   // The number of seconds each iteration of the timer will take.
-                        repeating: timeIntervalInSeconds,                           // If we are repeating (default), we add our duration as the repeating time.
-                        leeway: leeway)                                             // Add any leeway we specified.
-                }
-            }
-            
-            delegate?.basicGCDTimerValid(self)
-        }
-        
-        return _timerVar
+    private var _completion: RVS_BasicGCDTimerCompletion?
+    private var _interval: TimeInterval = 0
+    private var _leeway = 0
+    private var _context: Any?
+    private var _queue: DispatchQueue?
+    private var _wallTime = false
+
+    private func _locked<T>(_ body: () -> T) -> T {
+        _lock.lock()
+        defer { _lock.unlock() }
+        return body()
     }
-    
-    /* ############################################################## */
-    /**
-     This is called to completely invalidate the timer.
-     */
-    private func _seppukku() {
-        if let timer = _timerVar {
-            #if DEBUG
-                print("timer invalidating.")
-            #endif
-            delegate?.basicGCDTimerWillBecomeInvalid(self)
-            _delegate = nil
-            timer.setEventHandler(handler: nil)
-            timer.cancel()
-            
-            // We clean up everything.
-            timeIntervalInSeconds = 0
-            leewayInMilliseconds = 0
-            context = nil
-            _onlyFireOnce = false
-            
-            if ._suspended == _state {  // If we were suspended, then we need to call resume one more time.
-                #if DEBUG
-                    print("timer one more for the road")
-                #endif
-                timer.resume()
+
+    /// The event and cancellation closure, retained until removed or invalidated.
+    ///
+    /// Assigning nil removes it without invoking it. Removing the last recipient from
+    /// a started timer invalidates that timer. Assignments after invalidation are ignored.
+    public var completion: RVS_BasicGCDTimerCompletion? {
+        get { _locked { _completion } }
+        set {
+            let shouldInvalidate = _locked { () -> Bool in
+                guard _state != .invalidated else { return false }
+                _completion = newValue
+                return _source != nil && _completion == nil && _delegate == nil
             }
-            
-            _state = ._invalid
+            if shouldInvalidate { invalidate() }
         }
-        
-        _timerVar = nil
     }
-    
-    /* ############################################################## */
-    // MARK: - Public Instance Properties
-    /* ############################################################## */
-    /// If we don't have a delegate, we should have a completion.
-    public var completion: RVS_BasicGCDTimerCompletion?
-    /// This is the time between fires, in seconds.
-    public var timeIntervalInSeconds: TimeInterval = 0
-    /// This is how much "leeway" we give the timer, in milliseconds. It is ignored for onlyFireOnce.
-    public var leewayInMilliseconds: Int = 0
-    /// This allows the delegate to add any "context" data to the instance,
-    public var context: Any!
-    /// This is the dispatch queue the timer will use.
-    public var queue: DispatchQueue!
-    /// True, if we are to use the Apple "Wall Clock" time.
-    public var isWallTime: Bool = false
-    
-    /* ############################################################## */
-    // MARK: - Public Computed Properties
-    /* ############################################################## */
-    /**
-     - returns: true, if the timer is invalid. READ ONLY
-     */
-    public var isInvalid: Bool { ._invalid == _state }
-    
-    /* ############################################################## */
-    /**
-     - returns: true, if the timer will only fire one time (will return false after that one fire). READ ONLY
-     */
-    public var isOnlyFiringOnce: Bool { _onlyFireOnce }
-    
-    /* ############################################################## */
-    /**
-     - returns: true, if the timer is currently running. READ/WRITE
-     */
+
+    /// The delay to the first event and, when repeating, the period, in seconds.
+    ///
+    /// Set this before the first `resume()`; later assignments are ignored. It must be
+    /// finite, positive, and representable as a signed 64-bit nanosecond interval.
+    /// Positive subnanosecond values are rounded up to one nanosecond. Invalid settings
+    /// cause `resume()` to invalidate the timer and report cancellation.
+    public var timeIntervalInSeconds: TimeInterval {
+        get { _locked { _interval } }
+        set { _locked { if _state == .idle { _interval = newValue } } }
+    }
+
+    /// The permitted scheduling leeway, in milliseconds, for both one-shot and repeating timers.
+    ///
+    /// Set this before the first `resume()`; later assignments are ignored. Values must
+    /// be nonnegative and representable as signed 64-bit nanoseconds. Leeway allows Dispatch
+    /// to coalesce events to save energy; it does not bound delays caused by a busy queue.
+    public var leewayInMilliseconds: Int {
+        get { _locked { _leeway } }
+        set { _locked { if _state == .idle { _leeway = newValue } } }
+    }
+
+    /// Arbitrary caller-owned data retained for callbacks, then released on invalidation.
+    ///
+    /// Access to this property is synchronized; mutations inside a referenced object
+    /// are your responsibility. Assignments after invalidation are ignored.
+    public var context: Any! {
+        get { _locked { _context } }
+        set { _locked { if _state != .invalidated { _context = newValue } } }
+    }
+
+    /// The event delivery queue; nil requests Dispatch's default global queue.
+    ///
+    /// Set this before the first `resume()`; later assignments are ignored. Lifecycle
+    /// and cancellation notifications use the calling thread, independently of this queue.
+    public var queue: DispatchQueue! {
+        get { _locked { _queue } }
+        set { _locked { if _state == .idle { _queue = newValue } } }
+    }
+
+    /// Whether to schedule using wall-clock time instead of the default monotonic clock.
+    ///
+    /// Set this before the first `resume()`; later assignments are ignored. Wall time
+    /// follows calendar-clock adjustments. Neither clock guarantees execution during
+    /// sleep or app suspension; overdue events may be delivered when execution resumes.
+    public var isWallTime: Bool {
+        get { _locked { _wallTime } }
+        set { _locked { if _state == .idle { _wallTime = newValue } } }
+    }
+
+    /// Whether there is no live dispatch source, including before the first start.
+    ///
+    /// A newly initialized timer can be resumed. After explicit or automatic
+    /// invalidation, it cannot be restarted. Paused timers remain valid.
+    public var isInvalid: Bool { _locked { _state == .idle || _state == .invalidated } }
+
+    /// Whether the timer is configured for one event; false after invalidation.
+    public var isOnlyFiringOnce: Bool { _locked { _onlyFireOnce } }
+
+    /// Whether event delivery is enabled; setting this calls `resume()` or `pause()`.
+    ///
+    /// Repeated assignments are harmless. A paused timer remains valid, and a newly
+    /// created timer cannot start without a delegate or completion.
     public var isRunning: Bool {
-        get { ._running == _state }
-        
-        set {
-            if !newValue,                   // If we were running, and the new value is false, we pause.
-               ._running == _state,
-               let timer = _timer {
-                _state = ._suspended
-                timer.suspend()
-            } else if newValue,             // If the new value is true, then we resume (which could create a new instance of the timer).
-                      ._running != _state,  // We need to make sure that we're not already running, as calling `resume()`, while running, will cause a crash.
-                      let timer = _timer {
-                _state = ._running
-                timer.resume()
-            }
-        }
+        get { _locked { _state == .running } }
+        set { if newValue { resume() } else { pause() } }
     }
-    
-    /* ############################################################## */
-    /**
-     - returns: the delegate object. READ/WRITE. If nil, then the instance will stop and invalidate. You must have a delegate to run.
-     */
+
+    /// The weakly held delegate; a completion may be used alongside it or instead of it.
+    ///
+    /// Explicitly removing the last recipient from a started timer invalidates it.
+    /// If the delegate deallocates, the missing recipient is detected at the next event.
+    /// Assignments after invalidation are ignored.
     public var delegate: RVS_BasicGCDTimerDelegate? {
-        get { _delegate }
-        
+        get { _locked { _delegate } }
         set {
-            if _delegate !== newValue {
-                #if DEBUG
-                    print("timer changing the delegate from \(String(describing: delegate)) to \(String(describing: newValue))")
-                #endif
-                if nil == newValue,
-                   nil == completion {  // We can't have a timer with no one to call. We also use this to kill the timer.
-                    _seppukku()
-                } else {
-                    _delegate = newValue
-                }
+            let shouldInvalidate = _locked { () -> Bool in
+                guard _state != .invalidated else { return false }
+                _delegate = newValue
+                return _source != nil && _delegate == nil && _completion == nil
             }
+            if shouldInvalidate { invalidate() }
         }
     }
-    
-    /* ############################################################## */
-    // MARK: - Deinitializer
-    /* ############################################################## */
-    /**
-     We have to carefully dismantle this, as we can end up with crashes if we don't clean up properly.
-     */
-    deinit {
-        #if DEBUG
-            print("timer deinit")
-        #endif
-        completion = nil
-        _seppukku()
-    }
-    
-    /* ############################################################## */
-    // MARK: - Public Methods
-    /* ############################################################## */
-    /**
-     Default constructor
-     
-     - parameter inTimeIntervalInSeconds: The time (in seconds) between fires.
-     - parameter inDelegate: Our delegate, for callbacks. Optional. Default is nil.
-     - parameter inLeewayInMilliseconds: Any leeway. This is optional, and default is zero (0). It is ignored if onlyFireOnce is true.
-     - parameter inOnlyFireOnce: If true, then this will only fire one time, as opposed to repeat. Optional. Default is true. If true, then leewayInMilliseconds is ignored.
-     - parameter inContext: This can be any data that the caller wants to associate with the timer. It will be available in the callback, as the timer object's "context" property.
-     - parameter inQueue: The DispatchQueue to use for the timer. Optional. If not specified, the default queue is used.
-     - parameter inIsWallTime: If true (default is false), then the timer will use the Apple "Wall time" clock, which is more consistent.
-     - parameter inCompletion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
-     > NOTE: `inCompletion` is very simple. It is only called when the timer completes, or is aborted. For finer control, use a delegate.
-     */
+
+    /// Creates a stopped timer without scheduling any work.
+    ///
+    /// The first deadline is calculated by `resume()`, not by this initializer.
+    /// - Parameters:
+    ///   - inTimeIntervalInSeconds: Positive, finite delay and repeat period in seconds.
+    ///   - inDelegate: Weak event recipient. Optional when a completion is supplied.
+    ///   - inLeewayInMilliseconds: Nonnegative scheduling leeway in milliseconds; defaults to zero.
+    ///   - inOnlyFireOnce: Whether to deliver one event; defaults to true.
+    ///   - inContext: Optional data retained for callbacks.
+    ///   - inQueue: Event delivery queue; nil uses Dispatch's default global queue.
+    ///   - inIsWallTime: Whether to use wall time; defaults to false (monotonic time).
+    ///   - inCompletion: Optional event/cancellation closure. Capture owners weakly when appropriate.
     public init(timeIntervalInSeconds inTimeIntervalInSeconds: TimeInterval,
                 delegate inDelegate: RVS_BasicGCDTimerDelegate? = nil,
                 leewayInMilliseconds inLeewayInMilliseconds: Int = 0,
@@ -357,91 +302,175 @@ public class RVS_BasicGCDTimer {
                 context inContext: Any! = nil,
                 queue inQueue: DispatchQueue! = nil,
                 isWallTime inIsWallTime: Bool = false,
-                completion inCompletion: RVS_BasicGCDTimerCompletion! = nil
-    ) {
-        #if DEBUG
-            print("timer init")
-            print("\tleewayInMilliseconds: \(inLeewayInMilliseconds)")
-            print("\tonlyFireOnce: \(inOnlyFireOnce ? "true" : "false")")
-            print("\tisWallTime: \(inIsWallTime ? "true" : "false")")
-        #endif
-        timeIntervalInSeconds = inTimeIntervalInSeconds
-        leewayInMilliseconds = inLeewayInMilliseconds
-        delegate = inDelegate
-        context = inContext
-        isWallTime = inIsWallTime
-        queue = inQueue
+                completion inCompletion: RVS_BasicGCDTimerCompletion! = nil) {
+        _interval = inTimeIntervalInSeconds
+        _delegate = inDelegate
+        _leeway = inLeewayInMilliseconds
         _onlyFireOnce = inOnlyFireOnce
-        completion = inCompletion
+        _context = inContext
+        _queue = inQueue
+        _wallTime = inIsWallTime
+        _completion = inCompletion
     }
-    
-    /* ############################################################## */
-    /**
-     Super-simple initializer (just the time and a completion).
-     Both parameters are required.
-     - parameter inTimeIntervalInSeconds: The time (in seconds) between fires.
-     - parameter inCompletion: If provided, this function will be called (not necessarily in the main thread), when the timer is complete, or aborts. Optional. Default is nil.
-     */
-    public init(_ inTimeIntervalInSeconds: TimeInterval, completion inCompletion: @escaping RVS_BasicGCDTimerCompletion) {
-        timeIntervalInSeconds = inTimeIntervalInSeconds
-        completion = inCompletion
+
+    /// Creates a stopped one-shot timer using Dispatch's default global queue.
+    /// - Parameters:
+    ///   - inTimeIntervalInSeconds: Positive, finite delay in seconds.
+    ///   - inCompletion: Receives true for the event or false for cancellation before delivery.
+    public convenience init(_ inTimeIntervalInSeconds: TimeInterval, completion inCompletion: @escaping RVS_BasicGCDTimerCompletion) {
+        self.init(timeIntervalInSeconds: inTimeIntervalInSeconds, completion: inCompletion)
     }
-    
-    /* ############################################################## */
-    /**
-     If the timer is not currently running, we resume. If running, nothing happens.
-     */
+
+    /// Starts or resumes event delivery; repeated calls while running do nothing.
+    ///
+    /// At least one recipient is required. Invalid intervals or leeway permanently
+    /// invalidate the timer and report cancellation. Pausing does not move the original
+    /// deadlines, so resuming an overdue timer can deliver an event immediately.
     public func resume() {
-        // We have to have at least a delegate or completion to run.
-        if (nil != delegate) || (nil != completion),
-           ._running != _state {
-            #if DEBUG
-                print("timer resume")
-            #endif
-            delegate?.basicGCDTimerResume(self) // Call the delegate
-            isRunning = true    // Remember that this could create a timer on the spot.
+        _lock.lock()
+        guard _state == .idle || _state == .paused,
+              _delegate != nil || _completion != nil else { _lock.unlock(); return }
+        let created = _source == nil
+        if created {
+            let nanoseconds = _interval * 1_000_000_000
+            guard nanoseconds.isFinite, nanoseconds > 0, nanoseconds < Double(Int64.max),
+                  _leeway >= 0, Int64(_leeway) <= Int64.max / 1_000_000 else {
+                _lock.unlock()
+                invalidate()
+                return
+            }
+            let source = DispatchSource.makeTimerSource(queue: _queue)
+            // Keep seconds as Double: Int-sized nanoseconds would cap 32-bit watchOS at two seconds.
+            let interval = max(0.000000001, _interval)
+            let leeway = DispatchTimeInterval.milliseconds(_leeway)
+            source.setEventHandler { [weak self] in self?._fire() }
+            if _wallTime {
+                if _onlyFireOnce {
+                    source.schedule(wallDeadline: .now() + interval, leeway: leeway)
+                } else {
+                    source.schedule(wallDeadline: .now() + interval, repeating: interval, leeway: leeway)
+                }
+            } else {
+                if _onlyFireOnce {
+                    source.schedule(deadline: .now() + interval, leeway: leeway)
+                } else {
+                    source.schedule(deadline: .now() + interval, repeating: interval, leeway: leeway)
+                }
+            }
+            _source = source
+            _sourceIsSuspended = true
+        }
+        _state = .running
+        let transition = UUID()
+        _transition = transition
+        let recipient = _delegate
+        _lock.unlock()
+
+        if created { recipient?.basicGCDTimerValid(self) }
+        // Client code can pause or invalidate during either lifecycle callback.
+        guard _locked({ _state == .running && _transition == transition }) else { return }
+        recipient?.basicGCDTimerResume(self)
+        _locked {
+            guard _state == .running, _transition == transition, _sourceIsSuspended else { return }
+            _source?.resume()
+            _sourceIsSuspended = false
         }
     }
-    
-    /* ############################################################## */
-    /**
-     If the timer is currently running, we suspend. If not running, nothing happens.
-     */
+
+    /// Pauses future events without resetting the schedule; repeated calls do nothing.
+    ///
+    /// A callback already in progress may finish. Resume with `resume()` or `isRunning = true`.
     public func pause() {
-        // We have to have at least a delegate or completion to pause.
-        if (nil != delegate) || (nil != completion),
-           ._running == _state {
-            #if DEBUG
-                print("timer suspend")
-            #endif
-            delegate?.basicGCDTimerSuspend(self) // Call the delegate
-            isRunning = false
+        let recipient = _locked { () -> RVS_BasicGCDTimerDelegate? in
+            guard _state == .running else { return nil }
+            _state = .paused
+            _transition = UUID()
+            if !_sourceIsSuspended {
+                _source?.suspend()
+                _sourceIsSuspended = true
+            }
+            return _delegate
+        }
+        recipient?.basicGCDTimerSuspend(self)
+    }
+
+    /// Permanently cancels the timer and releases its completion, delegate, and context.
+    ///
+    /// Repeated or reentrant calls do nothing. Cancellation reports false to the current
+    /// completion unless a one-shot event has already begun. A source's invalidation
+    /// notification follows the cancellation completion. Context is then released, and
+    /// interval, leeway, and the one-shot flag reset to zero/false.
+    ///
+    /// This does not wait for client code already executing on another thread. A callback
+    /// already selected for delivery may finish after this method returns.
+    public func invalidate() {
+        _invalidate(notify: true)
+    }
+
+    private func _fire() {
+        _lock.lock()
+        guard _state == .running else { _lock.unlock(); return }
+        let recipient = _delegate
+        let hasCompletion = _completion != nil
+        let once = _onlyFireOnce
+        if once && (recipient != nil || hasCompletion) { _oneShotEventBegan = true }
+        _lock.unlock()
+        guard recipient != nil || hasCompletion else { invalidate(); return }
+
+        recipient?.basicGCDTimerCallback(self)
+        let callback = _locked { () -> RVS_BasicGCDTimerCompletion? in
+            guard _state != .invalidated else { return nil }
+            let callback = _completion
+            if once { _completion = nil }
+            return callback
+        }
+        callback?(self, true)
+        if once { _invalidate(notify: false) }
+    }
+
+    private func _invalidate(notify: Bool) {
+        _lock.lock()
+        guard _state != .invalidated else { _lock.unlock(); return }
+        let recipient = _source == nil ? nil : _delegate
+        let callback = notify && !_oneShotEventBegan ? _completion : nil
+        _state = .invalidated
+        _transition = UUID()
+        _delegate = nil
+        _completion = nil
+        _cancelSource()
+        _lock.unlock()
+
+        callback?(self, false)
+        recipient?.basicGCDTimerWillBecomeInvalid(self)
+        _locked {
+            _context = nil
+            _interval = 0
+            _leeway = 0
+            _onlyFireOnce = false
         }
     }
-    
-    /* ############################################################## */
-    /**
-     This completely nukes the timer. It resets the entire object to default.
-     */
-    public func invalidate() {
-        completion?(self, false)
-        _seppukku()
+
+    // Must be called with exclusive access. Every suspended source gets one final resume.
+    private func _cancelSource() {
+        guard let source = _source else { return }
+        source.setEventHandler(handler: nil)
+        source.cancel()
+        if _sourceIsSuspended { source.resume() }
+        _source = nil
+        _sourceIsSuspended = false
+    }
+
+    deinit {
+        // Never pass a partially deinitialized object to client code.
+        _cancelSource()
     }
 }
 
-// MARK: Equatable Conformance
-/* ################################################################## */
-/**
- This applies a simple Equatable comparison.
- */
 extension RVS_BasicGCDTimer: Equatable {
-    /* ############################################################## */
-    /**
-     Simple comparison, using the instance UUIDs
-     - parameters:
-        - lhs: The left-hand side of the comparison.
-        - rhs: The right-hand side.
-     - returns: True, if both reference the same instance.
-     */
-    public static func == (lhs: RVS_BasicGCDTimer, rhs: RVS_BasicGCDTimer) -> Bool { lhs._uuid == rhs._uuid }
+    /// Compares timer identity, regardless of scheduling or lifecycle state.
+    /// - Parameters:
+    ///   - lhs: The first timer.
+    ///   - rhs: The second timer.
+    /// - Returns: True only when both references identify the same instance.
+    public static func == (lhs: RVS_BasicGCDTimer, rhs: RVS_BasicGCDTimer) -> Bool { lhs === rhs }
 }

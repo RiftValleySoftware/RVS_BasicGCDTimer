@@ -1,142 +1,106 @@
 # ``RVS_BasicGCDTimer``
 
-![](icon.png)
+Schedule one-shot or repeating work with a manually controlled Dispatch timer.
 
 ## Overview
 
-This is a fundamental tool: A simple [Grand Central Dispatch](https://developer.apple.com/documentation/dispatch) timer that either fires repeatedly, or only once.
+Retain a ``RVS_BasicGCDTimer/RVS_BasicGCDTimer`` instance, supply a completion or delegate, and call `resume()`. The default is **one shot**. Pass `onlyFireOnce: false` for repeated delivery.
 
-## What Problem Does This Solve?
+The timer does not retain itself. Dropping the last strong reference cancels it. A delegate is weakly held, while the completion and context are strongly held until removed or invalidated.
 
-Timers are necessary for many different reasons. They could be the driving engine of a clock app, or a UI tool to refresh a display or close a screen.
+### Start a repeating timer
 
-This will allow "leeway," which Apple suggests as a way to help reduce energy usage.
+This example owns the timer, handles cancellation separately from events, and delivers callbacks on the main queue:
 
-The timer is thread-independent. You can instantiate it on any queue that you want.
+```swift
+import RVS_BasicGCDTimer
 
-It's incredibly simple. Just a "set and forget," if you are firing just once, or a simple repeating callback.
+final class Counter {
+    private var timer: RVS_BasicGCDTimer?
+    private(set) var count = 0
 
-## Requirements
+    // Call this object's methods on the main thread.
+    func start() {
+        stop()
+        timer = RVS_BasicGCDTimer(
+            timeIntervalInSeconds: 1,
+            leewayInMilliseconds: 50,
+            onlyFireOnce: false,
+            queue: .main
+        ) { [weak self] _, fired in
+            guard fired else { return }
+            self?.count += 1
+        }
+        timer?.resume()
+    }
 
-It should work fine for osx, tvOS and iOS. It only depends on the Swift Foundation library.
+    func pause() { timer?.pause() }
+    func resume() { timer?.resume() }
 
-This requires Swift Version 4.0 or above (tested with 4.2).
+    func stop() {
+        timer?.invalidate()
+        timer = nil
+    }
+}
+```
 
-## WHERE TO GET
+For one event, omit `onlyFireOnce: false`. The short initializer `RVS_BasicGCDTimer(1) { timer, fired in ... }` uses the default global queue; it does **not** default to the main queue.
 
-[This is the GitHub repo for the project.](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer).
+### Understand the lifecycle
 
-[This is the documentation page for it](https://riftvalleysoftware.com/work/open-source-projects/#RVS_BasicGCDTimer)
+| Operation or event | Result |
+| --- | --- |
+| Initialize | No dispatch source exists; `isInvalid` is true and `isRunning` is false. |
+| First `resume()` | Validates settings, creates the source, and starts the first deadline. At least one recipient is required. |
+| `pause()` | Suspends event delivery. The source remains valid. |
+| Resume a paused timer | Enables delivery using the existing schedule. An overdue event can arrive immediately. |
+| One-shot event | Calls the delegate, then the completion with true, and invalidates automatically. |
+| Repeating event | Calls the delegate, then the completion with true. |
+| `invalidate()` | Permanently cancels, clears recipients and context, and resets interval/leeway/one-shot values. |
+| Release the last reference | Cancels the source without calling the delegate or completion. |
 
-## USAGE
+Setting `isRunning` performs the same operation as calling `resume()` or `pause()`. Repeated starts, pauses, and invalidations are harmless. Create a new instance after invalidation; a cancelled source cannot restart.
 
-[Swift Package Manager (SPM)](https://swift.org/package-manager/)
--
+Cancellation before an event reports false to the current completion, including cancellation before the timer is first started. Repeating timers can report several true events followed by one false cancellation. Cancelling from a repeating completion can therefore invoke that completion once more, synchronously, with false. Check the flag before doing event work.
 
-You can use SPM to load the project as a dependency, by referencing its [GitHub Repo](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer/) URI (SSH: [git@github.com:RiftValleySoftware/RVS_BasicGCDTimer.git](git@github.com:RiftValleySoftware/RVS_BasicGCDTimer.git), or HTTPS: [https://github.com/RiftValleySoftware/RVS_BasicGCDTimer.git](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer.git)).
+A one-shot event that has already begun does not subsequently report false. If its delegate invalidates the timer, the remaining completion is suppressed. Invalidating again from any cancellation or invalidation callback has no effect.
 
-Once you have the dependency attached, you reference it by adding an import to the files that consume the package:
-    
-    import RVS_BasicGCDTimer
+### Configure timing before starting
 
-### Include the Source in Your Project
+`timeIntervalInSeconds` must be finite and positive, and its conversion to nanoseconds must be less than `Int64.max`. Positive values below one nanosecond use one nanosecond. `leewayInMilliseconds` must be nonnegative and fit in signed 64-bit nanoseconds. Invalid settings cause the first `resume()` to invalidate and report cancellation instead of passing invalid values to Dispatch.
 
-This is a simple source file; not a module.
+Set the interval, leeway, queue, and clock before the first `resume()`. Later assignments to those four settings are ignored. You can update the completion, delegate, and context until invalidation.
 
-To use this, simply add the [RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift](https://github.com/RiftValleySoftware/RVS_BasicGCDTimer/blob/master/RVS_BasicGCDTimer/RVS_BasicGCDTimer.swift) file to your project; copying it wherever you want.
+Leeway applies to both repeating and one-shot timers. It gives Dispatch flexibility to combine wakeups, but it is not a maximum latency guarantee for a busy callback queue. The default clock is monotonic; `isWallTime: true` follows the calendar clock and can be affected by clock changes. Neither option keeps an app running during suspension, wakes a sleeping device on demand, or guarantees exact deadlines. See [Apple's timer scheduling documentation](https://developer.apple.com/documentation/dispatch/dispatchsourcetimer/schedule(deadline:repeating:leeway:)-hvhp).
 
-You then instantiate the timer:
+### Choose queues and protect shared state
 
-Either as a one-shot timer (in this case, 100 milliseconds), or as a repeating timer:
+Events use the configured queue; lifecycle and cancellation notifications execute on the thread performing the operation. For example, invalidating a main-queue timer from a background thread calls its cancellation completion on that background thread.
 
-`timeIntervalInSeconds` is a double-precision floating point number, with the timer period, in seconds (not milliseconds). It is required to be a positive value over zero.
+Timer state and stored properties are synchronized. Client callbacks execute outside the state lock, may call timer methods, and must protect their own shared data. Concurrent lifecycle operations can produce overlapping notifications. Pausing and invalidating do not wait for already selected callbacks to finish. See [Apple's cancellation semantics](https://developer.apple.com/documentation/dispatch/dispatchsourceprotocol/cancel()).
 
-The `delegate` is required. The timer won't work at all without a valid delegate.
+The class does not declare `Sendable`: synchronizing a timer does not make its arbitrary context, delegate, or captured objects safe to transfer between Swift actors. Access those objects according to their own isolation requirements. Do not assume lifecycle callbacks execute on the event queue.
 
-`leewayInMilliseconds` is the recommended "leeway" that Apple suggests that you give timers. This helps conserve energy in mobile devices.
+### Use a delegate for lifecycle notifications
 
-Set `onlyFireOnce` to true in order for the timer to be a "one-shot" timer.
+Implement ``RVS_BasicGCDTimerDelegate/basicGCDTimerCallback(_:)`` to receive events. The other four protocol methods have no-op defaults. On a normal initial start the order is validity, resume, event, completion, then invalidation for a one-shot timer. State transitions happen before lifecycle callbacks, so callbacks can inspect state and call timer methods without recursively repeating the same transition.
 
-`someContext` is any data that you want returned to the callback in your delegate method. It will be available as the timer's `context` property.
+An invalidation notification receives an already-invalid timer, with its context still available until that notification returns. Deinitialization deliberately does not invoke client code; explicitly invalidate if you need a cancellation notification.
 
-`queue` is the GCD queue to use. Not specifying means that the default queue is used.
+### Integrate and migrate
 
-`isWallTime` asks the timer to use the "Apple Wall Clock" time. That time is absolute, and doesn't care about whether or not the computer sleeps or has performance breaks. It tends to be more consistent.
+The Swift package supports iOS/iPadOS 15, macOS 10.14, tvOS 11, and watchOS 5, and requires Swift tools 5.5 or later. The Xcode library targets use iOS 15, macOS 12, tvOS 15, and watchOS 9. Xcode test targets follow the installed SDK’s recommended deployment targets to match its XCTest libraries. The module has no third-party dependencies.
 
-Note that using Wall Time can lead to unexpected behavior. For example, if the app is suspended for some period of time, and is restarted, instead of continuing where it left off, the completion call may be executed immediately.
+Version 1.8 makes invalidation permanent, applies leeway to one-shot timers, and consistently ignores schedule-setting assignments after startup. It removes debug logging and callbacks during deinitialization. Existing code should retain timers, configure them before starting, handle the completion's false cancellation case, and create a fresh instance when starting a new schedule.
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 25.0, onlyFireOnce: true, context: someContext, queue: DispatchQueue.main, isWallTime: true)
+The package includes a privacy manifest. Xcode's `.a` products contain code only; when integrating those archives or copying the Swift source, include `Sources/RVS_BasicGCDTimer/PrivacyInfo.xcprivacy` in the consuming application's resources as appropriate for that application's manifest arrangement.
 
-Here, we specify a repeating timer, with no leeway, and no context data:
+## Topics
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate, leewayInMilliseconds: 0, onlyFireOnce: false, context: nil, queue: nil, isWallTime: false)
+### Timer
 
-However, there's a lot of defaults. You can specify the exact same as such:
+- ``RVS_BasicGCDTimer/RVS_BasicGCDTimer``
 
-    newTimer = RVS_BasicGCDTimer(timeIntervalInSeconds: 0.1, delegate: someDelegate)
+### Delegate callbacks
 
-Once the timer is instantiated, you start it by calling `resume()`:
-
-    newTimer.resume()
-
-You pause (suspend) a running timer by calling `pause()`:
-
-    newTimer.pause()
-
-If the timer is not already running, nothing happens. If it is running, then it suspends.
-
-If repeating, the timer will repeat until it is invalidated or deinitialized:
-
-    newTimer.invalidate()
-
-If a "one-shot," then the timer is invalidated as soon as it completes.
-
-### Delegate
-
-The delegate has one required method, and four optional ones (with default extension handlers). The parameter passed in is the timer object.
-
-You can look at the timer object's `context` property for any data/functions/whatever that you want the callback to access.
-
-This one is called at the completion of the timer. It is required:
-
-    func basicGCDTimerCallback(_ timer: RVS_BasicGCDTimer)
-
-This one is an optional method that is called when the timer bcomes valid:
-
-    func basicGCDTimerValid(_ timer: RVS_BasicGCDTimer)
-
-This one is an optional one that is called JUST PRIOR to a timer bcoming invalid:
-
-    func basicGCDTimerWillBecomeInvalid(_ timer: RVS_BasicGCDTimer)
-
-This is an optional method that is called as the timer is suspended:
-
-    func basicGCDTimerSuspend(_ timer: RVS_BasicGCDTimer)
-
-This is an optional method that is called as the timer is resumed (which includes the initial start):
-
-    func basicGCDTimerResume(_ timer: RVS_BasicGCDTimer)
-
-## DEPENDENCIES
-
-There are no dependencies to use RVS_BasicGCDTimer in your project. In order to test it and run it in the module project, you should use [CocoaPods](https://cocoapods.org) to install [SwiftLint](https://cocoapods.org/pods/SwiftLint), although that is not required. It's [just good practice](https://littlegreenviper.com/series/swiftwater/swiftlint/).
-
-## LICENSE
-
-MIT License
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
-modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-[The Great Rift Valley Software Company: https://riftvalleysoftware.com](https://riftvalleysoftware.com)
-
+- ``RVS_BasicGCDTimerDelegate``

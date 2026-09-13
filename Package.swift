@@ -28,7 +28,7 @@ import PackageDescription
 let package = Package(
     name: "RVS_BasicGCDTimer",
     platforms: [
-        .iOS(.v11),
+        .iOS(.v15),
         .tvOS(.v11),
         .macOS(.v10_14),
         .watchOS(.v5)
@@ -39,7 +39,8 @@ let package = Package(
             targets: ["RVS_BasicGCDTimer"])
     ],
     targets: [
-        .target(name: "RVS_BasicGCDTimer"),
+        .target(name: "RVS_BasicGCDTimer",
+                resources: [.copy("PrivacyInfo.xcprivacy")]),
         .testTarget(name: "RVS_BasicGCDTimerTest",
                     dependencies: ["RVS_BasicGCDTimer"])
     ]

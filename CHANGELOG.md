@@ -1,3 +1,18 @@
+**Version 1.8.0** *September 13, 2026*
+- Synchronized timer state and property storage to prevent concurrent pause/resume/invalidation from unbalancing the dispatch source.
+- Made invalidation idempotent and reentrant, including cancellation before the first start. Cancelled instances cannot restart.
+- Prevented recursive cancellation completions and suppressed event completion after delegate-driven invalidation. One-shot delivery no longer reports a subsequent cancellation.
+- Balanced suspended-source cleanup and removed client callbacks during deinitialization.
+- Corrected delegate removal when a completion remains, and made `isRunning` use the same checked transitions and notifications as `resume()` and `pause()`.
+- Validate intervals and leeway before scheduling, including nonfinite values and overflow; retain support for long delays on 32-bit watchOS. Apply leeway to one-shot timers as well as repeating timers.
+- Capture schedule settings at the first resume and ignore later changes. Completion, delegate, and context remain editable until invalidation.
+- Removed library debug logging, including descriptions of delegate objects.
+- Rewrote DocC, Quick Help, and README guidance for ownership, callback queues, cancellation, timing, concurrency, and migration.
+- Replaced seven broad/flaky tests with focused regression coverage that actually exercises repeating timers and concurrent control.
+- Added regression tests for removing delegates from started timers, with and without a remaining completion, and enabled coverage collection in the macOS library scheme.
+- Raised minimum iOS/iPadOS support to 15. Updated Xcode library targets to macOS 12, tvOS 15, and watchOS 9, and test targets to the SDK-recommended minimums for Xcode 27 compatibility; other Swift package platform minimums are unchanged.
+- Moved the privacy manifest into the Swift package target and included it as a resource. Documented resource integration for Xcode static archives and direct-source consumers.
+
 **Version 1.7.3** *February 17, 2026*
 - Documentation changes. No functional changes.
 
@@ -80,4 +95,3 @@
 - Made the Jazzy and Carthage stuff into .command files.
 - Tweaked the version.
 - Re-ran docs.
-

@@ -1,5 +1,7 @@
 # Privacy Declaration
 
-This project collects **absolutely no information at all**, from anyone, at any time.
+RVS_BasicGCDTimer schedules local callbacks. The library does not collect or transmit data, access files or preferences, or emit debug logging. Its optional context and completion are held in memory and released on invalidation or deinitialization, subject to any references retained by the calling application.
 
-It is hosted on GitHub, so users of the library may need to understand [GitHub's Privacy Policy](https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement).
+The calling application controls the work performed by delegates and completions, and is responsible for that work's privacy behavior. The library's declaration does not describe the application's own data use.
+
+The Swift package includes `Sources/RVS_BasicGCDTimer/PrivacyInfo.xcprivacy` as a resource. Static Xcode archives contain no resources; direct-source and archive consumers should include the manifest in their application's resource/manifest arrangement.
